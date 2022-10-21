@@ -16,6 +16,12 @@ func main() {
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Take care of your plants")
 	})
+
+	router.HandleFunc("/index", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("Content-type", "text/html")
+		http.ServeFile(w, r, "static/index.html")
+	})
+
 	uri.Uri_init_plant(router)
 	//////////////////////////////////////////////////////////////
 	// Setting database config
@@ -24,13 +30,6 @@ func main() {
 	storage.Connect()
 	//////////////////////////////////////////////////////////////
 
-	// fs := http.FileServer(http.Dir("static/"))
-	// http.Handle("/static", http.StripPrefix("/static/", fs))
-
-	// router.HandleFunc("/template", func(w http.ResponseWriter, r *http.Request) {
-	// 	tepl := template.Must(template.ParseFiles("static/abcd.html"))
-	// 	tepl.Execute(w, "Sabuj")
-	// })
 	fmt.Println("Server started at port 8080")
 	http.ListenAndServe("localhost:8080", router)
 }
