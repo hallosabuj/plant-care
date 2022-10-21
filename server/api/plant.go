@@ -65,3 +65,13 @@ func AddImages(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode("Multiple images uploaded")
 }
+
+func DeletePlant(w http.ResponseWriter, r *http.Request) {
+	var plantId string = mux.Vars(r)["plantId"]
+	if err := storage.PlantHandler.DeleteDetails(plantId); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	} else if err := storage.DeleteImages(plantId); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	json.NewEncoder(w).Encode("Plant Deleted")
+}

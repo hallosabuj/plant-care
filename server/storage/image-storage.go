@@ -96,3 +96,16 @@ func DeleteImage(fileName string) error {
 	}
 	return nil
 }
+
+func DeleteImages(plantId string) error {
+	files, err := filepath.Glob(fmt.Sprintf("./images/%s*", plantId))
+	if err != nil {
+		return err
+	}
+	for _, f := range files {
+		if err := os.Remove(f); err != nil {
+			return err
+		}
+	}
+	return nil
+}

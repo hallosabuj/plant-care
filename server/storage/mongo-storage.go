@@ -17,6 +17,7 @@ import (
 type Handler interface {
 	AddPlant(plant.Plant) error
 	GetAllPlants(*[]plant.Plant) error
+	DeleteDetails(string) error
 }
 
 var PlantHandler Handler
@@ -92,4 +93,12 @@ func (p plantMongoHandler) GetAllPlants(allPlants *[]plant.Plant) error {
 	}
 
 	return cur.Err()
+}
+
+func (p plantMongoHandler) DeleteDetails(plantId string) error {
+	_, err := p.col.DeleteOne(context.Background(), bson.M{"id": plantId})
+	if err != nil {
+		return err
+	}
+	return nil
 }
