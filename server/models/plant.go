@@ -1,6 +1,7 @@
-package plant
+package models
 
 type Plant struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
+	DOB  string `json:"dob"`
 }

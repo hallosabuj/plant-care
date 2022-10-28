@@ -7,12 +7,12 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
-	"github.com/hallosabuj/plant-care/server/plant"
+	"github.com/hallosabuj/plant-care/server/models"
 	"github.com/hallosabuj/plant-care/server/storage"
 )
 
 func GetAllPlants(w http.ResponseWriter, r *http.Request) {
-	var allPlants []plant.Plant
+	var allPlants []models.Plant
 	if err := storage.PlantHandler.GetAllPlants(&allPlants); err != nil {
 		json.NewEncoder(w).Encode(err)
 	}
@@ -22,7 +22,10 @@ func GetAllPlants(w http.ResponseWriter, r *http.Request) {
 
 func AddPlant(w http.ResponseWriter, r *http.Request) {
 	// bytes, _ := ioutil.ReadAll(r.Body)
-	var newPlant plant.Plant = plant.Plant{Name: r.FormValue("name")}
+	var newPlant models.Plant = models.Plant{
+		Name: r.FormValue("name"),
+		DOB:  r.FormValue("dob"),
+	}
 	// Generate the ID for the plant
 	newPlant.ID = fmt.Sprintf("%v", uuid.New())
 	//////////////////////////////////////////////////////////
@@ -74,4 +77,14 @@ func DeletePlant(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 	json.NewEncoder(w).Encode("Plant Deleted")
+}
+
+func DownloadImage(w http.ResponseWriter, r *http.Request) {
+	var imageName string = mux.Vars(r)["imageName"]
+	fmt.Println("plantId", imageName)
+	data, err := storage.GetImage(imageName)
+	if err != nil {
+		w.Write(nil)
+	}
+	w.Write(data)
 }

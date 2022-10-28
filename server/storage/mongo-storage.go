@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/hallosabuj/plant-care/server/config"
-	"github.com/hallosabuj/plant-care/server/plant"
+	"github.com/hallosabuj/plant-care/server/models"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -15,8 +15,8 @@ import (
 )
 
 type Handler interface {
-	AddPlant(plant.Plant) error
-	GetAllPlants(*[]plant.Plant) error
+	AddPlant(models.Plant) error
+	GetAllPlants(*[]models.Plant) error
 	DeleteDetails(string) error
 }
 
@@ -65,7 +65,7 @@ type plantMongoHandler struct {
 // 	return nil
 // }
 
-func (p plantMongoHandler) AddPlant(newPlant plant.Plant) error {
+func (p plantMongoHandler) AddPlant(newPlant models.Plant) error {
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	_, err := p.col.InsertOne(ctx, newPlant)
 	if err != nil {
@@ -75,7 +75,7 @@ func (p plantMongoHandler) AddPlant(newPlant plant.Plant) error {
 	return nil
 }
 
-func (p plantMongoHandler) GetAllPlants(allPlants *[]plant.Plant) error {
+func (p plantMongoHandler) GetAllPlants(allPlants *[]models.Plant) error {
 	cur, err := p.col.Find(context.Background(), bson.D{})
 	if err != nil {
 		return err
@@ -84,7 +84,7 @@ func (p plantMongoHandler) GetAllPlants(allPlants *[]plant.Plant) error {
 	defer cur.Close(context.Background())
 
 	for cur.Next(context.Background()) {
-		var plant plant.Plant
+		var plant models.Plant
 		err := cur.Decode(&plant)
 		if err != nil {
 			return err

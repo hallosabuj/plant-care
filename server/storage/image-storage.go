@@ -3,6 +3,7 @@ package storage
 import (
 	"fmt"
 	"io"
+	"io/ioutil"
 	"mime/multipart"
 	"os"
 	"path/filepath"
@@ -108,4 +109,18 @@ func DeleteImages(plantId string) error {
 		}
 	}
 	return nil
+}
+
+func GetImage(fileName string) ([]byte, error) {
+	files, err := filepath.Glob(fmt.Sprintf("./images/%s*", fileName))
+	if err != nil {
+		return nil, err
+	}
+	for _, file := range files {
+		fmt.Println(file)
+		// http.ServeFile(w, r, file)
+		data, _ := ioutil.ReadFile(file)
+		return data, nil
+	}
+	return nil, fmt.Errorf("unknown Error")
 }
