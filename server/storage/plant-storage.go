@@ -6,29 +6,27 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/hallosabuj/plant-care/server/config"
 	"github.com/hallosabuj/plant-care/server/models"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type Handler interface {
+type HandlerP interface {
 	AddPlant(models.Plant) error
 	GetAllPlants(*[]models.Plant) error
 	DeleteDetails(string) error
 }
 
-var PlantHandler Handler
+var PlantHandler HandlerP
 
-func Connect() {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	MongoClient, err := mongo.Connect(ctx, options.Client().ApplyURI(config.Global.MongoURL))
-	fatalf("Problem while connecting to Mongo: %s", err)
+// func Connect() {
+// 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+// 	MongoClient, err := mongo.Connect(ctx, options.Client().ApplyURI(config.Global.MongoURL))
+// 	fatalf("Problem while connecting to Mongo: %s", err)
 
-	PlantHandler = plantMongoHandler{MongoClient.Database(config.Global.DBName).Collection("plants")}
-}
+// 	PlantHandler = plantMongoHandler{MongoClient.Database(config.Global.DBName).Collection("plants")}
+// }
 
 func fatalf(format string, err error) {
 	if err != nil {

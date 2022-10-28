@@ -23,6 +23,7 @@ func main() {
 	})
 
 	uri.Uri_init_plant(router)
+	uri.Uri_init_fertilizer(router)
 	//////////////////////////////////////////////////////////////
 	// Setting database config
 	config.Global.DBName = "plant-care"
