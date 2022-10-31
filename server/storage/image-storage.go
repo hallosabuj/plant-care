@@ -21,19 +21,17 @@ func makeTwoDigitRepresentation(num int) string {
 	}
 }
 
-func StoreImage(id string, file multipart.File, fileHeader *multipart.FileHeader) error {
+func StoreImage(id string, file multipart.File, fileHeader *multipart.FileHeader) (string, error) {
 	defer file.Close()
 	// Create the uploads folder if it doesn't exist
 	err := os.MkdirAll("./images", os.ModePerm)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	// Getting the current time
 	now := time.Now()
-
-	// Create a new file in the uploads directory
-	dst, err := os.Create(fmt.Sprintf("./images/%s_%d%s%s_%s%s%s%s",
+	imageName := fmt.Sprintf("%s_%d%s%s_%s%s%s%s",
 		id,
 		now.Year(),
 		makeTwoDigitRepresentation(int(now.Month())),
@@ -42,18 +40,20 @@ func StoreImage(id string, file multipart.File, fileHeader *multipart.FileHeader
 		makeTwoDigitRepresentation(now.Minute()),
 		makeTwoDigitRepresentation(now.Second()),
 		filepath.Ext(fileHeader.Filename),
-	))
+	)
+	// Create a new file in the uploads directory
+	dst, err := os.Create(fmt.Sprintf("./images/%s", imageName))
 	if err != nil {
-		return err
+		return "", err
 	}
 	defer dst.Close()
 
 	// Copy the uploaded file to the filesystem at the specified destination
 	_, err = io.Copy(dst, file)
 	if err != nil {
-		return err
+		return "", err
 	}
-	return nil
+	return imageName, nil
 }
 
 func StoreMultipleImage(plantId string, files []*multipart.FileHeader) error {

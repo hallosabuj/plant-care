@@ -33,7 +33,8 @@ func AddPlant(w http.ResponseWriter, r *http.Request) {
 	// of the file input on the frontend
 	file, fileHeader, _ := r.FormFile("image")
 	// Storing photo in local file system
-	storage.StoreImage(newPlant.ID, file, fileHeader)
+	imageName, _ := storage.StoreImage(newPlant.ID, file, fileHeader)
+	newPlant.ImageName = imageName
 	// Storing into database
 	storage.PlantHandler.AddPlant(newPlant)
 	w.Header().Add("content-type", "application/json")
