@@ -1,19 +1,15 @@
 import axios from 'axios'
 import React, { Component } from 'react'
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
-import TextField from '@mui/material/TextField';
 
-class AddPlantModal extends Component {
+class AddFertilizerModal extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
       name: "",
-      dob: "",
       image: null,
+      composition:"",
+      details:"",
       showModal: false
     }
   }
@@ -22,9 +18,10 @@ class AddPlantModal extends Component {
     console.log("Handling form submit")
     const formData = new FormData()
     formData.append("name", this.state.name)
-    formData.append("dob", this.state.dob)
+    formData.append("details", this.state.details)
+    formData.append("composition", this.state.composition)
     formData.append("image", this.state.image)
-    let res = await axios.post("/plant", formData).catch((error) => {
+    let res = await axios.post("/fertilizer", formData).catch((error) => {
       console.log(error)
     })
     this.toggleShowModal()
@@ -37,9 +34,16 @@ class AddPlantModal extends Component {
       console.log(this.state)
     })
   }
-  dobChangeHandler = (event) => {
+  compotionChangeHandler = (event) => {
     this.setState({
-      dob: event.target.value
+      composition: event.target.value
+    }, () => {
+      console.log(this.state)
+    })
+  }
+  detailsChangeHandler = (event) => {
+    this.setState({
+      details: event.target.value
     }, () => {
       console.log(this.state)
     })
@@ -64,24 +68,21 @@ class AddPlantModal extends Component {
         <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-              Plant Name
+              Fertilizer Name
             </label>
-            <input value={this.state.name} onChange={this.nameChangeHandler} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Plant Name" />
+            <input value={this.state.name} onChange={this.nameChangeHandler} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Fertilizer Name" />
           </div>
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-              DOB
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+              Composition
             </label>
-            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <MobileDatePicker
-                label="Date mobile"
-                inputFormat="DD/MM/YYYY"
-                value={this.state.dob}
-                onChange={this.dobChangeHandler}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider> */}
-            <input value={this.state.dob} onChange={this.dobChangeHandler} className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="date" />
+            <input value={this.state.composition} onChange={this.compotionChangeHandler} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Composition" />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+              Details
+            </label>
+            <textarea value={this.state.details} onChange={this.detailsChangeHandler} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Details" />
           </div>
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
@@ -120,7 +121,7 @@ class AddPlantModal extends Component {
           type="button"
           onClick={this.toggleShowModal}
         >
-          + Add Plant
+          + Add Fertilizer
         </button>
         {showModal ? (
           <>
@@ -133,7 +134,7 @@ class AddPlantModal extends Component {
                   {/*header*/}
                   <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                     <h3 className="text-3xl font-semibold">
-                      Add Plant
+                      Add Fertilizer
                     </h3>
                     <button
                       className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -160,4 +161,4 @@ class AddPlantModal extends Component {
   }
 }
 
-export default AddPlantModal
+export default AddFertilizerModal

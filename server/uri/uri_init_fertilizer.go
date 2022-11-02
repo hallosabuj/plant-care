@@ -9,4 +9,6 @@ import (
 
 func Uri_init_fertilizer(router *mux.Router) {
 	router.HandleFunc("/fertilizer", api.AddFertilizer).Methods(http.MethodPost)
+	router.HandleFunc("/fertilizer", api.GetFertilizers).Methods(http.MethodGet)
+	router.HandleFunc("/fertilizer/downloadImage/{imageName}", api.DownloadFertilizerImage).Methods(http.MethodGet)
 }

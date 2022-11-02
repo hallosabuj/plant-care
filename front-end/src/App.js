@@ -6,6 +6,7 @@ import Home from './components/Home';
 import AddFertilizer from './components/examples/AddFertilizer';
 import NavBar from './components/NavBar';
 import Plants from './components/Plants/Plants';
+import Fertilizers from './components/fertilizers/Fertilizers';
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         <Routes>
           <Route exact path='/' element={<Home/>}></Route>
           <Route exact path='/plants' element={<Plants/>}></Route>
-          <Route exact path='/fertilizers' element={<Plants/>}></Route>
+          <Route exact path='/fertilizers' element={<Fertilizers/>}></Route>
           <Route exact path='/addplant' element={<AddPlantForm/>}></Route>
           <Route exact path="/showImage" element={<ShowImage/>}></Route>
           <Route exact path="/add-fertilizer" element={<AddFertilizer/>}></Route>

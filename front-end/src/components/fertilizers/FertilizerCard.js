@@ -6,8 +6,8 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-export default function PlantCard({ plant }) {
-  let imageUrl = "http://localhost:8080/plant/downloadImage/" + plant.imageName
+export default function FertilizerCard({ fertilizer }) {
+  let imageUrl = "http://localhost:8080/fertilizer/downloadImage/" + fertilizer.imageName
   return (
     <div className='float-left pr-1 pl-1 pt-3 shadow-lg lg:w-1/6 md:w-1/3'>
       <Card sx={{ border: 1, borderRadius: 2, height: "500px", backgroundColor: "cyan" }}>
@@ -15,14 +15,14 @@ export default function PlantCard({ plant }) {
           <CardMedia
             component="img"
             image={imageUrl}
-            alt={plant.name}
+            alt={fertilizer.name}
             sx={{maxHeight:"100%",maxWidth:"100%"}}
           />
         </div>
         <div className=' bg-orange-200 h-[200px] rounded-md'>
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-              {plant.name}
+              {fertilizer.name}
             </Typography>
           </CardContent>
           <CardActions>

@@ -7,11 +7,13 @@ import (
 	"time"
 
 	"github.com/hallosabuj/plant-care/server/models"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type HandlerF interface {
 	AddFertilizer(models.Fertilizer) error
+	GetAllFertilizers(*[]models.Fertilizer) error
 }
 
 var FertilizerHandler HandlerF
@@ -28,4 +30,24 @@ func (f fertilizerMongoHandler) AddFertilizer(newFertilizer models.Fertilizer) e
 	}
 
 	return nil
+}
+
+func (f fertilizerMongoHandler) GetAllFertilizers(allFertilizers *[]models.Fertilizer) error {
+	cur, err := f.col.Find(context.Background(), bson.D{})
+	if err != nil {
+		return err
+	}
+
+	defer cur.Close(context.Background())
+
+	for cur.Next(context.Background()) {
+		var fertilizer models.Fertilizer
+		err := cur.Decode(&fertilizer)
+		if err != nil {
+			return err
+		}
+		*allFertilizers = append(*allFertilizers, fertilizer)
+	}
+
+	return cur.Err()
 }
