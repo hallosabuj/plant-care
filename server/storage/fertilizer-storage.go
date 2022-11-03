@@ -14,6 +14,7 @@ import (
 type HandlerF interface {
 	AddFertilizer(models.Fertilizer) error
 	GetAllFertilizers(*[]models.Fertilizer) error
+	DeleteFertilizerDetails(string) error
 }
 
 var FertilizerHandler HandlerF
@@ -50,4 +51,9 @@ func (f fertilizerMongoHandler) GetAllFertilizers(allFertilizers *[]models.Ferti
 	}
 
 	return cur.Err()
+}
+
+func (f fertilizerMongoHandler) DeleteFertilizerDetails(fertilizerId string) error {
+	_, err := f.col.DeleteOne(context.Background(), bson.M{"id": fertilizerId})
+	return err
 }

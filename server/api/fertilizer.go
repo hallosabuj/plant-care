@@ -42,3 +42,13 @@ func DownloadFertilizerImage(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Write(data)
 }
+
+func DeleteFertilizer(w http.ResponseWriter, r *http.Request) {
+	var fertilizerId string = mux.Vars(r)["fertilizerId"]
+	if err := storage.FertilizerHandler.DeleteFertilizerDetails(fertilizerId); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	} else if err := storage.DeleteFertilizerImage(fertilizerId); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	json.NewEncoder(w).Encode("Fertilizer Deleted")
+}

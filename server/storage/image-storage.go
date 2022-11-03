@@ -164,3 +164,13 @@ func GetFertilizerImage(fileName string) ([]byte, error) {
 	}
 	return nil, fmt.Errorf("unknown Error")
 }
+
+func DeleteFertilizerImage(fertilizerId string) error {
+	files, _ := filepath.Glob(fmt.Sprintf("./images/fertilizer/%s*", fertilizerId))
+	for _, file := range files {
+		if err := os.Remove(file); err != nil {
+			return err
+		}
+	}
+	return nil
+}
