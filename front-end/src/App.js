@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import logo from './logo.png';
 import AddPlantForm from './components/examples/AddPlant';
 import ShowImage from './components/examples/ShowImage';
 import {BrowserRouter as Router,Route,Link, Routes} from 'react-router-dom'
