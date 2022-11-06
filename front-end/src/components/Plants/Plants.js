@@ -10,6 +10,7 @@ class Plants extends Component {
       this.state = {
          plants:null
       }
+      this.reRenderOnAddOrDelete=this.reRenderOnAddOrDelete.bind(this)
     }
     async getPlants(){
         let plants=await axios.get("/plant").then((response)=>{
@@ -25,23 +26,23 @@ class Plants extends Component {
     componentDidMount(){
         this.getPlants()
     }
+    reRenderOnAddOrDelete(){
+        this.getPlants()
+    }
     render() {
         return (
         <div>
             <div>
                 <div className="relative flex h-16 items-center justify-between">
                     <div className='sm:ml-6 sm:block flex space-x-4'>
-                        <AddPlantModal/>
+                        <AddPlantModal reRenderOnAdd={this.reRenderOnAddOrDelete}/>
                     </div>
                 </div>
             </div>
             {/* Short Circuit to check null */}
             {this.state.plants && this.state.plants.map((plant,index)=>(
-                <PlantCard key={index} plant={plant}/>    
+                <PlantCard key={plant.plantId} plant={plant} reRenderOnDelete={this.reRenderOnAddOrDelete}/>    
             ))}
-            
-            {/* <PlantCard/>
-            <PlantCard/> */}
         </div>
         )
     }

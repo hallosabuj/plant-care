@@ -1,10 +1,6 @@
 import * as React from 'react';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 
 export default function FertilizerCard({ fertilizer }) {
   let imageUrl = "http://localhost:8080/fertilizer/downloadImage/" + fertilizer.imageName
@@ -19,16 +15,15 @@ export default function FertilizerCard({ fertilizer }) {
             sx={{maxHeight:"100%",maxWidth:"100%"}}
           />
         </div>
-        <div className=' bg-orange-200 h-[200px] rounded-md'>
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {fertilizer.name}
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="small">Share</Button>
-            <Button size="small">Learn More</Button>
-          </CardActions>
+        <div className=' bg-orange-200 h-[200px] rounded-md flex justify-center items-center'>
+          <div className='grid grid-cols-3 grid-rows-3 gap-2'>
+            {/* Row 1 */}
+            <div className='bg-red-400 col-span-2 flex justify-center items-center'>Name: NPK</div>
+            <div className='bg-red-400 flex justify-center items-center'>DEL</div>
+            {/* Row 2 */}
+            <div className='bg-green-600 col-span-3 flex justify-center items-center'>Apply Interval: 22/11/22</div>
+            <div className='bg-green-600 col-span-3 flex justify-center items-center'>Availability: </div>
+          </div>
         </div>
       </Card>
     </div>
