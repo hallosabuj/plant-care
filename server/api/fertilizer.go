@@ -13,7 +13,7 @@ import (
 )
 
 func AddFertilizer(w http.ResponseWriter, r *http.Request) {
-	newFertilizer := models.Fertilizer{Name: r.FormValue("name"), Details: r.FormValue("details"), Composition: r.FormValue("composition")}
+	newFertilizer := models.Fertilizer{Name: r.FormValue("name"), Details: r.FormValue("details"), Composition: r.FormValue("composition"), ApplyInterval: r.FormValue(("applyInterval"))}
 	// Generating ID for fertilizer
 	newFertilizer.ID = fmt.Sprintf("%v", uuid.New())
 	// Getting the image from the request

@@ -22,7 +22,7 @@ class PlantCard extends Component {
   render() {
   let imageUrl = "http://localhost:8080/plant/downloadImage/" + this.state.plant.imageName
     return (
-      <div className='float-left pr-1 pl-1 pt-3 shadow-lg lg:w-1/6 md:w-1/3'>
+      <div className='pr-1 pl-1 pt-3 pb-3 shadow-lg lg:w-1/6 md:w-1/3'>
         <Card sx={{ border: 1, borderRadius: 2, height: "500px", backgroundColor: "cyan" }}>
           <div className='h-[300px] bg-lime-900 flex justify-center items-center p-2 rounded-md'>
             <img src={imageUrl} style={{maxHeight:"100%",maxWidth:"100%"}} alt={this.state.plant.name}/>
@@ -42,7 +42,6 @@ class PlantCard extends Component {
               <div className='flex justify-center items-center text-xs bg-green-600'>22/11/22</div>
               <div className='flex justify-center items-center col-span-2 text-xs bg-green-600'>22/11/22-22/11/22</div>
             </div>
-            
           </div>
         </Card>
       </div>

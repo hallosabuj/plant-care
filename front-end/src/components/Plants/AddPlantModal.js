@@ -1,10 +1,5 @@
 import axios from 'axios'
 import React, { Component } from 'react'
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
-import TextField from '@mui/material/TextField';
 
 class AddPlantModal extends Component {
   constructor(props) {
@@ -24,7 +19,9 @@ class AddPlantModal extends Component {
     formData.append("name", this.state.name)
     formData.append("dob", this.state.dob)
     formData.append("image", this.state.image)
-    let res = await axios.post("/plant", formData).catch((error) => {
+    await axios.post("/plant", formData).then(()=>{
+      this.props.reRenderOnAdd()
+    }).catch((error) => {
       console.log(error)
     })
     this.toggleShowModal()
@@ -72,15 +69,6 @@ class AddPlantModal extends Component {
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
               DOB
             </label>
-            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <MobileDatePicker
-                label="Date mobile"
-                inputFormat="DD/MM/YYYY"
-                value={this.state.dob}
-                onChange={this.dobChangeHandler}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider> */}
             <input value={this.state.dob} onChange={this.dobChangeHandler} className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="date" />
           </div>
           <div className="mb-6">
@@ -88,7 +76,7 @@ class AddPlantModal extends Component {
               Image
             </label>
             <input onChange={this.imageOnChangeHandler} className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="file" />
-            {image && (<img src={URL.createObjectURL(image)} style={{ height: '100px', width: 'auto' }} />)}
+            {image && (<img src={URL.createObjectURL(image)} style={{ height: '100px', width: 'auto' }} alt={this.state.name} />)}
           </div>
           {/*footer*/}
           <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
