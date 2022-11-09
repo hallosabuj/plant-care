@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
@@ -24,7 +25,7 @@ func AddPlant(w http.ResponseWriter, r *http.Request) {
 	// bytes, _ := ioutil.ReadAll(r.Body)
 	var newPlant models.Plant = models.Plant{
 		Name: r.FormValue("name"),
-		DOB:  r.FormValue("dob"),
+		DOB:  strings.ReplaceAll(r.FormValue("dob"), "/", "-"),
 	}
 	// Generate the ID for the plant
 	newPlant.ID = fmt.Sprintf("%v", uuid.New())
@@ -68,6 +69,34 @@ func AddImages(w http.ResponseWriter, r *http.Request) {
 	storage.StoreMultipleImage(plantId, files)
 
 	json.NewEncoder(w).Encode("Multiple images uploaded")
+}
+
+func GetPlant(w http.ResponseWriter, r *http.Request) {
+	var plantId string = mux.Vars(r)["plantId"]
+	var plant models.Plant
+	err := storage.PlantHandler.GetPlantDetails(plantId, &plant)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	} else {
+		json.NewEncoder(w).Encode(plant)
+	}
+}
+
+func UpdatePlant(w http.ResponseWriter, r *http.Request) {
+	var field string = mux.Vars(r)["field"]
+	var plantId string = mux.Vars(r)["plantId"]
+	var value string = mux.Vars(r)["value"]
+	if strings.Contains("name dob imagename details", field) {
+		// List of strging field field
+		if err := storage.PlantHandler.UpdatePlant(field, plantId, value); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		json.NewEncoder(w).Encode("Updated")
+	} else if strings.Contains("", field) {
+		// List of fileds that need special type of updation
+	} else {
+		http.Error(w, "unknown field", http.StatusInternalServerError)
+	}
 }
 
 func DeletePlant(w http.ResponseWriter, r *http.Request) {

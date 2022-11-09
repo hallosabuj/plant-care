@@ -26,11 +26,22 @@ func AddFertilizer(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(newFertilizer)
 }
 
-func GetFertilizers(w http.ResponseWriter, r *http.Request) {
+func GetAllFertilizers(w http.ResponseWriter, r *http.Request) {
 	var allFertilizer []models.Fertilizer
 	storage.FertilizerHandler.GetAllFertilizers(&allFertilizer)
 	w.Header().Add("content-type", "application/json")
 	json.NewEncoder(w).Encode(allFertilizer)
+}
+
+func GetFertilizer(w http.ResponseWriter, r *http.Request) {
+	var fertilizerId string = mux.Vars(r)["fertilizerId"]
+	var fertilizer models.Fertilizer
+	err := storage.FertilizerHandler.GetFertilizerDetails(fertilizerId, &fertilizer)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	} else {
+		json.NewEncoder(w).Encode(fertilizer)
+	}
 }
 
 func DownloadFertilizerImage(w http.ResponseWriter, r *http.Request) {

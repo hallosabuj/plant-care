@@ -15,4 +15,5 @@ func Connect() {
 	fatalf("Problem while connecting to Mongo: %s", err)
 	FertilizerHandler = fertilizerMongoHandler{MongoClient.Database(config.Global.DBName).Collection("fertilizer")}
 	PlantHandler = plantMongoHandler{MongoClient.Database(config.Global.DBName).Collection("plants")}
+	AppliedFertilizerHandler = appliedFertilizerMongoHnadler{MongoClient.Database(config.Global.DBName).Collection("applied-fertilizer")}
 }

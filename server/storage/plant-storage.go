@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/hallosabuj/plant-care/server/models"
@@ -16,17 +17,11 @@ type HandlerP interface {
 	AddPlant(models.Plant) error
 	GetAllPlants(*[]models.Plant) error
 	DeleteDetails(string) error
+	GetPlantDetails(string, *models.Plant) error
+	UpdatePlant(field, plantId, value string) error
 }
 
 var PlantHandler HandlerP
-
-// func Connect() {
-// 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-// 	MongoClient, err := mongo.Connect(ctx, options.Client().ApplyURI(config.Global.MongoURL))
-// 	fatalf("Problem while connecting to Mongo: %s", err)
-
-// 	PlantHandler = plantMongoHandler{MongoClient.Database(config.Global.DBName).Collection("plants")}
-// }
 
 func fatalf(format string, err error) {
 	if err != nil {
@@ -98,5 +93,30 @@ func (p plantMongoHandler) DeleteDetails(plantId string) error {
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+func (p plantMongoHandler) GetPlantDetails(plantId string, plant *models.Plant) error {
+	res := p.col.FindOne(context.Background(), bson.M{"id": plantId})
+	err := res.Err()
+	if err != nil {
+		return err
+	} else {
+		_ = res.Decode(plant)
+	}
+	return nil
+}
+
+func (p plantMongoHandler) UpdatePlant(field, plantId, value string) error {
+	fmt.Println(field)
+	fmt.Println(plantId)
+	fmt.Println(value)
+	filter := bson.M{"id": plantId}
+	update := bson.D{
+		{"$set", bson.D{
+			{strings.ToLower(field), value},
+		}},
+	}
+	p.col.UpdateOne(context.Background(), filter, update)
 	return nil
 }
