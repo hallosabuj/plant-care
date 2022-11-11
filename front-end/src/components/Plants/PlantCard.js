@@ -20,7 +20,7 @@ class PlantCard extends Component {
     this.props.reRenderOnDelete()
   }
   render() {
-  let imageUrl = "http://localhost:8080/plant/downloadImage/" + this.state.plant.imageName
+  let imageUrl = "http://localhost:8080/plant/downloadImage/" + this.state.plant.imageNames[0]
     return (
       <div className='pr-1 pl-1 pt-3 pb-3 shadow-lg lg:w-1/6 md:w-1/3'>
         <Card sx={{ border: 1, borderRadius: 2, height: "500px", backgroundColor: "cyan" }}>

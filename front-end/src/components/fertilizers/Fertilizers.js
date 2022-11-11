@@ -28,20 +28,19 @@ class Fertilizers extends Component {
     render() {
         return (
         <div>
-            <div>
+            <div className=' bg-blue-500'>
                 <div className="relative flex h-16 items-center justify-between">
                     <div className='sm:ml-6 sm:block flex space-x-4'>
                         <AddFertilizerModal/>
                     </div>
                 </div>
             </div>
-            {/* Short Circuit to check null */}
-            {this.state.fertilizers && this.state.fertilizers.map((fertilizer,index)=>(
-                <FertilizerCard key={index} fertilizer={fertilizer}/>
-            ))}
-            
-            {/* <PlantCard/>
-            <PlantCard/> */}
+            <div className='flex bg-blue-400'>
+                {/* Short Circuit to check null */}
+                {this.state.fertilizers && this.state.fertilizers.map((fertilizer,index)=>(
+                    <FertilizerCard key={index} fertilizer={fertilizer}/>
+                ))}
+            </div>
         </div>
         )
     }

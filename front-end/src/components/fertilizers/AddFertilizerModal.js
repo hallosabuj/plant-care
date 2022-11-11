@@ -10,6 +10,7 @@ class AddFertilizerModal extends Component {
       image: null,
       composition:"",
       details:"",
+      applyInterval:0,
       showModal: false
     }
   }
@@ -20,6 +21,7 @@ class AddFertilizerModal extends Component {
     formData.append("name", this.state.name)
     formData.append("details", this.state.details)
     formData.append("composition", this.state.composition)
+    formData.append("applyInterval", this.state.applyInterval)
     formData.append("image", this.state.image)
     let res = await axios.post("/fertilizer", formData).catch((error) => {
       console.log(error)
@@ -54,6 +56,13 @@ class AddFertilizerModal extends Component {
       image: event.target.files[0]
     })
   }
+  applyIntervalChangeHandler = (event) => {
+    this.setState({
+      applyInterval: event.target.value
+    }, () => {
+      console.log(this.state)
+    })
+  }
   toggleShowModal = () => {
     this.setState({
       showModal: !this.state.showModal
@@ -67,19 +76,25 @@ class AddFertilizerModal extends Component {
       <div className="w-full max-w-xs">
         <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
               Fertilizer Name
             </label>
             <input value={this.state.name} onChange={this.nameChangeHandler} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Fertilizer Name" />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Apply Interval
+            </label>
+            <input value={this.state.applyInterval} onChange={this.applyIntervalChangeHandler} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" placeholder="Apply Interval" />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
               Composition
             </label>
             <input value={this.state.composition} onChange={this.compotionChangeHandler} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Composition" />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
               Details
             </label>
             <textarea value={this.state.details} onChange={this.detailsChangeHandler} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Details" />

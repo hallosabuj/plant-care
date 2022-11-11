@@ -56,7 +56,8 @@ func StoreImage(id string, file multipart.File, fileHeader *multipart.FileHeader
 	return imageName, nil
 }
 
-func StoreMultipleImage(plantId string, files []*multipart.FileHeader) error {
+func StoreMultipleImage(plantId string, files []*multipart.FileHeader, imageNames *[]string) error {
+	i := 1
 	for _, fileHeader := range files {
 		// Open the file
 		file, err := fileHeader.Open()
@@ -67,16 +68,18 @@ func StoreMultipleImage(plantId string, files []*multipart.FileHeader) error {
 		defer file.Close()
 
 		now := time.Now()
-		dst, err := os.Create(fmt.Sprintf("./images/%s_%d%s%s_%s%s%s%s",
+		imageName := fmt.Sprintf("%s_%d%s%s_%s%s%s%s",
 			plantId,
 			now.Year(),
 			makeTwoDigitRepresentation(int(now.Month())),
 			makeTwoDigitRepresentation(now.Day()),
 			makeTwoDigitRepresentation(now.Hour()),
 			makeTwoDigitRepresentation(now.Minute()),
-			makeTwoDigitRepresentation(now.Second()),
+			makeTwoDigitRepresentation(now.Second()+i),
 			filepath.Ext(fileHeader.Filename),
-		))
+		)
+		dst, err := os.Create(fmt.Sprintf("./images/%s", imageName))
+		i++
 		if err != nil {
 			return err
 		}
@@ -86,7 +89,8 @@ func StoreMultipleImage(plantId string, files []*multipart.FileHeader) error {
 		if err != nil {
 			return err
 		}
-		time.Sleep(1 * time.Second)
+
+		*imageNames = append(*imageNames, imageName)
 	}
 	return nil
 }

@@ -19,6 +19,7 @@ type HandlerP interface {
 	DeleteDetails(string) error
 	GetPlantDetails(string, *models.Plant) error
 	UpdatePlant(field, plantId, value string) error
+	UpdateImageNames(string, []string) error
 }
 
 var PlantHandler HandlerP
@@ -108,14 +109,28 @@ func (p plantMongoHandler) GetPlantDetails(plantId string, plant *models.Plant) 
 }
 
 func (p plantMongoHandler) UpdatePlant(field, plantId, value string) error {
-	fmt.Println(field)
-	fmt.Println(plantId)
-	fmt.Println(value)
 	filter := bson.M{"id": plantId}
 	update := bson.D{
 		{"$set", bson.D{
 			{strings.ToLower(field), value},
 		}},
+	}
+	p.col.UpdateOne(context.Background(), filter, update)
+	return nil
+}
+
+func (p plantMongoHandler) UpdateImageNames(plantId string, newImageNames []string) error {
+	filter := bson.M{"id": plantId}
+	res := p.col.FindOne(context.Background(), filter)
+	err := res.Err()
+	if err != nil {
+		return nil
+	}
+	var plant models.Plant
+	res.Decode(&plant)
+	newImageNames = append(newImageNames, plant.ImageNames...)
+	update := bson.D{
+		{Key: "$set", Value: bson.D{{Key: "imagenames", Value: newImageNames}}},
 	}
 	p.col.UpdateOne(context.Background(), filter, update)
 	return nil

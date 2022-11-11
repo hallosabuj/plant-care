@@ -35,7 +35,7 @@ func AddPlant(w http.ResponseWriter, r *http.Request) {
 	file, fileHeader, _ := r.FormFile("image")
 	// Storing photo in local file system
 	imageName, _ := storage.StoreImage(newPlant.ID, file, fileHeader)
-	newPlant.ImageName = imageName
+	newPlant.ImageNames = []string{imageName}
 	// Storing into database
 	storage.PlantHandler.AddPlant(newPlant)
 	w.Header().Add("content-type", "application/json")
@@ -66,7 +66,11 @@ func AddImages(w http.ResponseWriter, r *http.Request) {
 	// Get a reference to the fileHeaders.
 	// They are accessible only after ParseMultipartForm is called
 	files := r.MultipartForm.File["image"]
-	storage.StoreMultipleImage(plantId, files)
+	var imageNames []string
+	storage.StoreMultipleImage(plantId, files, &imageNames)
+
+	// Now store image names to the database
+	storage.PlantHandler.UpdateImageNames(plantId, imageNames)
 
 	json.NewEncoder(w).Encode("Multiple images uploaded")
 }
@@ -86,7 +90,7 @@ func UpdatePlant(w http.ResponseWriter, r *http.Request) {
 	var field string = mux.Vars(r)["field"]
 	var plantId string = mux.Vars(r)["plantId"]
 	var value string = mux.Vars(r)["value"]
-	if strings.Contains("name dob imagename details", field) {
+	if strings.Contains("name dob details", field) {
 		// List of strging field field
 		if err := storage.PlantHandler.UpdatePlant(field, plantId, value); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

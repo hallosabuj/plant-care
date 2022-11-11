@@ -6,9 +6,11 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <section class="header">
-        <h1 class="different">Hello World</h1>
-    </section>
-    <img src="images/cafeteria.png">
+    <form action="/plant/uploadMultipleImage" method="post" enctype="multipart/form-data">
+        <input type="text" name="id"/>
+        <input type="file" name="image"/>
+        <input type="file" name="image"/>
+        <button type="submit">Upload</button>
+    </form>
 </body>
 </html>
