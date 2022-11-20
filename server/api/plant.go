@@ -24,8 +24,9 @@ func GetAllPlants(w http.ResponseWriter, r *http.Request) {
 func AddPlant(w http.ResponseWriter, r *http.Request) {
 	// bytes, _ := ioutil.ReadAll(r.Body)
 	var newPlant models.Plant = models.Plant{
-		Name: r.FormValue("name"),
-		DOB:  strings.ReplaceAll(r.FormValue("dob"), "/", "-"),
+		Name:    r.FormValue("name"),
+		DOB:     strings.ReplaceAll(r.FormValue("dob"), "/", "-"),
+		Details: r.FormValue("details"),
 	}
 	// Generate the ID for the plant
 	newPlant.ID = fmt.Sprintf("%v", uuid.New())
@@ -35,16 +36,16 @@ func AddPlant(w http.ResponseWriter, r *http.Request) {
 	file, fileHeader, _ := r.FormFile("image")
 	// Storing photo in local file system
 	imageName, _ := storage.StoreImage(newPlant.ID, file, fileHeader)
-	newPlant.ImageNames = []string{imageName}
+	newPlant.ProfileImage = imageName
 	// Storing into database
 	storage.PlantHandler.AddPlant(newPlant)
 	w.Header().Add("content-type", "application/json")
 	json.NewEncoder(w).Encode(newPlant)
 }
 
-func DeletePhoto(w http.ResponseWriter, r *http.Request) {
+func DeletePlantPhoto(w http.ResponseWriter, r *http.Request) {
 	fileName := mux.Vars(r)["imageName"]
-	if err := storage.DeleteImage(fileName); err != nil {
+	if err := storage.DeletePlantImage(fileName); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 	json.NewEncoder(w).Encode("Image deleted")
@@ -78,6 +79,7 @@ func AddImages(w http.ResponseWriter, r *http.Request) {
 func GetPlant(w http.ResponseWriter, r *http.Request) {
 	var plantId string = mux.Vars(r)["plantId"]
 	var plant models.Plant
+	plant.ImageNames = make(map[int]string)
 	err := storage.PlantHandler.GetPlantDetails(plantId, &plant)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -90,8 +92,8 @@ func UpdatePlant(w http.ResponseWriter, r *http.Request) {
 	var field string = mux.Vars(r)["field"]
 	var plantId string = mux.Vars(r)["plantId"]
 	var value string = mux.Vars(r)["value"]
-	if strings.Contains("name dob details", field) {
-		// List of strging field field
+	if strings.Contains("name dob details profileimage", field) {
+		// List of string field
 		if err := storage.PlantHandler.UpdatePlant(field, plantId, value); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
@@ -115,7 +117,6 @@ func DeletePlant(w http.ResponseWriter, r *http.Request) {
 
 func DownloadImage(w http.ResponseWriter, r *http.Request) {
 	var imageName string = mux.Vars(r)["imageName"]
-	fmt.Println("plantId", imageName)
 	data, err := storage.GetImage(imageName)
 	if err != nil {
 		w.Write(nil)

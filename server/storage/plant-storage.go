@@ -1,16 +1,11 @@
 package storage
 
 import (
-	"context"
-	"errors"
+	"database/sql"
 	"fmt"
-	"strings"
-	"time"
 
 	"github.com/hallosabuj/plant-care/server/models"
 	"github.com/sirupsen/logrus"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type HandlerP interface {
@@ -30,108 +25,90 @@ func fatalf(format string, err error) {
 	}
 }
 
-type plantMongoHandler struct {
-	col *mongo.Collection
+type plantHandler struct {
+	db *sql.DB
 }
 
-// func (p plantMongoHandler) AddPlant(newPlant plant.Plant) error {
-// 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-
-// 	filter := bson.M{"id": newPlant.ID}
-// 	res := p.col.FindOne(ctx, filter)
-// 	err := res.Err()
-// 	if err != nil {
-// 		if err != mongo.ErrNoDocuments {
-// 			return err
-// 		}
-// 	} else {
-// 		var existingPlant plant.Plant
-// 		_ = res.Decode(&existingPlant)
-// 		return errors.New(fmt.Sprintf("there is already such plant with ID: %s", newPlant.ID))
-// 	}
-
-// 	update := bson.M{"$set": newPlant}
-// 	_, err = p.col.UpdateOne(ctx, filter, update, options.Update().SetUpsert(true))
-// 	if err != nil {
-// 		return errors.New(fmt.Sprintf("error while inserting license: %s", err))
-// 	}
-
-// 	return nil
-// }
-
-func (p plantMongoHandler) AddPlant(newPlant models.Plant) error {
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	_, err := p.col.InsertOne(ctx, newPlant)
-	if err != nil {
-		return errors.New(fmt.Sprintf("error while inserting license: %s", err))
-	}
-
-	return nil
-}
-
-func (p plantMongoHandler) GetAllPlants(allPlants *[]models.Plant) error {
-	cur, err := p.col.Find(context.Background(), bson.D{})
+func (p plantHandler) AddPlant(newPlant models.Plant) error {
+	fmt.Println(newPlant)
+	sqlQuery := fmt.Sprintf("insert into plants(plantId,name,dob,details,profileimage) values('%s','%s','%s','%s','%s')", newPlant.ID, newPlant.Name, newPlant.DOB, newPlant.Details, newPlant.ProfileImage)
+	_, err := p.db.Exec(sqlQuery)
 	if err != nil {
 		return err
 	}
+	sqlQuery = fmt.Sprintf("insert into plantimages(plantid,name) values('%s','%s')", newPlant.ID, newPlant.ProfileImage)
+	_, err = p.db.Exec(sqlQuery)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
-	defer cur.Close(context.Background())
-
-	for cur.Next(context.Background()) {
+func (p plantHandler) GetAllPlants(allPlants *[]models.Plant) error {
+	res, err := p.db.Query("select * from plants")
+	if err != nil {
+		return nil
+	}
+	defer res.Close()
+	for res.Next() {
 		var plant models.Plant
-		err := cur.Decode(&plant)
+		err := res.Scan(&plant.ID, &plant.Name, &plant.DOB, &plant.Details, &plant.ProfileImage)
 		if err != nil {
 			return err
 		}
 		*allPlants = append(*allPlants, plant)
 	}
-
-	return cur.Err()
+	return nil
 }
 
-func (p plantMongoHandler) DeleteDetails(plantId string) error {
-	_, err := p.col.DeleteOne(context.Background(), bson.M{"id": plantId})
-	if err != nil {
-		return err
+func (p plantHandler) DeleteDetails(plantId string) error {
+	_, err := p.db.Query("delete from plants where plantId=?", plantId)
+	return err
+}
+
+func (p plantHandler) UpdatePlant(field, plantId, value string) error {
+	_, err := p.db.Query("update plants set "+field+"=? where plantid=?", value, plantId)
+	return err
+}
+
+func (p plantHandler) UpdateImageNames(plantId string, newImageNames []string) error {
+	for _, imageName := range newImageNames {
+		sqlQuery := fmt.Sprintf("insert into plantimages(plantid,name) values('%s','%s')", plantId, imageName)
+		_, err := p.db.Exec(sqlQuery)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
 
-func (p plantMongoHandler) GetPlantDetails(plantId string, plant *models.Plant) error {
-	res := p.col.FindOne(context.Background(), bson.M{"id": plantId})
-	err := res.Err()
-	if err != nil {
-		return err
-	} else {
-		_ = res.Decode(plant)
-	}
-	return nil
-}
-
-func (p plantMongoHandler) UpdatePlant(field, plantId, value string) error {
-	filter := bson.M{"id": plantId}
-	update := bson.D{
-		{"$set", bson.D{
-			{strings.ToLower(field), value},
-		}},
-	}
-	p.col.UpdateOne(context.Background(), filter, update)
-	return nil
-}
-
-func (p plantMongoHandler) UpdateImageNames(plantId string, newImageNames []string) error {
-	filter := bson.M{"id": plantId}
-	res := p.col.FindOne(context.Background(), filter)
-	err := res.Err()
+func (p plantHandler) GetPlantDetails(plantId string, plant *models.Plant) error {
+	// Getting plant details
+	res, err := p.db.Query("select * from plants where plantid=?", plantId)
 	if err != nil {
 		return nil
 	}
-	var plant models.Plant
-	res.Decode(&plant)
-	newImageNames = append(newImageNames, plant.ImageNames...)
-	update := bson.D{
-		{Key: "$set", Value: bson.D{{Key: "imagenames", Value: newImageNames}}},
+	defer res.Close()
+	for res.Next() {
+		err := res.Scan(&plant.ID, &plant.Name, &plant.DOB, &plant.Details, &plant.ProfileImage)
+		if err != nil {
+			return err
+		}
 	}
-	p.col.UpdateOne(context.Background(), filter, update)
+	// Getting imagenames
+	res, err = p.db.Query("select imageid,name from plantimages where plantid=?", plantId)
+	if err != nil {
+		return nil
+	}
+	defer res.Close()
+	for res.Next() {
+		var imageId int
+		var imageName string
+		err := res.Scan(&imageId, &imageName)
+		if err != nil {
+			return nil
+		}
+		plant.ImageNames[imageId] = imageName
+	}
 	return nil
 }

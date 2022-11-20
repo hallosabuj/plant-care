@@ -95,7 +95,7 @@ func StoreMultipleImage(plantId string, files []*multipart.FileHeader, imageName
 	return nil
 }
 
-func DeleteImage(fileName string) error {
+func DeletePlantImage(fileName string) error {
 	if err := os.Remove(fmt.Sprintf("./images/%v", fileName)); err != nil {
 		return fmt.Errorf("no such file or directory")
 	}
