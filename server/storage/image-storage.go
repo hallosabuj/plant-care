@@ -21,7 +21,10 @@ func makeTwoDigitRepresentation(num int) string {
 	}
 }
 
-func StoreImage(id string, file multipart.File, fileHeader *multipart.FileHeader) (string, error) {
+// /////////////////////////////////////////////
+// Plant related image operations
+// /////////////////////////////////////////////
+func StorePlantImage(id string, file multipart.File, fileHeader *multipart.FileHeader) (string, error) {
 	defer file.Close()
 	// Create the uploads folder if it doesn't exist
 	err := os.MkdirAll("./images", os.ModePerm)
@@ -56,7 +59,7 @@ func StoreImage(id string, file multipart.File, fileHeader *multipart.FileHeader
 	return imageName, nil
 }
 
-func StoreMultipleImage(plantId string, files []*multipart.FileHeader, imageNames *[]string) error {
+func StorePlantImages(plantId string, files []*multipart.FileHeader, imageNames *[]string) error {
 	i := 1
 	for _, fileHeader := range files {
 		// Open the file
@@ -102,7 +105,7 @@ func DeletePlantImage(fileName string) error {
 	return nil
 }
 
-func DeleteImages(plantId string) error {
+func DeletePlantImages(plantId string) error {
 	files, err := filepath.Glob(fmt.Sprintf("./images/%s*", plantId))
 	if err != nil {
 		return err
@@ -115,7 +118,7 @@ func DeleteImages(plantId string) error {
 	return nil
 }
 
-func GetImage(fileName string) ([]byte, error) {
+func GetPlantImage(fileName string) ([]byte, error) {
 	files, err := filepath.Glob(fmt.Sprintf("./images/%s*", fileName))
 	if err != nil {
 		return nil, err
@@ -129,6 +132,9 @@ func GetImage(fileName string) ([]byte, error) {
 	return nil, fmt.Errorf("unknown Error")
 }
 
+// /////////////////////////////////////////////
+// Fertilizer related image operations
+// /////////////////////////////////////////////
 func StoreFertilizerImage(fileName string, file multipart.File, fileHeader multipart.FileHeader) error {
 	defer file.Close()
 	// Create the uploads folder if it doesn't exist

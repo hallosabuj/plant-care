@@ -84,7 +84,7 @@ func (p plantHandler) UpdateImageNames(plantId string, newImageNames []string) e
 
 func (p plantHandler) GetPlantDetails(plantId string, plant *models.Plant) error {
 	// Getting plant details
-	res, err := p.db.Query("select * from plants where plantid=?", plantId)
+	res, err := p.db.Query("select plantId,name,dob,details,profileimage from plants where plantid=?", plantId)
 	if err != nil {
 		return nil
 	}

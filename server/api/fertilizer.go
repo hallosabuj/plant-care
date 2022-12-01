@@ -13,14 +13,18 @@ import (
 )
 
 func AddFertilizer(w http.ResponseWriter, r *http.Request) {
-	newFertilizer := models.Fertilizer{Name: r.FormValue("name"), Details: r.FormValue("details"), Composition: r.FormValue("composition"), ApplyInterval: r.FormValue(("applyInterval"))}
+	newFertilizer := models.Fertilizer{
+		Name:        r.FormValue("name"),
+		Details:     r.FormValue("details"),
+		Composition: r.FormValue("composition"),
+	}
 	// Generating ID for fertilizer
 	newFertilizer.ID = fmt.Sprintf("%v", uuid.New())
 	// Getting the image from the request
 	file, fileHeader, _ := r.FormFile("image")
 	storage.StoreFertilizerImage(newFertilizer.ID, file, *fileHeader)
 	// Generating the filename
-	newFertilizer.ImageName = fmt.Sprintf("%s%s", newFertilizer.ID, filepath.Ext(fileHeader.Filename))
+	newFertilizer.ProfileImage = fmt.Sprintf("%s%s", newFertilizer.ID, filepath.Ext(fileHeader.Filename))
 	// Storing image for the fertilizer
 	storage.FertilizerHandler.AddFertilizer(newFertilizer)
 	json.NewEncoder(w).Encode(newFertilizer)

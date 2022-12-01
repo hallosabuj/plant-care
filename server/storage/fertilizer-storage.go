@@ -1,14 +1,10 @@
 package storage
 
 import (
-	"context"
-	"errors"
+	"database/sql"
 	"fmt"
-	"time"
 
 	"github.com/hallosabuj/plant-care/server/models"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type HandlerF interface {
@@ -20,52 +16,54 @@ type HandlerF interface {
 
 var FertilizerHandler HandlerF
 
-type fertilizerMongoHandler struct {
-	col *mongo.Collection
+type fertilizerHandler struct {
+	db *sql.DB
 }
 
-func (f fertilizerMongoHandler) AddFertilizer(newFertilizer models.Fertilizer) error {
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	_, err := f.col.InsertOne(ctx, newFertilizer)
-	if err != nil {
-		return errors.New(fmt.Sprintf("error while inserting fertilizer: %s", err))
-	}
-
-	return nil
-}
-
-func (f fertilizerMongoHandler) GetAllFertilizers(allFertilizers *[]models.Fertilizer) error {
-	cur, err := f.col.Find(context.Background(), bson.D{})
+func (f fertilizerHandler) AddFertilizer(newFertilizer models.Fertilizer) error {
+	sqlQuery := fmt.Sprintf("insert into fertilizers(fertilizerid,name,composition,details,profileimage) values('%s','%s','%s','%s','%s')", newFertilizer.ID, newFertilizer.Name, newFertilizer.Composition, newFertilizer.Details, newFertilizer.ProfileImage)
+	_, err := f.db.Exec(sqlQuery)
 	if err != nil {
 		return err
 	}
+	return nil
+}
 
-	defer cur.Close(context.Background())
+func (f fertilizerHandler) GetAllFertilizers(allFertilizers *[]models.Fertilizer) error {
+	res, err := f.db.Query("select fertilizerid,name,composition,details,profileimage from fertilizers")
+	if err != nil {
+		return err
+	}
+	defer res.Close()
 
-	for cur.Next(context.Background()) {
+	for res.Next() {
 		var fertilizer models.Fertilizer
-		err := cur.Decode(&fertilizer)
+		err = res.Scan(&fertilizer.ID, &fertilizer.Name, &fertilizer.Composition, &fertilizer.Details, &fertilizer.ProfileImage)
 		if err != nil {
 			return err
 		}
 		*allFertilizers = append(*allFertilizers, fertilizer)
 	}
-
-	return cur.Err()
+	return nil
 }
 
-func (f fertilizerMongoHandler) DeleteFertilizerDetails(fertilizerId string) error {
-	_, err := f.col.DeleteOne(context.Background(), bson.M{"id": fertilizerId})
+func (f fertilizerHandler) DeleteFertilizerDetails(fertilizerId string) error {
+	_, err := f.db.Query("delete from fertilizers where fertilizerId=?", fertilizerId)
 	return err
 }
 
-func (f fertilizerMongoHandler) GetFertilizerDetails(fertilizerId string, fertilizer *models.Fertilizer) error {
-	res := f.col.FindOne(context.Background(), bson.M{"id": fertilizerId})
-	err := res.Err()
+func (f fertilizerHandler) GetFertilizerDetails(fertilizerId string, fertilizer *models.Fertilizer) error {
+	res, err := f.db.Query("select fertilizerid,name,composition,details,applyinterval,profileimage from fertilizers where fertilizerId=?", fertilizerId)
 	if err != nil {
 		return err
-	} else {
-		_ = res.Decode(fertilizer)
+	}
+	defer res.Close()
+
+	for res.Next() {
+		err = res.Scan(&fertilizer.ID, &fertilizer.Name, &fertilizer.Composition, &fertilizer.Details, &fertilizer.ApplyInterval, &fertilizer.ProfileImage)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

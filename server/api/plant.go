@@ -35,7 +35,7 @@ func AddPlant(w http.ResponseWriter, r *http.Request) {
 	// of the file input on the frontend
 	file, fileHeader, _ := r.FormFile("image")
 	// Storing photo in local file system
-	imageName, _ := storage.StoreImage(newPlant.ID, file, fileHeader)
+	imageName, _ := storage.StorePlantImage(newPlant.ID, file, fileHeader)
 	newPlant.ProfileImage = imageName
 	// Storing into database
 	storage.PlantHandler.AddPlant(newPlant)
@@ -68,7 +68,7 @@ func AddImages(w http.ResponseWriter, r *http.Request) {
 	// They are accessible only after ParseMultipartForm is called
 	files := r.MultipartForm.File["image"]
 	var imageNames []string
-	storage.StoreMultipleImage(plantId, files, &imageNames)
+	storage.StorePlantImages(plantId, files, &imageNames)
 
 	// Now store image names to the database
 	storage.PlantHandler.UpdateImageNames(plantId, imageNames)
@@ -109,7 +109,7 @@ func DeletePlant(w http.ResponseWriter, r *http.Request) {
 	var plantId string = mux.Vars(r)["plantId"]
 	if err := storage.PlantHandler.DeleteDetails(plantId); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-	} else if err := storage.DeleteImages(plantId); err != nil {
+	} else if err := storage.DeletePlantImages(plantId); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 	json.NewEncoder(w).Encode("Plant Deleted")
@@ -117,7 +117,7 @@ func DeletePlant(w http.ResponseWriter, r *http.Request) {
 
 func DownloadImage(w http.ResponseWriter, r *http.Request) {
 	var imageName string = mux.Vars(r)["imageName"]
-	data, err := storage.GetImage(imageName)
+	data, err := storage.GetPlantImage(imageName)
 	if err != nil {
 		w.Write(nil)
 	}

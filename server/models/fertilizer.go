@@ -6,5 +6,5 @@ type Fertilizer struct {
 	Details       string `json:"details"`
 	Composition   string `json:"composition"`
 	ApplyInterval string `json:"applyInterval"`
-	ImageName     string `json:"imageName"`
+	ProfileImage  string `json:"profileImage"`
 }

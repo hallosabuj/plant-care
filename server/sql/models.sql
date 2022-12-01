@@ -11,8 +11,7 @@ CREATE Table fertilizers(
     name VARCHAR(255),
     composition VARCHAR(500),
     details VARCHAR(400),
-    applyInterval int,
-    imagename VARCHAR(260)
+    profileImage VARCHAR(260)
 );
 
 CREATE Table plantImages(
@@ -20,4 +19,23 @@ CREATE Table plantImages(
     plantId VARCHAR(50),
     name VARCHAR(260),
     FOREIGN KEY (plantId) REFERENCES plants(plantId) ON DELETE CASCADE
+);
+
+CREATE Table NeededFertilizers(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    plantId VARCHAR(50),
+    fertilizerId VARCHAR(50),
+    applyInterval INT,
+    benefit VARCHAR(500),
+    FOREIGN KEY (plantId) REFERENCES plants(plantId) ON DELETE CASCADE,
+    FOREIGN KEY (fertilizerId) REFERENCES fertilizers(fertilizerId)
+);
+
+CREATE Table AppliedFertilizer(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    plantId VARCHAR(50),
+    fertilizerId VARCHAR(50),
+    appliedDate VARCHAR(20),
+    FOREIGN KEY (plantId) REFERENCES plants(plantId) ON DELETE CASCADE,
+    FOREIGN KEY (fertilizerId) REFERENCES fertilizers(fertilizerId)
 );
