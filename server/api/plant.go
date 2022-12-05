@@ -24,9 +24,10 @@ func GetAllPlants(w http.ResponseWriter, r *http.Request) {
 func AddPlant(w http.ResponseWriter, r *http.Request) {
 	// bytes, _ := ioutil.ReadAll(r.Body)
 	var newPlant models.Plant = models.Plant{
-		Name:    r.FormValue("name"),
-		DOB:     strings.ReplaceAll(r.FormValue("dob"), "/", "-"),
-		Details: r.FormValue("details"),
+		Name:     r.FormValue("name"),
+		DOB:      strings.ReplaceAll(r.FormValue("dob"), "/", "-"),
+		Details:  r.FormValue("details"),
+		SoilType: r.FormValue("soilType"),
 	}
 	// Generate the ID for the plant
 	newPlant.ID = fmt.Sprintf("%v", uuid.New())
@@ -92,7 +93,7 @@ func UpdatePlant(w http.ResponseWriter, r *http.Request) {
 	var field string = mux.Vars(r)["field"]
 	var plantId string = mux.Vars(r)["plantId"]
 	var value string = mux.Vars(r)["value"]
-	if strings.Contains("name dob details profileimage", field) {
+	if strings.Contains("name dob details profileimage soiltype", field) {
 		// List of string field
 		if err := storage.PlantHandler.UpdatePlant(field, plantId, value); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

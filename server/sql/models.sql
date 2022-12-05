@@ -3,7 +3,8 @@ CREATE Table plants(
     name VARCHAR(255) NOT NULL,
     dob VARCHAR(15),
     details VARCHAR(4000),
-    profileimage VARCHAR(260)
+    profileimage VARCHAR(260),
+    soilType VARCHAR(20)
 );
 
 CREATE Table fertilizers(
@@ -11,6 +12,7 @@ CREATE Table fertilizers(
     name VARCHAR(255),
     composition VARCHAR(500),
     details VARCHAR(400),
+    available VARCHAR(10),
     profileImage VARCHAR(260)
 );
 

@@ -9,6 +9,7 @@ import Plants from './components/Plants/Plants';
 import Fertilizers from './components/fertilizers/Fertilizers';
 import Footer from './components/Footer';
 import PlantDetails from './components/Plants/PlantDetails';
+import FertilizerDetails from './components/fertilizers/FertilizerDetails';
 
 function App() {
   return (
@@ -18,8 +19,9 @@ function App() {
         <Routes>
           <Route exact path='/' element={<Home/>}></Route>
           <Route exact path='/plants' element={<Plants/>}></Route>
-          <Route exact path='/plant/:plantId' element={<PlantDetails/>}></Route>
+          <Route exact path='/plants/:plantId' element={<PlantDetails/>}></Route>
           <Route exact path='/fertilizers' element={<Fertilizers/>}></Route>
+          <Route exact path='/fertilizers/:fertilizerId' element={<FertilizerDetails/>}></Route>
           <Route exact path='/addplant' element={<AddPlantForm/>}></Route>
           <Route exact path="/showImage" element={<ShowImage/>}></Route>
           <Route exact path="/add-fertilizer" element={<AddFertilizer/>}></Route>

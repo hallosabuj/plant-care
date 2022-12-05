@@ -31,7 +31,7 @@ type plantHandler struct {
 
 func (p plantHandler) AddPlant(newPlant models.Plant) error {
 	fmt.Println(newPlant)
-	sqlQuery := fmt.Sprintf("insert into plants(plantId,name,dob,details,profileimage) values('%s','%s','%s','%s','%s')", newPlant.ID, newPlant.Name, newPlant.DOB, newPlant.Details, newPlant.ProfileImage)
+	sqlQuery := fmt.Sprintf("insert into plants(plantId,name,dob,details,profileimage,soilType) values('%s','%s','%s','%s','%s','%s')", newPlant.ID, newPlant.Name, newPlant.DOB, newPlant.Details, newPlant.ProfileImage, newPlant.SoilType)
 	_, err := p.db.Exec(sqlQuery)
 	if err != nil {
 		return err
@@ -45,14 +45,14 @@ func (p plantHandler) AddPlant(newPlant models.Plant) error {
 }
 
 func (p plantHandler) GetAllPlants(allPlants *[]models.Plant) error {
-	res, err := p.db.Query("select * from plants")
+	res, err := p.db.Query("select plantId,name,dob,details,profileimage,soiltype from plants")
 	if err != nil {
 		return nil
 	}
 	defer res.Close()
 	for res.Next() {
 		var plant models.Plant
-		err := res.Scan(&plant.ID, &plant.Name, &plant.DOB, &plant.Details, &plant.ProfileImage)
+		err := res.Scan(&plant.ID, &plant.Name, &plant.DOB, &plant.Details, &plant.ProfileImage, &plant.SoilType)
 		if err != nil {
 			return err
 		}
@@ -84,13 +84,13 @@ func (p plantHandler) UpdateImageNames(plantId string, newImageNames []string) e
 
 func (p plantHandler) GetPlantDetails(plantId string, plant *models.Plant) error {
 	// Getting plant details
-	res, err := p.db.Query("select plantId,name,dob,details,profileimage from plants where plantid=?", plantId)
+	res, err := p.db.Query("select plantId,name,dob,details,profileimage,soiltype from plants where plantid=?", plantId)
 	if err != nil {
 		return nil
 	}
 	defer res.Close()
 	for res.Next() {
-		err := res.Scan(&plant.ID, &plant.Name, &plant.DOB, &plant.Details, &plant.ProfileImage)
+		err := res.Scan(&plant.ID, &plant.Name, &plant.DOB, &plant.Details, &plant.ProfileImage, &plant.SoilType)
 		if err != nil {
 			return err
 		}

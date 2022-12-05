@@ -30,7 +30,7 @@ func (f fertilizerHandler) AddFertilizer(newFertilizer models.Fertilizer) error 
 }
 
 func (f fertilizerHandler) GetAllFertilizers(allFertilizers *[]models.Fertilizer) error {
-	res, err := f.db.Query("select fertilizerid,name,composition,details,profileimage from fertilizers")
+	res, err := f.db.Query("select fertilizerid,name,composition,details,profileimage,available from fertilizers")
 	if err != nil {
 		return err
 	}
@@ -38,7 +38,7 @@ func (f fertilizerHandler) GetAllFertilizers(allFertilizers *[]models.Fertilizer
 
 	for res.Next() {
 		var fertilizer models.Fertilizer
-		err = res.Scan(&fertilizer.ID, &fertilizer.Name, &fertilizer.Composition, &fertilizer.Details, &fertilizer.ProfileImage)
+		err = res.Scan(&fertilizer.ID, &fertilizer.Name, &fertilizer.Composition, &fertilizer.Details, &fertilizer.ProfileImage, &fertilizer.Available)
 		if err != nil {
 			return err
 		}
@@ -53,14 +53,14 @@ func (f fertilizerHandler) DeleteFertilizerDetails(fertilizerId string) error {
 }
 
 func (f fertilizerHandler) GetFertilizerDetails(fertilizerId string, fertilizer *models.Fertilizer) error {
-	res, err := f.db.Query("select fertilizerid,name,composition,details,applyinterval,profileimage from fertilizers where fertilizerId=?", fertilizerId)
+	res, err := f.db.Query("select fertilizerid,name,composition,details,available,profileimage from fertilizers where fertilizerId=?", fertilizerId)
 	if err != nil {
 		return err
 	}
 	defer res.Close()
 
 	for res.Next() {
-		err = res.Scan(&fertilizer.ID, &fertilizer.Name, &fertilizer.Composition, &fertilizer.Details, &fertilizer.ApplyInterval, &fertilizer.ProfileImage)
+		err = res.Scan(&fertilizer.ID, &fertilizer.Name, &fertilizer.Composition, &fertilizer.Details, &fertilizer.Available, &fertilizer.ProfileImage)
 		if err != nil {
 			return err
 		}

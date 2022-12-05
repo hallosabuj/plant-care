@@ -42,7 +42,6 @@ class AddPlantModal extends Component {
     })
   }
   imageOnChangeHandler = (event) => {
-    console.log(event.target.files)
     this.setState({
       image: event.target.files[0]
     })

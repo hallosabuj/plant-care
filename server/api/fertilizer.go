@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"path/filepath"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
@@ -61,9 +62,14 @@ func DownloadFertilizerImage(w http.ResponseWriter, r *http.Request) {
 func DeleteFertilizer(w http.ResponseWriter, r *http.Request) {
 	var fertilizerId string = mux.Vars(r)["fertilizerId"]
 	if err := storage.FertilizerHandler.DeleteFertilizerDetails(fertilizerId); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		if strings.Contains(err.Error(), "Error 1451:") {
+			http.Error(w, "Can not delete, some plants using this fertilizer", http.StatusInternalServerError)
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 	} else if err := storage.DeleteFertilizerImage(fertilizerId); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Image not deleted", http.StatusOK)
+	} else {
+
 	}
-	json.NewEncoder(w).Encode("Fertilizer Deleted")
 }
