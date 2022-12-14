@@ -46,7 +46,9 @@ func AddPlant(w http.ResponseWriter, r *http.Request) {
 
 func DeletePlantPhoto(w http.ResponseWriter, r *http.Request) {
 	fileName := mux.Vars(r)["imageName"]
-	if err := storage.DeletePlantImage(fileName); err != nil {
+	if err := storage.PlantHandler.RemoveImageNameFromDB(fileName); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	} else if err := storage.DeletePlantImage(fileName); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 	json.NewEncoder(w).Encode("Image deleted")

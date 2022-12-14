@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { Component } from 'react'
 import PlantCard from './PlantCard'
-import AddPlantModal from './AddPlantModal'
+import AddPlantModal from './Modals/Add_PlantModal'
 
 class Plants extends Component {
     constructor(props) {
@@ -13,7 +13,7 @@ class Plants extends Component {
         this.reRenderOnAddOrDelete = this.reRenderOnAddOrDelete.bind(this)
     }
     async getPlants() {
-        let plants = await axios.get("/plant").then((response) => {
+        let plants = await axios.get("/api/plant").then((response) => {
             console.log(response)
             this.setState({
                 plants: response.data
@@ -34,12 +34,12 @@ class Plants extends Component {
             <div>
                 <div className=' bg-blue-500'>
                         <div className="relative flex h-16 items-center justify-between">
-                            <div className='sm:ml-6 sm:block flex space-x-4'>
+                            <div className='sm:ml-6 sm:block flex '>
                                 <AddPlantModal reRenderOnAdd={this.reRenderOnAddOrDelete} />
                             </div>
                         </div>
                 </div>
-                <div className=' bg-blue-400 flex'>
+                <div className=' bg-blue-400 grid lg:grid-cols-6 md:grid-cols-3 grid-cols-2'>
                     {/* Short Circuit to check null */}
                     {this.state.plants && this.state.plants.map((plant, index) => (
                         <PlantCard key={plant.plantId} plant={plant} reRenderOnDelete={this.reRenderOnAddOrDelete} />

@@ -15,6 +15,7 @@ type HandlerP interface {
 	GetPlantDetails(string, *models.Plant) error
 	UpdatePlant(field, plantId, value string) error
 	UpdateImageNames(string, []string) error
+	RemoveImageNameFromDB(string) error
 }
 
 var PlantHandler HandlerP
@@ -111,4 +112,9 @@ func (p plantHandler) GetPlantDetails(plantId string, plant *models.Plant) error
 		plant.ImageNames[imageId] = imageName
 	}
 	return nil
+}
+
+func (p plantHandler) RemoveImageNameFromDB(imageName string) error {
+	_, err := p.db.Query("delete from plantimages where name=?", imageName)
+	return err
 }

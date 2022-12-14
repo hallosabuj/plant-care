@@ -73,3 +73,22 @@ func DeleteFertilizer(w http.ResponseWriter, r *http.Request) {
 
 	}
 }
+
+func UpdateFertilizer(w http.ResponseWriter, r *http.Request) {
+	queryParams := mux.Vars(r)
+	var fertilizerId string = queryParams["fertilizerId"]
+	var field string = queryParams["field"]
+	var value string = queryParams["value"]
+
+	if !strings.Contains("name details composition available", field) {
+		http.Error(w, "unknown field", http.StatusInternalServerError)
+		return
+	}
+
+	err := storage.FertilizerHandler.UpdateFertilizer(fertilizerId, field, value)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	json.NewEncoder(w).Encode("Updated")
+}

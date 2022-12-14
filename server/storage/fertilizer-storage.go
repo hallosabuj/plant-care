@@ -12,6 +12,7 @@ type HandlerF interface {
 	GetAllFertilizers(*[]models.Fertilizer) error
 	DeleteFertilizerDetails(string) error
 	GetFertilizerDetails(string, *models.Fertilizer) error
+	UpdateFertilizer(string, string, string) error
 }
 
 var FertilizerHandler HandlerF
@@ -66,4 +67,9 @@ func (f fertilizerHandler) GetFertilizerDetails(fertilizerId string, fertilizer 
 		}
 	}
 	return nil
+}
+
+func (f fertilizerHandler) UpdateFertilizer(fertilizerId string, field string, value string) error {
+	_, err := f.db.Query("update fertilizers set "+field+"=? where fertilizerid=?", value, fertilizerId)
+	return err
 }

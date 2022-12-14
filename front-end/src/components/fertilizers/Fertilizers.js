@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { Component } from 'react'
-import AddFertilizerModal from './AddFertilizerModal'
+import AddFertilizerModal from './Modals/AddFertilizerModal'
 import FertilizerCard from './FertilizerCard'
 
 class Fertilizers extends Component {
@@ -13,7 +13,7 @@ class Fertilizers extends Component {
       this.reRenderOnAddOrDelete=this.reRenderOnAddOrDelete.bind(this)
     }
     async getFertilizers(){
-        let fertilizers=await axios.get("/fertilizer").then((response)=>{
+        let fertilizers=await axios.get("/api/fertilizer").then((response)=>{
             console.log(response)
             this.setState({
                 fertilizers:response.data
@@ -34,12 +34,12 @@ class Fertilizers extends Component {
         <div>
             <div className=' bg-blue-500'>
                 <div className="relative flex h-16 items-center justify-between">
-                    <div className='sm:ml-6 sm:block flex space-x-4'>
+                    <div className='sm:ml-6 sm:block flex'>
                         <AddFertilizerModal reRenderOnAdd={this.reRenderOnAddOrDelete}/>
                     </div>
                 </div>
             </div>
-            <div className='flex bg-blue-400'>
+            <div className=' bg-blue-400 grid lg:grid-cols-6 md:grid-cols-3 grid-cols-2'>
                 {/* Short Circuit to check null */}
                 {this.state.fertilizers && this.state.fertilizers.map((fertilizer,index)=>(
                     <FertilizerCard key={index} fertilizer={fertilizer} reRenderOnDelete={this.reRenderOnAddOrDelete}/>
