@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Compressor from 'compressorjs'
 import React, { Component } from 'react'
 
 class AddFertilizerModal extends Component {
@@ -11,7 +12,9 @@ class AddFertilizerModal extends Component {
       composition:"",
       details:"",
       applyInterval:0,
-      showModal: false
+      showModal: false,
+      compressed: false,
+      compressing: false
     }
   }
   handleSubmit = async (event) => {
@@ -23,7 +26,7 @@ class AddFertilizerModal extends Component {
     formData.append("composition", this.state.composition)
     formData.append("applyInterval", this.state.applyInterval)
     formData.append("image", this.state.image)
-    let res = await axios.post("/api/fertilizer", formData).catch((error) => {
+    await axios.post("/api/fertilizer", formData).catch((error) => {
       console.log(error)
     })
     this.toggleShowModal()
@@ -50,11 +53,31 @@ class AddFertilizerModal extends Component {
       console.log(this.state)
     })
   }
-  imageOnChangeHandler = (event) => {
-    console.log(event.target.files)
+  imageOnChangeHandler = async (event) => {
     this.setState({
-      image: event.target.files[0]
+      compressing:true
     })
+    let originalImage = event.target.files[0]
+    let compressedImage=null
+    new Compressor(originalImage,{
+      quality:0.6,
+      success(result){
+        compressedImage=result
+        console.log("Com")
+      }
+    })
+    while(true){
+      if (compressedImage!==null){
+        this.setState({
+          image:compressedImage,
+          compressed:true,
+          compressing:false
+        })
+        console.log("Image compressed")
+        break
+      }
+      await new Promise(r => setTimeout(r, 1000));
+    }
   }
   applyIntervalChangeHandler = (event) => {
     this.setState({
@@ -104,7 +127,7 @@ class AddFertilizerModal extends Component {
               Image
             </label>
             <input onChange={this.imageOnChangeHandler} className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="file" />
-            {image && (<img src={URL.createObjectURL(image)} style={{ height: '100px', width: 'auto' }} />)}
+            {image && (<img src={URL.createObjectURL(image)} style={{ height: '100px', width: 'auto' }} alt={"FertilizerImage"}/>)}
           </div>
           {/*footer*/}
           <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
@@ -115,13 +138,24 @@ class AddFertilizerModal extends Component {
             >
               Close
             </button>
-            <button
-              className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-              type="button"
-              onClick={this.handleSubmit}
-            >
-              ADD
-            </button>
+            {this.state.compressed && (
+              <button
+                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                type="button"
+                onClick={this.handleSubmit}
+              >
+                ADD
+              </button>
+              )}
+
+              {this.state.compressing && (
+              <button
+                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                type="button"
+              >
+                Compressing
+              </button>
+              )}
           </div>
         </form>
       </div>

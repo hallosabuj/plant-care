@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { Component } from 'react'
+import Compressor from 'compressorjs'
 
 class AddPlantModal extends Component {
   constructor(props) {
@@ -9,7 +10,9 @@ class AddPlantModal extends Component {
       name: "",
       dob: "",
       image: null,
-      showModal: false
+      showModal: false,
+      compressed: false,
+      compressing: false
     }
   }
   handleSubmit = async (event) => {
@@ -19,7 +22,7 @@ class AddPlantModal extends Component {
     formData.append("name", this.state.name)
     formData.append("dob", this.state.dob)
     formData.append("image", this.state.image)
-    await axios.post("/api/plant", formData).then(()=>{
+    await axios.post("/api/plant", formData).then(() => {
       this.props.reRenderOnAdd()
     }).catch((error) => {
       console.log(error)
@@ -41,10 +44,31 @@ class AddPlantModal extends Component {
       console.log(this.state)
     })
   }
-  imageOnChangeHandler = (event) => {
+  imageOnChangeHandler = async (event) => {
     this.setState({
-      image: event.target.files[0]
+      compressing:true
     })
+    let originalImage = event.target.files[0]
+    let compressedImage=null
+    new Compressor(originalImage,{
+      quality:0.6,
+      success(result){
+        compressedImage=result
+        console.log("Com")
+      }
+    })
+    while(true){
+      if (compressedImage!==null){
+        this.setState({
+          image:compressedImage,
+          compressed:true,
+          compressing:false
+        })
+        console.log("Image compressed")
+        break
+      }
+      await new Promise(r => setTimeout(r, 1000));
+    }
   }
   toggleShowModal = () => {
     this.setState({
@@ -86,13 +110,25 @@ class AddPlantModal extends Component {
             >
               Close
             </button>
-            <button
-              className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-              type="button"
-              onClick={this.handleSubmit}
-            >
-              ADD
-            </button>
+
+            {this.state.compressed && (
+              <button
+                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                type="button"
+                onClick={this.handleSubmit}
+              >
+                ADD
+              </button>
+            )}
+
+            {this.state.compressing && (
+              <button
+                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                type="button"
+              >
+                Compressing
+              </button>
+            )}
           </div>
         </form>
       </div>

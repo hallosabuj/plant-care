@@ -1,23 +1,53 @@
 import axios from 'axios'
 import React, { Component } from 'react'
+import Compressor from 'compressorjs'
 
 class AddImageModal extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      images: []
+      images: [],
+      addButtonText:"",
+      compressed:false,
+      compressing:false
     }
   }
-  imageOnChangeHandler = (event) => {
+  imageOnChangeHandler = async (event) => {
+    // this.setState({
+    //   images: [...event.target.files]
+    // })
+    let originalImages=[...event.target.files]
+    let compressedImages=[]
     this.setState({
-      images: [...event.target.files]
+      compressing:true
     })
+    originalImages.map((image,index)=>{
+      new Compressor(image,{
+        quality:0.6,
+        success(result){
+          console.log("compressed")
+          compressedImages=[...compressedImages,result]
+        }
+      })
+    })
+    while(true){
+      if (originalImages.length===compressedImages.length){
+        this.setState({
+          images:compressedImages,
+          compressed:true,
+          compressing:false
+        })
+        console.log("All compresses")
+        break
+      }
+      await new Promise(r => setTimeout(r, 1000));
+    }
   }
   uploadImages = async () => {
     const formData = new FormData()
     formData.append("id",this.props.plantId)
-    this.state.images.forEach((image)=>formData.append("image",image))
+    this.state.images.forEach((image)=>formData.append("image",image,image.name))
     await axios.post("/api/plant/uploadImages",formData).then((response)=>{
       console.log(response)
       this.props.closeModal()
@@ -26,13 +56,9 @@ class AddImageModal extends Component {
       this.props.closeModal()
     })
   }
-  render() {
-    let images = this.state.images
 
-    console.log(images)
-    if (this.props.isOpen === false) {
-      return <></>
-    }
+  uploadForm = () =>{
+    let images = this.state.images
     return (
       <div className='fixed inset-0 w-full h-full bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center'>
         <div className=' bg-white p-2 rounded w-96'>
@@ -42,10 +68,15 @@ class AddImageModal extends Component {
                 Images
               </label>
               <input onChange={this.imageOnChangeHandler} type="file" accept='image/*' multiple className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" />
-              {images && images.map((image,index)=>{
-                console.log(index)
-                return (<img key={image.lastModified} src={URL.createObjectURL(image)} style={{ height: '100px', width: 'auto' }} alt={image.name}/>)
-              })}
+              <div className='grid grid-cols-3'>
+                  {images && images.map((image,index)=>{
+                    console.log(index)
+                    return (
+                      <div>
+                        <img key={image.lastModified} src={URL.createObjectURL(image)} className="max-h-28 max-w-[90px]" alt={image.name}/>
+                      </div>
+                    )})}
+              </div>
             </div>
           </div>
           {/*footer*/}
@@ -57,16 +88,34 @@ class AddImageModal extends Component {
             >
               Close
             </button>
+
+            {this.state.compressed && (
             <button
               className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
               type="button"
               onClick={this.uploadImages}
             >
-              Add
+              Upload
+            </button>)}
+            {this.state.compressing && (
+              <button
+              className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              type="button"
+            >
+              Compressing
             </button>
+            )}
           </div>
         </div>
       </div>
+    )
+  }
+  render() {
+    if (this.props.isOpen === false) {
+      return <></>
+    }
+    return (
+      this.uploadForm()
     )
   }
 }

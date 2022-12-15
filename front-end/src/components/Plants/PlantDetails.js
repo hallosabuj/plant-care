@@ -137,7 +137,7 @@ class PlantDetails extends Component {
           {/* Row 2 */}
           <div className=' bg-slate-400 flex justify-center items-center overflow-hidden relative'>
             {this.state.plantDetails && (<ImageSlider imageNames={this.state.plantDetails.imageNames} />)}
-            <img src={addPhotoIcon} className="w-6 h-6 top-1 right-4 absolute" onClick={this.showAddImageModal}/>
+            <img src={addPhotoIcon} className="w-6 h-6 top-1 right-4 absolute" onClick={this.showAddImageModal} alt="PlantImage"/>
           </div>
           {/* Row 3 */}
           <div className=' bg-slate-400 flex justify-left items-center pl-10 h-8'>
