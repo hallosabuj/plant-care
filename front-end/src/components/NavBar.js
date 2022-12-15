@@ -6,10 +6,7 @@ import {  NavLink } from 'react-router-dom'
 const navigation = [
     { name: 'Home', href: '/web/', current: false },
     { name: 'Plants', href: '/web/plants', current: false },
-    { name: 'Fertilizers', href: '/web/fertilizers', current: false },
-    { name: 'Add Plant', href: '/web/addplant', current: false },
-    { name: 'Add Fertilizer', href: '/web/add-fertilizer', current: false },
-    { name: 'Show Image', href: '/web/showImage', current: false },
+    { name: 'Fertilizers', href: '/web/fertilizers', current: false }
 ]
 
 function classNames(...classes) {
