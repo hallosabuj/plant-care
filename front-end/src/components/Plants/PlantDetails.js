@@ -8,6 +8,7 @@ import PlantEditModal from './Modals/PlantEditModal';
 import AddNeededFertilizerModal from './Modals/Add_NeededFertilizerModal';
 import AddAppliedFertilizerModal from './Modals/Add_AppliedFertilizerModal';
 import AddImageModal from './Modals/Add_ImageModal';
+import ShowImageModal from './Modals/Show_ImageModal';
 
 class PlantDetails extends Component {
   constructor(props) {
@@ -17,11 +18,13 @@ class PlantDetails extends Component {
       plantDetails: null,
       neededFertilizers: null,
       appliedFertilizers: null,
-      editModal:false,
-      editValues:null,
-      addNeededFertilizerModal:false,
-      addappliedFertilizerModal:false,
-      addImageModal:false
+      editModal: false,
+      editValues: null,
+      addNeededFertilizerModal: false,
+      addappliedFertilizerModal: false,
+      addImageModal: false,
+      showImageModal: false,
+      imageUrlForShowModal:""
     }
   }
   async getDetails() {
@@ -58,71 +61,86 @@ class PlantDetails extends Component {
     this.getDetails()
   }
 
-  showEditModal=(displayName,fieldName,fieldValue)=>{
+  showEditModal = (displayName, fieldName, fieldValue) => {
     console.log(fieldName)
-    let textTypes="name soilType details"
-    let dateTypes="dob"
+    let textTypes = "name soilType details"
+    let dateTypes = "dob"
 
-    let editValues={plantId:this.state.plantDetails.plantId,displayName:null,fieldName:null,fieldValue:null,fieldType:null}
-    editValues.displayName=displayName
-    editValues.fieldName=fieldName
-    editValues.fieldValue=fieldValue
+    let editValues = { plantId: this.state.plantDetails.plantId, displayName: null, fieldName: null, fieldValue: null, fieldType: null }
+    editValues.displayName = displayName
+    editValues.fieldName = fieldName
+    editValues.fieldValue = fieldValue
 
-    if(textTypes.includes(fieldName)){
-      editValues.fieldType="text"
-    }else if(dateTypes.includes(fieldName)){
-      editValues.fieldType="date"
+    if (textTypes.includes(fieldName)) {
+      editValues.fieldType = "text"
+    } else if (dateTypes.includes(fieldName)) {
+      editValues.fieldType = "date"
     }
     console.log(editValues)
     this.setState({
-      editValues:editValues
+      editValues: editValues
     })
     this.setState({
-      editModal:true
+      editModal: true
     })
   }
-  closeEditModal=()=>{
+  closeEditModal = () => {
     this.setState({
-      editModal:false,
-      editValues:null
+      editModal: false,
+      editValues: null
     })
     this.getDetails()
   }
 
-  showAddNeededFertilizersModal=()=>{
+  showAddNeededFertilizersModal = () => {
     this.setState({
-      addNeededFertilizerModal:true
+      addNeededFertilizerModal: true
     })
   }
-  closeAddNeededFertilizersModal=()=>{
+  closeAddNeededFertilizersModal = () => {
     this.setState({
-      addNeededFertilizerModal:false
+      addNeededFertilizerModal: false
     })
     this.getDetails()
   }
 
-  showAddAppliedFertilizersModal=()=>{
+  showAddAppliedFertilizersModal = () => {
     this.setState({
-      addappliedFertilizerModal:true
+      addappliedFertilizerModal: true
     })
   }
-  closeAddAppliedFertilizerModal=()=>{
+  closeAddAppliedFertilizerModal = () => {
     this.setState({
-      addappliedFertilizerModal:false
+      addappliedFertilizerModal: false
     })
     this.getDetails()
   }
 
-  showAddImageModal=()=>{
+  showAddImageModal = () => {
     this.setState({
-      addImageModal:true
+      addImageModal: true
     })
   }
-  closeAddImageModal=()=>{
+  closeAddImageModal = () => {
     this.setState({
-      addImageModal:false
+      addImageModal: false
     })
     this.getDetails()
+  }
+
+  openShowImageModal = (imageUrl) => {
+    console.log("Opening",imageUrl)
+    this.setState({
+      showImageModal: true,
+      imageUrlForShowModal: imageUrl
+    })
+  }
+  closeShowImageModal = () => {
+    console.log("Closing")
+    this.setState({
+      showImageModal: false,
+      imageUrlForShowModal: ""
+    })
   }
 
   render() {
@@ -132,26 +150,26 @@ class PlantDetails extends Component {
           {/* Row 1 */}
           <div className=' bg-slate-500 h-14 flex justify-center items-center text-4xl relative'>
             <h1>{this.state.plantDetails.name}</h1>
-            <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Name","name",this.state.plantDetails.name)} alt={"Edit"}/>
+            <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={() => this.showEditModal("Name", "name", this.state.plantDetails.name)} alt={"Edit"} />
           </div>
           {/* Row 2 */}
           <div className=' bg-slate-400 flex justify-center items-center overflow-hidden relative'>
-            {this.state.plantDetails && (<ImageSlider imageNames={this.state.plantDetails.imageNames} />)}
-            <img src={addPhotoIcon} className="w-6 h-6 top-1 right-4 absolute" onClick={this.showAddImageModal} alt="PlantImage"/>
+            {this.state.plantDetails && (<ImageSlider openShowImageModal={this.openShowImageModal} imageNames={this.state.plantDetails.imageNames} />)}
+            <img src={addPhotoIcon} className="w-6 h-6 top-1 right-4 absolute" onClick={this.showAddImageModal} alt="PlantImage" />
           </div>
           {/* Row 3 */}
           <div className=' bg-slate-400 flex justify-left items-center pl-10 h-8'>
             Watering : true/false
           </div>
           {/* Row 3 */}
-          <div className='flex justify-left items-center bg-slate-500 pl-10 h-8 relative'> 
+          <div className='flex justify-left items-center bg-slate-500 pl-10 h-8 relative'>
             <div>DOB: {this.state.plantDetails.dob} </div>
-            <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Date of birth","dob",this.state.plantDetails.dob)} alt={"Edit"}/>
+            <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={() => this.showEditModal("Date of birth", "dob", this.state.plantDetails.dob)} alt={"Edit"} />
           </div>
           {/* Row 4 */}
           <div className=' bg-slate-400 flex justify-left items-center pl-10 h-8 relative'>
             Soil type : {this.state.plantDetails.soilType}
-            <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Soil type","soiltype",this.state.plantDetails.soilType)} alt={"Edit"}/>
+            <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={() => this.showEditModal("Soil type", "soiltype", this.state.plantDetails.soilType)} alt={"Edit"} />
           </div>
           {/* Row 5 */}
           <div className='flex justify-left items-center pl-10 bg-slate-500 min-h-[32px] relative'>
@@ -159,7 +177,7 @@ class PlantDetails extends Component {
               <h2>About the plant</h2>
               {this.state.plantDetails.details}
             </div>
-            <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("About the plant","details",this.state.plantDetails.details)} alt={"Edit"}/>
+            <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={() => this.showEditModal("About the plant", "details", this.state.plantDetails.details)} alt={"Edit"} />
           </div>
           {/* Row 6 */}
           <div className=''>
@@ -168,7 +186,7 @@ class PlantDetails extends Component {
                 <tr>
                   <th colSpan={3} className=' text-center text-2xl relative'>
                     Fertilizers needed for this plant
-                    <img src={addIcon} className="h-6 w-6 absolute top-1 right-4" alt={"Add"} onClick={this.showAddNeededFertilizersModal}/>
+                    <img src={addIcon} className="h-6 w-6 absolute top-1 right-4" alt={"Add"} onClick={this.showAddNeededFertilizersModal} />
                   </th>
                 </tr>
                 <tr>
@@ -210,7 +228,7 @@ class PlantDetails extends Component {
                 <tr>
                   <th colSpan={2} className=' text-center text-2xl relative'>
                     Fertilizers applied
-                    <img src={addIcon} className="h-6 w-6 absolute top-1 right-4" alt="Add" onClick={this.showAddAppliedFertilizersModal}/>
+                    <img src={addIcon} className="h-6 w-6 absolute top-1 right-4" alt="Add" onClick={this.showAddAppliedFertilizersModal} />
                   </th>
                 </tr>
                 <tr>
@@ -240,10 +258,11 @@ class PlantDetails extends Component {
             </table>
           </div>
         </div>
-        <PlantEditModal isOpen={this.state.editModal} editValues={this.state.editValues} closeModal={this.closeEditModal}/>
-        <AddNeededFertilizerModal isOpen={this.state.addNeededFertilizerModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeAddNeededFertilizersModal}/>
-        <AddAppliedFertilizerModal isOpen={this.state.addappliedFertilizerModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeAddAppliedFertilizerModal}/>
-        <AddImageModal isOpen={this.state.addImageModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeAddImageModal}/>
+        <PlantEditModal isOpen={this.state.editModal} editValues={this.state.editValues} closeModal={this.closeEditModal} />
+        <AddNeededFertilizerModal isOpen={this.state.addNeededFertilizerModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeAddNeededFertilizersModal} />
+        <AddAppliedFertilizerModal isOpen={this.state.addappliedFertilizerModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeAddAppliedFertilizerModal} />
+        <AddImageModal isOpen={this.state.addImageModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeAddImageModal} />
+        <ShowImageModal isOpen={this.state.showImageModal} imageUrl={this.state.imageUrlForShowModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeShowImageModal} />
       </div>
     )
   }

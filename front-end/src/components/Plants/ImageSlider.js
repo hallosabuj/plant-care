@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md'
 import axios from 'axios'
 import removeIcon from '../../remove.png';
+import ShowImageModal from './Modals/Show_ImageModal';
 class ImageSlider extends Component {
     constructor(props) {
         super(props)
@@ -34,6 +35,11 @@ class ImageSlider extends Component {
             console.log(error)
         })
     }
+    sendImageUrlToParent=(imageUrl)=>{
+        console.log("Need to send URL to parent")
+        console.log(imageUrl)
+        this.props.openShowImageModal(imageUrl)
+    }
     render() {
         return (
             <div className='relative flex items-center'>
@@ -43,7 +49,7 @@ class ImageSlider extends Component {
                         let imageUrl = "/api/plant/downloadImage/" + this.state.imageNames[key]
                         return (
                             <div className='h-[220px] inline-block p-2 cursor-pointer hover:scale-105 ease-in-out duration-300 relative' key={key}>
-                                <img className='h-full w-auto' src={imageUrl} alt="Plant"/>
+                                <img onClick={()=>{this.sendImageUrlToParent(imageUrl)}} className='h-full w-auto' src={imageUrl} alt="Plant"/>
                                 <img onClick={()=>{this.deleteImage(key)}} src={removeIcon} className="h-6 w-6 top-3 right-3 opacity-60 hover:opacity-100 absolute" alt='Delete'/>
                             </div>
                         )

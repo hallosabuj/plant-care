@@ -8,7 +8,7 @@ class AddNeededFertilizerModal extends Component {
         this.state = {
             listOfFertilizers:null,
             fertilizerId: "",
-            applyInterval: 1,
+            applyInterval: "1",
             benefit: ""
         }
     }
