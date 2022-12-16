@@ -262,7 +262,7 @@ class PlantDetails extends Component {
         <AddNeededFertilizerModal isOpen={this.state.addNeededFertilizerModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeAddNeededFertilizersModal} />
         <AddAppliedFertilizerModal isOpen={this.state.addappliedFertilizerModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeAddAppliedFertilizerModal} />
         <AddImageModal isOpen={this.state.addImageModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeAddImageModal} />
-        <ShowImageModal isOpen={this.state.showImageModal} imageUrl={this.state.imageUrlForShowModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeShowImageModal} />
+        <ShowImageModal isOpen={this.state.showImageModal} imageUrl={this.state.imageUrlForShowModal} plantId={this.state.plantDetails.plantId} plantName={this.state.plantDetails.name} closeModal={this.closeShowImageModal} />
       </div>
     )
   }

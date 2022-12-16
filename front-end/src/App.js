@@ -6,6 +6,7 @@ import Fertilizers from './components/fertilizers/Fertilizers';
 import Footer from './components/Footer';
 import PlantDetails from './components/Plants/PlantDetails';
 import FertilizerDetails from './components/fertilizers/FertilizerDetails';
+import ApplyFertilizer from './components/fertilizations/ApplyFertilizer';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route exact path='/web/plants/:plantId' element={<PlantDetails/>}></Route>
           <Route exact path='/web/fertilizers' element={<Fertilizers/>}></Route>
           <Route exact path='/web/fertilizers/:fertilizerId' element={<FertilizerDetails/>}></Route>
+          <Route exact path='/web/apply-fertilizer' element={<ApplyFertilizer/>}></Route>
         </Routes>
       </Router>
       <Footer />
