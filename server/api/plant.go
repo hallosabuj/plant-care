@@ -91,6 +91,16 @@ func GetPlant(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func GetPlantForAFertilizer(w http.ResponseWriter, r *http.Request) {
+	var fertilizerId string = mux.Vars(r)["fertilizerId"]
+	var allPlants []models.PlantForAFertilizer
+	if err := storage.PlantHandler.GetPlantsForAFertilizer(fertilizerId, &allPlants); err != nil {
+		json.NewEncoder(w).Encode(err)
+	}
+	w.Header().Add("content-type", "application/json")
+	json.NewEncoder(w).Encode(allPlants)
+}
+
 func UpdatePlant(w http.ResponseWriter, r *http.Request) {
 	var field string = mux.Vars(r)["field"]
 	var plantId string = mux.Vars(r)["plantId"]
