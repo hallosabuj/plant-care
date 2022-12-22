@@ -31,7 +31,7 @@ func (f fertilizerHandler) AddFertilizer(newFertilizer models.Fertilizer) error 
 }
 
 func (f fertilizerHandler) GetAllFertilizers(allFertilizers *[]models.Fertilizer) error {
-	res, err := f.db.Query("select fertilizerid,name,composition,details,profileimage,available from fertilizers")
+	res, err := f.db.Query("select IFNULL(fertilizerid,''),IFNULL(name,''),IFNULL(composition,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(available,'') from fertilizers")
 	if err != nil {
 		return err
 	}
@@ -43,6 +43,7 @@ func (f fertilizerHandler) GetAllFertilizers(allFertilizers *[]models.Fertilizer
 		if err != nil {
 			return err
 		}
+		fmt.Println(fertilizer)
 		*allFertilizers = append(*allFertilizers, fertilizer)
 	}
 	return nil
@@ -54,7 +55,7 @@ func (f fertilizerHandler) DeleteFertilizerDetails(fertilizerId string) error {
 }
 
 func (f fertilizerHandler) GetFertilizerDetails(fertilizerId string, fertilizer *models.Fertilizer) error {
-	res, err := f.db.Query("select fertilizerid,name,composition,details,available,profileimage from fertilizers where fertilizerId=?", fertilizerId)
+	res, err := f.db.Query("select IFNULL(fertilizerid,''),IFNULL(name,''),IFNULL(composition,''),IFNULL(details,''),IFNULL(available,''),IFNULL(profileimage,'') from fertilizers where fertilizerId=?", fertilizerId)
 	if err != nil {
 		return err
 	}

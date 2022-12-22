@@ -28,7 +28,7 @@ func (p plantFertilizerHandler) AddNeededFertilizer(neededFertilizer models.Need
 }
 
 func (p plantFertilizerHandler) GetNeededFertilizer(neededFertilizers *[]models.NeededFertilizer) error {
-	res, err := p.db.Query("select n.plantId,p.name,n.fertilizerId,f.name,n.applyinterval,n.benefit from NeededFertilizers n,plants p,fertilizers f where p.plantId=n.plantId and n.fertilizerId=f.fertilizerId")
+	res, err := p.db.Query("select IFNULL(n.plantId,''),IFNULL(p.name,''),IFNULL(n.fertilizerId,''),IFNULL(f.name,''),IFNULL(n.applyinterval,''),IFNULL(n.benefit,'') from NeededFertilizers n,plants p,fertilizers f where p.plantId=n.plantId and n.fertilizerId=f.fertilizerId")
 	if err != nil {
 		return err
 	}
@@ -47,7 +47,7 @@ func (p plantFertilizerHandler) GetNeededFertilizer(neededFertilizers *[]models.
 
 func (p plantFertilizerHandler) GetFilteredNeededFertilizers(filed string, value string, filteredNeededFertilizers *[]models.NeededFertilizer) error {
 	fmt.Println(filed, value)
-	res, err := p.db.Query("select n.plantId,p.name,n.fertilizerId,f.name,n.applyinterval,n.benefit from NeededFertilizers n,plants p,fertilizers f where p.plantId=n.plantId and n.fertilizerId=f.fertilizerId and n."+filed+"=?", value)
+	res, err := p.db.Query("select IFNULL(n.plantId,''),IFNULL(p.name,''),IFNULL(n.fertilizerId,''),IFNULL(f.name,''),IFNULL(n.applyinterval,''),IFNULL(n.benefit,'') from NeededFertilizers n,plants p,fertilizers f where p.plantId=n.plantId and n.fertilizerId=f.fertilizerId and n."+filed+"=?", value)
 	if err != nil {
 		fmt.Println(err)
 	}

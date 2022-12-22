@@ -3,10 +3,6 @@ import React, { Component } from 'react'
 class Footer extends Component {
   render() {
     return (
-      // <div className=' pb-0 bg-slate-900'>
-      //   <h1 className='text-red-200'>This is footer neen to add valid values</h1>
-      // </div>
-
       <footer className="p-4 bg-lime-300 rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
         <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="#" className="hover:underline">Plant Care™</a>. All Rights Reserved.
         </span>
@@ -25,7 +21,6 @@ class Footer extends Component {
           </li>
         </ul>
       </footer>
-
     )
   }
 }

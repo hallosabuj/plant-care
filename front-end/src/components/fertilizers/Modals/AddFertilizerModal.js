@@ -25,7 +25,7 @@ class AddFertilizerModal extends Component {
     formData.append("details", this.state.details)
     formData.append("composition", this.state.composition)
     formData.append("applyInterval", this.state.applyInterval)
-    formData.append("image", this.state.image)
+    formData.append("image", this.state.image,this.state.image.name)
     await axios.post("/api/fertilizer", formData).catch((error) => {
       console.log(error)
     })
@@ -63,7 +63,6 @@ class AddFertilizerModal extends Component {
       quality:0.6,
       success(result){
         compressedImage=result
-        console.log("Com")
       }
     })
     while(true){

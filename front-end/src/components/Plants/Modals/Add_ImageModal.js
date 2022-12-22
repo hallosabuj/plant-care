@@ -72,8 +72,8 @@ class AddImageModal extends Component {
                   {images && images.map((image,index)=>{
                     console.log(index)
                     return (
-                      <div>
-                        <img key={image.lastModified} src={URL.createObjectURL(image)} className="max-h-28 max-w-[90px]" alt={image.name}/>
+                      <div key={image.lastModified}>
+                        <img src={URL.createObjectURL(image)} className="max-h-28 max-w-[90px]" alt={image.name}/>
                       </div>
                     )})}
               </div>

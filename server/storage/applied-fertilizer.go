@@ -30,7 +30,7 @@ func (a appliedFertilizeHnadler) AddEntry(appliedFertilizers []models.AppliedFer
 }
 
 func (a appliedFertilizeHnadler) GetAllAppliedFertilizers(allAppliedFertilizers *[]models.AppliedFertilizer) error {
-	res, err := a.db.Query("select a.plantid, p.name, a.fertilizerid, f.name, a.appliedDate from appliedfertilizer a,plants p, fertilizers f where a.plantId=p.plantId and a.fertilizerId=f.fertilizerId order by a.appliedDate desc")
+	res, err := a.db.Query("select IFNULL(a.plantid,''), IFNULL(p.name,''), IFNULL(a.fertilizerid,''), IFNULL(f.name,''), IFNULL(a.appliedDate,'') from appliedfertilizer a,plants p, fertilizers f where a.plantId=p.plantId and a.fertilizerId=f.fertilizerId order by a.appliedDate desc")
 	if err != nil {
 		return nil
 	}
@@ -47,7 +47,7 @@ func (a appliedFertilizeHnadler) GetAllAppliedFertilizers(allAppliedFertilizers 
 }
 
 func (a appliedFertilizeHnadler) GetFilteredAllAppliedFertilizers(field, value string, filteredAppliedFertilizers *[]models.AppliedFertilizer) error {
-	res, err := a.db.Query("select a.plantid, p.name, a.fertilizerid, f.name, a.appliedDate from appliedfertilizer a,plants p, fertilizers f where a.plantId=p.plantId and a.fertilizerId=f.fertilizerId and a."+field+"=? order by a.appliedDate desc", value)
+	res, err := a.db.Query("select IFNULL(a.plantid,''), IFNULL(p.name,''), IFNULL(a.fertilizerid,''), IFNULL(f.name,''), IFNULL(a.appliedDate,'') from appliedfertilizer a,plants p, fertilizers f where a.plantId=p.plantId and a.fertilizerId=f.fertilizerId and a."+field+"=? order by a.appliedDate desc", value)
 	if err != nil {
 		return nil
 	}

@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/hallosabuj/plant-care/server/models"
-	"github.com/sirupsen/logrus"
 )
 
 type HandlerP interface {
@@ -25,12 +24,6 @@ type HandlerP interface {
 
 var PlantHandler HandlerP
 
-func fatalf(format string, err error) {
-	if err != nil {
-		logrus.Fatalf(format, err)
-	}
-}
-
 type plantHandler struct {
 	db *sql.DB
 }
@@ -42,6 +35,11 @@ func (p plantHandler) AddPlant(newPlant models.Plant) error {
 	if err != nil {
 		return err
 	}
+	sqlQuery = fmt.Sprintf("insert into NeededFertilizers(plantId,fertilizerId,applyInterval,benefit) values('%s',(SELECT fertilizerId FROM fertilizers where name='water'),'%s','%s')", newPlant.ID, "1", "Transportation of nutrients")
+	_, err = p.db.Exec(sqlQuery)
+	if err != nil {
+		return err
+	}
 	sqlQuery = fmt.Sprintf("insert into plantimages(plantid,name) values('%s','%s')", newPlant.ID, newPlant.ProfileImage)
 	_, err = p.db.Exec(sqlQuery)
 	if err != nil {
@@ -50,15 +48,19 @@ func (p plantHandler) AddPlant(newPlant models.Plant) error {
 	return nil
 }
 func (p plantHandler) GetPlantsForAFertilizer(fertilizerId string, plantsForAFertilizer *[]models.PlantForAFertilizer) error {
-	res, err := p.db.Query(`select n.plantId,p.name,p.profileImage,n.applyInterval, MAX(a.appliedDate) 
-	from neededfertilizers n,plants p, appliedFertilizer a
-	where n.fertilizerId=? 
-		and p.plantId = a.plantId 
-		and a.plantId = n.plantId
-		and a.fertilizerId = n.fertilizerId
-		GROUP BY p.plantId`, fertilizerId)
+	res, err := p.db.Query(`
+	SELECT IFNULL(plants.plantId,''),IFNULL(plants.name,''),IFNULL(plants.profileImage,''),IFNULL(plants.applyInterval,''), IFNULL(MAX(applied.appliedDate),'') from (
+		SELECT n.plantId as plantId,p.name as name,p.profileImage as profileImage, n.applyInterval as applyInterval
+		from neededfertilizers n, plants p 
+		where n.plantId=p.plantId and n.fertilizerId=?
+	) plants LEFT JOIN (
+		SELECT plantId, appliedDate FROM appliedfertilizer 
+		where fertilizerId=?
+	) applied
+	on plants.plantId=applied.plantId GROUP BY plants.plantId`,
+		fertilizerId, fertilizerId)
 	if err != nil {
-		return nil
+		return err
 	}
 	year2, month2, day2 := time.Now().Date()
 	defer res.Close()
@@ -69,17 +71,21 @@ func (p plantHandler) GetPlantsForAFertilizer(fertilizerId string, plantsForAFer
 		if err != nil {
 			return err
 		}
-		temp := strings.Split(plant.LastAppliedDate, "-")
-		year1, _ := strconv.Atoi(temp[0])
-		month1, _ := strconv.Atoi(temp[1])
-		day1, _ := strconv.Atoi(temp[2])
-		plant.NumberOfDaysElapsed = strings.Split(fmt.Sprintf("%f", DateDifference(year1, month1, day1, year2, int(month2), day2)), ".")[0]
+		if plant.LastAppliedDate == "" {
+			plant.NumberOfDaysElapsed = "0"
+		} else {
+			temp := strings.Split(plant.LastAppliedDate, "-")
+			year1, _ := strconv.Atoi(temp[0])
+			month1, _ := strconv.Atoi(temp[1])
+			day1, _ := strconv.Atoi(temp[2])
+			plant.NumberOfDaysElapsed = strings.Split(fmt.Sprintf("%f", DateDifference(year1, month1, day1, year2, int(month2), day2)), ".")[0]
+		}
 		*plantsForAFertilizer = append(*plantsForAFertilizer, plant)
 	}
 	return nil
 }
 func (p plantHandler) GetAllPlants(allPlants *[]models.Plant) error {
-	res, err := p.db.Query("select plantId,name,dob,details,profileimage,soiltype from plants")
+	res, err := p.db.Query("select IFNULL(plantId,''),IFNULL(name,''),IFNULL(dob,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(soiltype,'') from plants")
 	if err != nil {
 		return nil
 	}
@@ -118,7 +124,7 @@ func (p plantHandler) UpdateImageNames(plantId string, newImageNames []string) e
 
 func (p plantHandler) GetPlantDetails(plantId string, plant *models.Plant) error {
 	// Getting plant details
-	res, err := p.db.Query("select plantId,name,dob,details,profileimage,soiltype from plants where plantid=?", plantId)
+	res, err := p.db.Query("select IFNULL(plantId,''),IFNULL(name,''),IFNULL(dob,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(soiltype,'') from plants where plantid=?", plantId)
 	if err != nil {
 		return nil
 	}

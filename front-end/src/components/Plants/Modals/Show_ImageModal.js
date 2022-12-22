@@ -46,7 +46,7 @@ class ShowImageModal extends Component {
             // document.body.appendChild(link);
             // link.click()
             //////////////////////////////////////////////////////////////////////
-            fileDownload(response.data,"image.jpg")
+            fileDownload(response.data,this.props.plantName+".jpg")
         })
     }
     closeModal = (event) => {

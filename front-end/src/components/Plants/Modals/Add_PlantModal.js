@@ -21,7 +21,7 @@ class AddPlantModal extends Component {
     const formData = new FormData()
     formData.append("name", this.state.name)
     formData.append("dob", this.state.dob)
-    formData.append("image", this.state.image)
+    formData.append("image", this.state.image,this.state.image.name)
     await axios.post("/api/plant", formData).then(() => {
       this.props.reRenderOnAdd()
     }).catch((error) => {
@@ -46,23 +46,23 @@ class AddPlantModal extends Component {
   }
   imageOnChangeHandler = async (event) => {
     this.setState({
-      compressing:true
+      compressing: true
     })
     let originalImage = event.target.files[0]
-    let compressedImage=null
-    new Compressor(originalImage,{
-      quality:0.6,
-      success(result){
-        compressedImage=result
+    let compressedImage = null
+    new Compressor(originalImage, {
+      quality: 0.6,
+      success(result) {
+        compressedImage = result
         console.log("Com")
       }
     })
-    while(true){
-      if (compressedImage!==null){
+    while (true) {
+      if (compressedImage !== null) {
         this.setState({
-          image:compressedImage,
-          compressed:true,
-          compressing:false
+          image: compressedImage,
+          compressed: true,
+          compressing: false
         })
         console.log("Image compressed")
         break
@@ -74,7 +74,15 @@ class AddPlantModal extends Component {
     this.setState({
       showModal: !this.state.showModal
     }, () => {
-      console.log(this.state)
+      if (this.state.showModal === false) {
+        this.setState({
+          name: "",
+          dob: "",
+          image: null,
+          compressed: false,
+          compressing: false
+        })
+      }
     })
   }
   form() {
@@ -171,7 +179,6 @@ class AddPlantModal extends Component {
                   <div className="relative p-6 flex-auto">
                     {this.form()}
                   </div>
-
                 </div>
               </div>
             </div>
