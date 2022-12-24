@@ -9,6 +9,7 @@ import AddNeededFertilizerModal from './Modals/Add_NeededFertilizerModal';
 import AddAppliedFertilizerModal from './Modals/Add_AppliedFertilizerModal';
 import AddImageModal from './Modals/Add_ImageModal';
 import ShowImageModal from './Modals/Show_ImageModal';
+import AddRepotting from './Modals/Add_Repotting';
 
 class PlantDetails extends Component {
   constructor(props) {
@@ -18,13 +19,15 @@ class PlantDetails extends Component {
       plantDetails: null,
       neededFertilizers: null,
       appliedFertilizers: null,
+      repottingList:null,
       editModal: false,
       editValues: null,
       addNeededFertilizerModal: false,
       addappliedFertilizerModal: false,
       addImageModal: false,
       showImageModal: false,
-      imageUrlForShowModal:""
+      imageUrlForShowModal:"",
+      addRepottingModal:false
     }
   }
   async getDetails() {
@@ -53,6 +56,14 @@ class PlantDetails extends Component {
         appliedFertilizers: response.data
       })
       console.log(this.state.appliedFertilizers)
+    }).catch(function (error) {
+      console.log(error);
+    });
+    // Getting repotting lists
+    await axios.get("/api/repotting/" + plantId).then((response) => {
+      this.setState({
+        repottingList: response.data
+      })
     }).catch(function (error) {
       console.log(error);
     });
@@ -143,6 +154,20 @@ class PlantDetails extends Component {
     })
   }
 
+  openAddRepottingModal = (imageUrl) => {
+    console.log("Opening",imageUrl)
+    this.setState({
+      addRepottingModal: true
+    })
+  }
+  closeAddRepottingModal = () => {
+    console.log("Closing")
+    this.setState({
+      addRepottingModal: false
+    })
+    this.getDetails()
+  }
+
   render() {
     return !(this.state.plantDetails) ? (<div>Details Not Found</div>) : (
       <div>
@@ -156,10 +181,6 @@ class PlantDetails extends Component {
           <div className=' bg-slate-400 flex justify-center items-center overflow-hidden relative'>
             {this.state.plantDetails && (<ImageSlider openShowImageModal={this.openShowImageModal} imageNames={this.state.plantDetails.imageNames} />)}
             <img src={addPhotoIcon} className="w-6 h-6 top-1 right-4 absolute" onClick={this.showAddImageModal} alt="PlantImage" />
-          </div>
-          {/* Row 3 */}
-          <div className=' bg-slate-400 flex justify-left items-center pl-10 h-8'>
-            Watering : true/false
           </div>
           {/* Row 3 */}
           <div className='flex justify-left items-center bg-slate-500 pl-10 h-8 relative'>
@@ -257,12 +278,42 @@ class PlantDetails extends Component {
               </tbody>
             </table>
           </div>
+          {/* Row 8 */}
+          <div className=''>
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th className=' text-center text-2xl relative'>
+                    Repotting Details
+                    <img src={addIcon} className="h-6 w-6 absolute top-1 right-4" alt="Add" onClick={this.openAddRepottingModal} />
+                  </th>
+                </tr>
+                <tr>
+                  <th scope="col" className="py-3 px-6 text-center">
+                    Date
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.repottingList && this.state.repottingList.map((repotting, index) => {
+                  return (
+                    <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600">
+                      <td className="py-4 px-6 text-center">
+                        {repotting.repottingDate}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
         <PlantEditModal isOpen={this.state.editModal} editValues={this.state.editValues} closeModal={this.closeEditModal} />
         <AddNeededFertilizerModal isOpen={this.state.addNeededFertilizerModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeAddNeededFertilizersModal} />
         <AddAppliedFertilizerModal isOpen={this.state.addappliedFertilizerModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeAddAppliedFertilizerModal} />
         <AddImageModal isOpen={this.state.addImageModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeAddImageModal} />
         <ShowImageModal isOpen={this.state.showImageModal} imageUrl={this.state.imageUrlForShowModal} plantId={this.state.plantDetails.plantId} plantName={this.state.plantDetails.name} closeModal={this.closeShowImageModal} />
+        <AddRepotting isOpen={this.state.addRepottingModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeAddRepottingModal} />
       </div>
     )
   }

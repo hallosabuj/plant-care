@@ -7,6 +7,8 @@ import Footer from './components/Footer';
 import PlantDetails from './components/Plants/PlantDetails';
 import FertilizerDetails from './components/fertilizers/FertilizerDetails';
 import ApplyFertilizer from './components/fertilizations/ApplyFertilizer';
+import Pesticides from './components/pesticides/Pesticides';
+import Disease from './components/disease/Disease';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
           <Route exact path='/web/fertilizers' element={<Fertilizers/>}></Route>
           <Route exact path='/web/fertilizers/:fertilizerId' element={<FertilizerDetails/>}></Route>
           <Route exact path='/web/apply-fertilizer' element={<ApplyFertilizer/>}></Route>
+          <Route exact path='/web/pesticides' element={<Pesticides/>}></Route>
+          <Route exact path='/web/disease' element={<Disease/>}></Route>
         </Routes>
       </Router>
       <Footer />
