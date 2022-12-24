@@ -41,3 +41,9 @@ CREATE Table AppliedFertilizer(
     FOREIGN KEY (plantId) REFERENCES plants(plantId) ON DELETE CASCADE,
     FOREIGN KEY (fertilizerId) REFERENCES fertilizers(fertilizerId)
 );
+
+CREATE Table Repotting(
+    plantId VARCHAR(50),
+    repottingDate VARCHAR(20),
+    FOREIGN KEY (plantId) REFERENCES plants(plantId) ON DELETE CASCADE
+)

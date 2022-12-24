@@ -57,7 +57,7 @@ func (p plantHandler) GetPlantsForAFertilizer(fertilizerId string, plantsForAFer
 		SELECT plantId, appliedDate FROM appliedfertilizer 
 		where fertilizerId=?
 	) applied
-	on plants.plantId=applied.plantId GROUP BY plants.plantId`,
+	on plants.plantId=applied.plantId GROUP BY plants.plantId order by plants.name`,
 		fertilizerId, fertilizerId)
 	if err != nil {
 		return err
@@ -85,7 +85,7 @@ func (p plantHandler) GetPlantsForAFertilizer(fertilizerId string, plantsForAFer
 	return nil
 }
 func (p plantHandler) GetAllPlants(allPlants *[]models.Plant) error {
-	res, err := p.db.Query("select IFNULL(plantId,''),IFNULL(name,''),IFNULL(dob,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(soiltype,'') from plants")
+	res, err := p.db.Query("select IFNULL(plantId,''),IFNULL(name,''),IFNULL(dob,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(soiltype,'') from plants order by name")
 	if err != nil {
 		return nil
 	}
