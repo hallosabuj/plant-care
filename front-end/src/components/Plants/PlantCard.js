@@ -25,12 +25,12 @@ class PlantCard extends Component {
     return (
       <div className='pr-1 pl-1 pt-3 pb-3 shadow-lg hover:scale-105'>
         <Card sx={{ border: 1, borderRadius: 2, height: "405px", backgroundColor: "cyan" }}>
-          <Link to={"/web/plants/" + this.state.plant.plantId}>
-            <div className='h-[300px] bg-lime-900 flex justify-center items-center p-2 rounded-md relative' >
+          <div className='h-[300px] bg-lime-900 flex justify-center items-center p-2 rounded-md relative' >
+            <Link to={"/web/plants/" + this.state.plant.plantId}>
               <img src={imageUrl} style={{ maxHeight: "100%", maxWidth: "100%" }} alt={this.state.plant.name} />
-              <img src={deleteIcon} onClick={() => this.deletePlant()} alt="delete" className='hover:opacity-100 opacity-60 top-3 right-3 absolute'/>
-            </div>
-          </Link>
+            </Link>
+            <img src={deleteIcon} onClick={() => this.deletePlant()} alt="delete" className='hover:opacity-100 opacity-60 top-3 right-3 absolute' />
+          </div>
           <div className=' bg-orange-200 h-[100px] rounded-md flex justify-center items-center'>
             <div className='grid grid-cols-2 grid-rows-2 gap-2 w-full p-2'>
               {/* Row 1 */}
@@ -42,7 +42,7 @@ class PlantCard extends Component {
               <div className='flex justify-center items-center bg-orange-400'>
                 <div className='bg-red-700 h-4 w-4 rounded-1/2'></div>
               </div>
-          </div>
+            </div>
           </div>
         </Card>
       </div>

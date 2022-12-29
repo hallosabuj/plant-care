@@ -9,7 +9,7 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "/home/sabuj/spicasys/sabuj/plant-care/server/main.go"
+            "program": "D:\\Sabuj\\plant-care\\server/main.go"
         }
     ]
 }
