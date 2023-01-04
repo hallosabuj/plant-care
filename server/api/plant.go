@@ -39,7 +39,7 @@ func AddPlant(w http.ResponseWriter, r *http.Request) {
 	imageName, _ := storage.StorePlantImage(newPlant.ID, file, fileHeader)
 	newPlant.ProfileImage = imageName
 	// Storing into database
-	storage.PlantHandler.AddPlant(newPlant)
+	storage.PlantHandler.AddPlant(&newPlant)
 	w.Header().Add("content-type", "application/json")
 	json.NewEncoder(w).Encode(newPlant)
 }

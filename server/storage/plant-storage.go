@@ -12,7 +12,7 @@ import (
 )
 
 type HandlerP interface {
-	AddPlant(models.Plant) error
+	AddPlant(*models.Plant) error
 	GetAllPlants(*[]models.Plant) error
 	GetPlantsForAFertilizer(string, *[]models.PlantForAFertilizer) error
 	DeleteDetails(string) error
@@ -28,10 +28,18 @@ type plantHandler struct {
 	db *sql.DB
 }
 
-func (p plantHandler) AddPlant(newPlant models.Plant) error {
-	fmt.Println(newPlant)
-	sqlQuery := fmt.Sprintf("insert into plants(plantId,name,dob,details,profileimage,soilType) values('%s','%s','%s','%s','%s','%s')", newPlant.ID, newPlant.Name, newPlant.DOB, newPlant.Details, newPlant.ProfileImage, newPlant.SoilType)
-	_, err := p.db.Exec(sqlQuery)
+func (p plantHandler) AddPlant(newPlant *models.Plant) error {
+	// Fetching max numberId from the plants table
+	sqlQuery := "select MAX(numberId) from plants"
+	res, err := p.db.Query(sqlQuery)
+	if err == nil {
+		if res.Next() {
+			res.Scan(&newPlant.NumberId)
+			newPlant.NumberId = newPlant.NumberId + 1
+		}
+	}
+	sqlQuery = fmt.Sprintf("insert into plants(plantId,name,dob,details,profileimage,soilType,numberId) values('%s','%s','%s','%s','%s','%s',%d)", newPlant.ID, newPlant.Name, newPlant.DOB, newPlant.Details, newPlant.ProfileImage, newPlant.SoilType, newPlant.NumberId)
+	_, err = p.db.Exec(sqlQuery)
 	if err != nil {
 		return err
 	}
