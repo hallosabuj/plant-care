@@ -34,6 +34,7 @@ func main() {
 	uri.Uri_init_applied_fertilizer(router)
 	uri.Uri_init_needed_fertilizers(router)
 	uri.Uri_init_repotting(router)
+	uri.Uri_init_pesticides(router)
 	//////////////////////////////////////////////////////////////
 	// Setting database config
 	config.Global.DBName = "plant-care"
@@ -58,8 +59,8 @@ func main() {
 	})
 	////////////////////////////////////////////////////////////
 
-	fmt.Println("Server started at port 80")
-	http.ListenAndServe(":80", nil)
+	fmt.Println("Server started at port 8080")
+	http.ListenAndServe(":8080", nil)
 }
 
 func getFileSystem() http.FileSystem {

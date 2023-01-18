@@ -21,4 +21,5 @@ func Connect() {
 	PlantsFertilizersHandler = plantFertilizerHandler{db: DB}
 	AppliedFertilizerHandler = appliedFertilizeHnadler{db: DB}
 	RepottingHandler = repottingHandler{db: DB}
+	PesticideHandler = pesticideHandler{db: DB}
 }
