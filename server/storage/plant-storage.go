@@ -57,8 +57,8 @@ func (p plantHandler) AddPlant(newPlant *models.Plant) error {
 }
 func (p plantHandler) GetPlantsForAFertilizer(fertilizerId string, plantsForAFertilizer *[]models.PlantForAFertilizer) error {
 	res, err := p.db.Query(`
-	SELECT IFNULL(plants.plantId,''),IFNULL(plants.name,''),IFNULL(plants.profileImage,''),IFNULL(plants.applyInterval,''), IFNULL(MAX(applied.appliedDate),'') from (
-		SELECT n.plantId as plantId,p.name as name,p.profileImage as profileImage, n.applyInterval as applyInterval
+	SELECT IFNULL(plants.plantId,''),IFNULL(plants.name,''),IFNULL(plants.profileImage,''),IFNULL(plants.applyInterval,''), IFNULL(MAX(applied.appliedDate),''), IFNULL(MAX(plants.numberId),'') from (
+		SELECT n.plantId as plantId,p.name as name,p.profileImage as profileImage, n.applyInterval as applyInterval, p.numberId as numberId
 		from neededfertilizers n, plants p 
 		where n.plantId=p.plantId and n.fertilizerId=?
 	) plants LEFT JOIN (
@@ -75,7 +75,7 @@ func (p plantHandler) GetPlantsForAFertilizer(fertilizerId string, plantsForAFer
 	for res.Next() {
 		var plant models.PlantForAFertilizer
 		plant.FertilizerId = fertilizerId
-		err := res.Scan(&plant.PlantId, &plant.PlantName, &plant.ProfileImage, &plant.ApplyInterval, &plant.LastAppliedDate)
+		err := res.Scan(&plant.PlantId, &plant.PlantName, &plant.ProfileImage, &plant.ApplyInterval, &plant.LastAppliedDate, &plant.NumberId)
 		if err != nil {
 			return err
 		}
@@ -93,14 +93,14 @@ func (p plantHandler) GetPlantsForAFertilizer(fertilizerId string, plantsForAFer
 	return nil
 }
 func (p plantHandler) GetAllPlants(allPlants *[]models.Plant) error {
-	res, err := p.db.Query("select IFNULL(plantId,''),IFNULL(name,''),IFNULL(dob,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(soiltype,'') from plants order by name")
+	res, err := p.db.Query("select IFNULL(plantId,''),IFNULL(name,''),IFNULL(dob,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(soiltype,''),IFNULL(numberId,'') from plants order by name")
 	if err != nil {
 		return nil
 	}
 	defer res.Close()
 	for res.Next() {
 		var plant models.Plant
-		err := res.Scan(&plant.ID, &plant.Name, &plant.DOB, &plant.Details, &plant.ProfileImage, &plant.SoilType)
+		err := res.Scan(&plant.ID, &plant.Name, &plant.DOB, &plant.Details, &plant.ProfileImage, &plant.SoilType, &plant.NumberId)
 		if err != nil {
 			return err
 		}
@@ -132,13 +132,13 @@ func (p plantHandler) UpdateImageNames(plantId string, newImageNames []string) e
 
 func (p plantHandler) GetPlantDetails(plantId string, plant *models.Plant) error {
 	// Getting plant details
-	res, err := p.db.Query("select IFNULL(plantId,''),IFNULL(name,''),IFNULL(dob,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(soiltype,'') from plants where plantid=?", plantId)
+	res, err := p.db.Query("select IFNULL(plantId,''),IFNULL(name,''),IFNULL(dob,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(soiltype,''),IFNULL(numberId,'') from plants where plantid=?", plantId)
 	if err != nil {
 		return nil
 	}
 	defer res.Close()
 	for res.Next() {
-		err := res.Scan(&plant.ID, &plant.Name, &plant.DOB, &plant.Details, &plant.ProfileImage, &plant.SoilType)
+		err := res.Scan(&plant.ID, &plant.Name, &plant.DOB, &plant.Details, &plant.ProfileImage, &plant.SoilType, &plant.NumberId)
 		if err != nil {
 			return err
 		}

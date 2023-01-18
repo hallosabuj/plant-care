@@ -46,4 +46,13 @@ CREATE Table Repotting(
     plantId VARCHAR(50),
     repottingDate VARCHAR(20),
     FOREIGN KEY (plantId) REFERENCES plants(plantId) ON DELETE CASCADE
-)
+);
+
+CREATE Table Pesticides(
+    pesticideId VARCHAR(50) PRIMARY KEY,
+    name VARCHAR(260),
+    composition VARCHAR(500),
+    details VARCHAR(400),
+    available VARCHAR(10),
+    profileImage VARCHAR(260)
+);
