@@ -174,7 +174,7 @@ class PlantDetails extends Component {
         <div className='grid gap-2 p-2'>
           {/* Row 1 */}
           <div className=' bg-slate-500 h-14 flex justify-center items-center text-4xl relative'>
-            <h1>{this.state.plantDetails.name}</h1>
+            <h1>{this.state.plantDetails.numberId}: {this.state.plantDetails.name}</h1>
             <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={() => this.showEditModal("Name", "name", this.state.plantDetails.name)} alt={"Edit"} />
           </div>
           {/* Row 2 */}

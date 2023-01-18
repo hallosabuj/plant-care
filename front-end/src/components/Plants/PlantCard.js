@@ -33,7 +33,9 @@ class PlantCard extends Component {
           <div className=' bg-orange-200 h-[100px] rounded-md flex justify-center items-center'>
             <div className='grid grid-cols-2 grid-rows-2 gap-2 w-full p-2'>
               {/* Row 1 */}
-              <div className=' flex p-2 items-center col-span-2 bg-slate-600 h-10'>{this.state.plant.name}</div>
+              <div className=' flex p-2 items-center col-span-2 bg-slate-600 h-10'>
+                {this.state.plant.numberId}: {this.state.plant.name}
+              </div>
               {/* Row 2 */}
               <div className='flex justify-center items-center bg-orange-400'>
                 <img src={waterIcon} className="h-6 w-6" alt={"Water"}></img>

@@ -57,10 +57,11 @@ class AddNeededFertilizerModal extends Component {
         console.log(jsonBody)
         axios.post("/api/plant-fertilizer",jsonBody).then((response)=>{
             console.log("Needed fertilizer added")
+        }).then((response)=>{
+            this.props.closeModal()
         }).catch((error)=>{
             console.log(error)
         })
-        this.props.closeModal()
     }
     render() {
         if(this.props.isOpen===false){
