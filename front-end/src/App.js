@@ -6,7 +6,7 @@ import Fertilizers from './components/fertilizers/Fertilizers';
 import Footer from './components/Footer';
 import PlantDetails from './components/Plants/PlantDetails';
 import FertilizerDetails from './components/fertilizers/FertilizerDetails';
-import ApplyFertilizer from './components/fertilizations/ApplyFertilizer';
+import ApplyFertilizer from './components/apply/ApplyFertilizer';
 import Pesticides from './components/pesticides/Pesticides';
 import Disease from './components/disease/Disease';
 import PesticideDetails from './components/pesticides/PesticideDetails';
