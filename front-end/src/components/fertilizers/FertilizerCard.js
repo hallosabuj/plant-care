@@ -31,13 +31,13 @@ export class FertilizerCard extends Component {
           </div>
           </Link>
           <div className=' bg-orange-200 h-[200px] rounded-md flex justify-center items-center'>
-            <div className='grid grid-cols-3 grid-rows-3 gap-2'>
+            <div className='grid grid-cols-3 grid-rows-3 gap-2 w-full p-2'>
               {/* Row 1 */}
-              <div className='bg-red-400 col-span-2 flex justify-center items-center'>Name: {this.state.fertilizer.name}</div>
+              <div className='bg-red-400 col-span-2 flex items-center p-2'>Name: {this.state.fertilizer.name}</div>
               <div className='flex justify-center items-center bg-slate-600'>
                 <img src={deleteIcon} onClick={()=>this.deleteFertilizer()} alt="delete" />
               </div>
-              <div className='bg-green-600 col-span-3 flex justify-center items-center'>Availability: {this.state.fertilizer.available}</div>
+              <div className='bg-green-600 col-span-3 flex items-center p-2'>Availability: {this.state.fertilizer.available}</div>
             </div>
           </div>
         </Card>
