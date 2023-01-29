@@ -38,6 +38,12 @@ class ApplyFertilizer extends Component {
     this.getFertilizers()
   }
   onFertilizerChangeHandler = (event) => {
+    if (event.target.value===""){
+      this.setState({
+        plants:null
+      })
+      return
+    }
     this.setState({
       appliedFertilizerId: event.target.value
     }, () => {
