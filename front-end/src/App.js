@@ -10,6 +10,7 @@ import ApplyFertilizer from './components/apply/ApplyFertilizer';
 import Pesticides from './components/pesticides/Pesticides';
 import Disease from './components/disease/Disease';
 import PesticideDetails from './components/pesticides/PesticideDetails';
+import ApplyPesticide from './components/apply/ApplyPesticide';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route exact path='/web/fertilizers/:fertilizerId' element={<FertilizerDetails/>}></Route>
           <Route exact path='/web/apply-fertilizer' element={<ApplyFertilizer/>}></Route>
           <Route exact path='/web/pesticides' element={<Pesticides/>}></Route>
+          <Route exact path='/web/apply-pesticide' element={<ApplyPesticide/>}></Route>
           <Route exact path='/web/pesticides/:pesticideId' element={<PesticideDetails/>}></Route>
           <Route exact path='/web/disease' element={<Disease/>}></Route>
         </Routes>

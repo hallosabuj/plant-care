@@ -101,6 +101,16 @@ func GetPlantForAFertilizer(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(allPlants)
 }
 
+func GetPlantForAPesticide(w http.ResponseWriter, r *http.Request) {
+	var pesticideId string = mux.Vars(r)["pesticideId"]
+	var allPlants []models.PlantForAPesticide
+	if err := storage.PlantHandler.GetPlantsForAPesticide(pesticideId, &allPlants); err != nil {
+		json.NewEncoder(w).Encode(err)
+	}
+	w.Header().Add("content-type", "application/json")
+	json.NewEncoder(w).Encode(allPlants)
+}
+
 func UpdatePlant(w http.ResponseWriter, r *http.Request) {
 	var field string = mux.Vars(r)["field"]
 	var plantId string = mux.Vars(r)["plantId"]

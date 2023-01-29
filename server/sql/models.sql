@@ -56,3 +56,12 @@ CREATE Table Pesticides(
     available VARCHAR(10),
     profileImage VARCHAR(260)
 );
+
+CREATE Table AppliedPesticide(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    plantId VARCHAR(50),
+    pesticideId VARCHAR(50),
+    appliedDate VARCHAR(20),
+    FOREIGN KEY (plantId) REFERENCES plants(plantId) ON DELETE CASCADE,
+    FOREIGN KEY (pesticideId) REFERENCES pesticides(pesticideId)
+);

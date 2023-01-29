@@ -16,6 +16,7 @@ class NavBar extends Component {
             { name: 'Fertilizers', href: '/web/fertilizers' },
             { name: 'Apply Fertilizer', href: '/web/apply-fertilizer' },
             { name: 'Pesticides', href: '/web/pesticides' },
+            { name: 'Apply Pesticide', href: '/web/apply-pesticide' },
             { name: 'Disease', href: '/web/disease' },
         ],
         currentPage:(window.location.href.split('#')[1] === "" || window.location.href.split('#')[1] === undefined) ? "/web" : window.location.href.split('#')[1]

@@ -1,43 +1,38 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
-class ApplyFertilizer extends Component {
+class ApplyPesticide extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      fertilizers: null,
-      appliedFertilizerId: "",
+      pesticides: null,
+      appliedPesticideId: "",
       plants: null
     }
   }
-  getFertilizers = async () => {
-    let fertilizers = await axios.get("/api/fertilizer").then((response) => {
+  getPesticides = async () => {
+    await axios.get("/api/pesticide").then((response) => {
       this.setState({
-        fertilizers: response.data
+        pesticides: response.data
       })
     }).catch(function (error) {
       console.log(error);
     });
   }
-  getPlantsForAFertilizer = async () => {
-    if (this.state.appliedFertilizerId !== "") {
-      axios.get("/api/plants/fertilizer/" + this.state.appliedFertilizerId).then((response) => {
-        let tempPlants = response.data.map(plant => { return { ...plant, isChecked: false } })
-        this.setState({
-          plants: tempPlants
-        })
-      })
-    } else {
+  getPlants = async () => {
+    axios.get("/api/plants/pesticide/"+this.state.appliedPesticideId).then((response) => {
+      console.log(response)
+      let tempPlants = response.data.map(plant => { return { ...plant, isChecked: false } })
       this.setState({
-        plants: null
+        plants: tempPlants
       })
-    }
+    })
   }
   componentDidMount() {
-    this.getFertilizers()
+    this.getPesticides()
   }
-  onFertilizerChangeHandler = (event) => {
+  onPesticideChangeHandler = (event) => {
     if (event.target.value===""){
       this.setState({
         plants:null
@@ -45,9 +40,9 @@ class ApplyFertilizer extends Component {
       return
     }
     this.setState({
-      appliedFertilizerId: event.target.value
+      appliedPesticideId: event.target.value
     }, () => {
-      this.getPlantsForAFertilizer()
+      this.getPlants()
     })
   }
   handleChange = (event) => {
@@ -74,17 +69,17 @@ class ApplyFertilizer extends Component {
 
     this.state.plants.map((plant) => {
       if (plant.isChecked === true) {
-        let tempPlant = { fertilizerId: this.state.appliedFertilizerId, plantId: plant.plantId, appliedDate: currentDate }
+        let tempPlant = { pesticideId: this.state.appliedPesticideId, plantId: plant.plantId, appliedDate: currentDate }
         jsonBody = [...jsonBody, tempPlant]
       }
     })
-    console.log(jsonBody)
+    console.log("body::",jsonBody)
     if (jsonBody.length === 0) {
       alert("Select at least one plant to save")
     } else {
-      axios.post("/api/applied-fertilizer", jsonBody).then((response) => {
+      axios.post("/api/applied-pesticide", jsonBody).then((response) => {
         alert("Changes saved")
-        this.getPlantsForAFertilizer()
+        this.getPlants()
       }).catch((error) => {
         console.log(error)
       })
@@ -93,14 +88,14 @@ class ApplyFertilizer extends Component {
   render() {
     return (
       <div>
-        {/* Section for fertilizer selection */}
+        {/* Section for pesticide selection */}
         <div className='grid grid-cols-3 bg-cyan-400'>
           <div className='flex p-2 justify-center items-center'>
-            <select onChange={this.onFertilizerChangeHandler} className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-              <option value="">Select Fertilizer</option>
-              {this.state.fertilizers && this.state.fertilizers.map((fertilizer, index) => {
+            <select onChange={this.onPesticideChangeHandler} className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              <option value="">Select Pesticide</option>
+              {this.state.pesticides && this.state.pesticides.map((pesticide, index) => {
                 return (
-                  <option value={fertilizer.fertilizerId} key={fertilizer.fertilizerId}>{fertilizer.name}</option>
+                  <option value={pesticide.pesticideId} key={pesticide.pesticideId}>{pesticide.name}</option>
                 )
               })}
             </select>
@@ -143,9 +138,6 @@ class ApplyFertilizer extends Component {
                           Last Applied Date
                         </th>
                         <th scope="col" className="text-sm font-medium px-6 py-4 text-left whitespace-nowrap">
-                          Apply Interval
-                        </th>
-                        <th scope="col" className="text-sm font-medium px-6 py-4 text-left whitespace-nowrap">
                           # Days from last fertilization
                         </th>
                       </tr>
@@ -158,16 +150,13 @@ class ApplyFertilizer extends Component {
                               <input type="checkbox" name={plant.plantId} checked={plant.isChecked ? plant.isChecked : false} onChange={this.handleChange} className="w-4 h-4 focus:ring-green-500 dark:focus:ring-green-600 focus:ring-2"></input>
                             </td>
                             <td className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                              {plant.numberId}: {plant.plantName}
+                              {plant.numberId}: {plant.name}
                             </td>
                             <td className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                               <img src={"/api/plant/downloadImage/" + plant.profileImage} className="h-16 w-auto" />
                             </td>
                             <td className="py-4 px-6">
                               {plant.lastAppliedDate}
-                            </td>
-                            <td className="py-4 px-6">
-                              {plant.applyInterval}
                             </td>
                             <td className="py-4 px-6">
                               {plant.numberOfDaysElapsed}
@@ -187,4 +176,4 @@ class ApplyFertilizer extends Component {
   }
 }
 
-export default ApplyFertilizer
+export default ApplyPesticide

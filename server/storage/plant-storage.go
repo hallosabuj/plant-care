@@ -15,6 +15,7 @@ type HandlerP interface {
 	AddPlant(*models.Plant) error
 	GetAllPlants(*[]models.Plant) error
 	GetPlantsForAFertilizer(string, *[]models.PlantForAFertilizer) error
+	GetPlantsForAPesticide(string, *[]models.PlantForAPesticide) error
 	DeleteDetails(string) error
 	GetPlantDetails(string, *models.Plant) error
 	UpdatePlant(field, plantId, value string) error
@@ -92,6 +93,44 @@ func (p plantHandler) GetPlantsForAFertilizer(fertilizerId string, plantsForAFer
 	}
 	return nil
 }
+
+func (p plantHandler) GetPlantsForAPesticide(pesticideId string, plantsForAFertilizer *[]models.PlantForAPesticide) error {
+	res, err := p.db.Query(`
+	SELECT IFNULL(plants.plantId,''),IFNULL(plants.name,''),IFNULL(plants.profileImage,''), IFNULL(MAX(applied.appliedDate),''), IFNULL(MAX(plants.numberId),'') from (
+		SELECT p.plantId as plantId,p.name as name,p.profileImage as profileImage, p.numberId as numberId
+		from plants p 
+	) plants LEFT JOIN (
+		SELECT plantId, appliedDate FROM appliedpesticide 
+		where pesticideId=?
+	) applied
+	on plants.plantId=applied.plantId GROUP BY plants.plantId order by plants.name`,
+		pesticideId)
+	if err != nil {
+		return err
+	}
+	year2, month2, day2 := time.Now().Date()
+	defer res.Close()
+	for res.Next() {
+		var plant models.PlantForAPesticide
+		plant.PesticideId = pesticideId
+		err := res.Scan(&plant.PlantId, &plant.PlantName, &plant.ProfileImage, &plant.LastAppliedDate, &plant.NumberId)
+		if err != nil {
+			return err
+		}
+		if plant.LastAppliedDate == "" {
+			plant.NumberOfDaysElapsed = "0"
+		} else {
+			temp := strings.Split(plant.LastAppliedDate, "-")
+			year1, _ := strconv.Atoi(temp[0])
+			month1, _ := strconv.Atoi(temp[1])
+			day1, _ := strconv.Atoi(temp[2])
+			plant.NumberOfDaysElapsed = strings.Split(fmt.Sprintf("%f", DateDifference(year1, month1, day1, year2, int(month2), day2)), ".")[0]
+		}
+		*plantsForAFertilizer = append(*plantsForAFertilizer, plant)
+	}
+	return nil
+}
+
 func (p plantHandler) GetAllPlants(allPlants *[]models.Plant) error {
 	res, err := p.db.Query("select IFNULL(plantId,''),IFNULL(name,''),IFNULL(dob,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(soiltype,''),IFNULL(numberId,'') from plants order by name")
 	if err != nil {
