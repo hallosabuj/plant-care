@@ -35,6 +35,7 @@ func main() {
 	uri.Uri_init_needed_fertilizers(router)
 	uri.Uri_init_repotting(router)
 	uri.Uri_init_pesticides(router)
+	uri.Uri_init_applied_pesticides(router)
 	//////////////////////////////////////////////////////////////
 	// Setting database config
 	config.Global.DBName = "plant-care"
