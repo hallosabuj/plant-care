@@ -24,7 +24,7 @@ class PlantCard extends Component {
     return (
       <div className='pr-1 pl-1 pt-3 pb-3 shadow-lg hover:scale-105'>
         <div className='h-[420px] bg-cyan-400'>
-          <div className='h-[320px] bg-lime-900 flex justify-center items-center p-2 rounded-md relative' >
+          <div className='h-[320px] bg-lime-900 flex justify-center items-center p-2 rounded-md relative overflow-hidden' >
             <Link to={"/web/plants/" + this.state.plant.plantId}>
               <img src={imageUrl} className=' max-h-1 max-w-1' alt={this.state.plant.name} />
             </Link>
