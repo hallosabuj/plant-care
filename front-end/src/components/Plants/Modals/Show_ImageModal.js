@@ -61,7 +61,7 @@ class ShowImageModal extends Component {
         return (
             <div onClick={this.closeModal} id="imageModal" className='fixed inset-0 p-5 w-full h-full bg-black bg-opacity-30 backdrop-blur-sm flex justify-center'>
                 <div className="bg-white p-2 flex justify-center items-center relative">
-                    <img className=' max-h-1 max-w-1' src={this.props.imageUrl} />
+                    <img className=' max-h-1 max-w-1' src={this.props.imageUrl} alt="Plant"/>
                     <div className=' bottom-3 absolute'>
                         <button
                             className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 opacity-50 hover:opacity-100"

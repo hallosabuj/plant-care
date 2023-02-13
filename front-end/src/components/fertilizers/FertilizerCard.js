@@ -1,4 +1,3 @@
-import Card from '@mui/material/Card';
 import axios from 'axios';
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
@@ -24,9 +23,9 @@ export class FertilizerCard extends Component {
     let imageUrl = "/api/fertilizer/downloadImage/" + this.state.fertilizer.profileImage
     return (
       <div className='pr-1 pl-1 pt-3 pb-3 shadow-lg hover:scale-105'>
-        <Card sx={{ border: 1, borderRadius: 2, height: "400px", backgroundColor: "cyan" }}>
+        <div className='h-[400px]'>
           <Link to={"/web/fertilizers/"+this.state.fertilizer.fertilizerId}>
-          <div className='h-[300px] bg-lime-900 flex justify-center items-center p-2 rounded-md relative overflow-hidden'>
+          <div className='h-[300px] flex justify-center items-center border-[6px] border-black rounded-md relative overflow-hidden'>
             <img src={imageUrl} style={{maxHeight:"100%",maxWidth:"100%"}} alt={this.state.fertilizer.name}/>
             <img src={deleteIcon} onClick={()=>this.deleteFertilizer()} alt="delete" className='hover:opacity-100 opacity-60 top-3 right-3 absolute'/>
           </div>
@@ -39,7 +38,7 @@ export class FertilizerCard extends Component {
               <div className='bg-green-600 flex items-center w-full p-2'>Availability: {this.state.fertilizer.available}</div>
             </div>
           </div>
-        </Card>
+        </div>
       </div>
     );
   }
