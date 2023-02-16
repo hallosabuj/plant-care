@@ -24,8 +24,10 @@ func makeTwoDigitRepresentation(num int) string {
 // /////////////////////////////////////////////
 // Plant related image operations
 // /////////////////////////////////////////////
-func StorePlantImage(id string, file multipart.File, fileHeader *multipart.FileHeader) (string, error) {
-	defer file.Close()
+func StorePlantImage(id string, fileSmall, fileMedium, fileLarge multipart.File, fileHeader *multipart.FileHeader) (string, error) {
+	defer fileSmall.Close()
+	defer fileMedium.Close()
+	defer fileLarge.Close()
 	// Create the uploads folder if it doesn't exist
 	err := os.MkdirAll("./images", os.ModePerm)
 	if err != nil {
@@ -44,18 +46,49 @@ func StorePlantImage(id string, file multipart.File, fileHeader *multipart.FileH
 		makeTwoDigitRepresentation(now.Second()),
 		filepath.Ext(fileHeader.Filename),
 	)
+
+	// Storing large image
 	// Create a new file in the uploads directory
-	dst, err := os.Create(fmt.Sprintf("./images/%s", imageName))
+	dst, err := os.Create(fmt.Sprintf("./images/plant/large/%s", imageName))
 	if err != nil {
 		return "", err
 	}
 	defer dst.Close()
 
 	// Copy the uploaded file to the filesystem at the specified destination
-	_, err = io.Copy(dst, file)
+	_, err = io.Copy(dst, fileLarge)
 	if err != nil {
 		return "", err
 	}
+
+	// Storig medium image
+	// Create a new file in the uploads directory
+	dst, err = os.Create(fmt.Sprintf("./images/plant/medium/%s", imageName))
+	if err != nil {
+		return "", err
+	}
+	defer dst.Close()
+
+	// Copy the uploaded file to the filesystem at the specified destination
+	_, err = io.Copy(dst, fileMedium)
+	if err != nil {
+		return "", err
+	}
+
+	// Storig small image
+	// Create a new file in the uploads directory
+	dst, err = os.Create(fmt.Sprintf("./images/plant/small/%s", imageName))
+	if err != nil {
+		return "", err
+	}
+	defer dst.Close()
+
+	// Copy the uploaded file to the filesystem at the specified destination
+	_, err = io.Copy(dst, fileSmall)
+	if err != nil {
+		return "", err
+	}
+
 	return imageName, nil
 }
 
@@ -118,8 +151,8 @@ func DeletePlantImages(plantId string) error {
 	return nil
 }
 
-func GetPlantImage(fileName string) ([]byte, error) {
-	files, err := filepath.Glob(fmt.Sprintf("./images/%s*", fileName))
+func GetPlantImage(size, fileName string) ([]byte, error) {
+	files, err := filepath.Glob(fmt.Sprintf("./images/plant/"+size+"/%s*", fileName))
 	if err != nil {
 		return nil, err
 	}

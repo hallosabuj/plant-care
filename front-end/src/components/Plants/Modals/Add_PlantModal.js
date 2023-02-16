@@ -9,7 +9,9 @@ class AddPlantModal extends Component {
     this.state = {
       name: "",
       dob: "",
-      image: null,
+      imageSmall: null,
+      imageMedium: null,
+      imageLarge: null,
       showModal: false,
       compressed: false,
       compressing: false
@@ -21,7 +23,9 @@ class AddPlantModal extends Component {
     const formData = new FormData()
     formData.append("name", this.state.name)
     formData.append("dob", this.state.dob)
-    formData.append("image", this.state.image,this.state.image.name)
+    formData.append("imageSmall", this.state.imageSmall,this.state.imageSmall.name)
+    formData.append("imageMedium", this.state.imageMedium,this.state.imageMedium.name)
+    formData.append("imageLarge", this.state.imageLarge,this.state.imageLarge.name)
     await axios.post("/api/plant", formData).then(() => {
       this.props.reRenderOnAdd()
     }).catch((error) => {
@@ -49,18 +53,42 @@ class AddPlantModal extends Component {
       compressing: true
     })
     let originalImage = event.target.files[0]
-    let compressedImage = null
+    let compressedImageLarge = null
+    let compressedImageMedium = null
+    let compressedImageSmall = null
     new Compressor(originalImage, {
       quality: 0.6,
+      maxHeight:1280,
+      maxWidth:1280,
       success(result) {
-        compressedImage = result
+        compressedImageLarge = result
+        console.log("Com")
+      }
+    })
+    new Compressor(originalImage, {
+      quality: 0.6,
+      maxHeight:512,
+      maxWidth:512,
+      success(result) {
+        compressedImageMedium = result
+        console.log("Com")
+      }
+    })
+    new Compressor(originalImage, {
+      quality: 0.6,
+      maxHeight:164,
+      maxWidth:164,
+      success(result) {
+        compressedImageSmall = result
         console.log("Com")
       }
     })
     while (true) {
-      if (compressedImage !== null) {
+      if (compressedImageSmall !== null && compressedImageMedium !== null && compressedImageLarge !== null) {
         this.setState({
-          image: compressedImage,
+          imageSmall: compressedImageSmall,
+          imageMedium: compressedImageMedium,
+          imageLarge: compressedImageLarge,
           compressed: true,
           compressing: false
         })
@@ -86,7 +114,7 @@ class AddPlantModal extends Component {
     })
   }
   form() {
-    let image = this.state.image
+    let image = this.state.imageLarge
     return (
       <div className="w-full max-w-xs">
         <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">

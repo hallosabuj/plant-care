@@ -161,7 +161,7 @@ class ApplyFertilizer extends Component {
                               {plant.numberId}: {plant.plantName}
                             </td>
                             <td className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                              <img src={"/api/plant/downloadImage/" + plant.profileImage} className="h-16 w-auto" />
+                              <img src={"/api/plant/downloadImage/small/" + plant.profileImage} className="h-16 w-auto" />
                             </td>
                             <td className="py-4 px-6">
                               {plant.lastAppliedDate}

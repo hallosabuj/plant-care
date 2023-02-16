@@ -20,7 +20,7 @@ class PlantCard extends Component {
     this.props.reRenderOnDelete()
   }
   render() {
-    let imageUrl = "/api/plant/downloadImage/" + this.state.plant.profileImage
+    let imageUrl = "/api/plant/downloadImage/medium/" + this.state.plant.profileImage
     return (
       <div className='pr-1 pl-1 pt-3 pb-3 shadow-lg hover:scale-105'>
         <div className='h-[420px]'>

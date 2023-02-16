@@ -34,9 +34,11 @@ func AddPlant(w http.ResponseWriter, r *http.Request) {
 	//////////////////////////////////////////////////////////
 	// The argument to FormFile must match the name attribute
 	// of the file input on the frontend
-	file, fileHeader, _ := r.FormFile("image")
+	fileSmall, _, _ := r.FormFile("imageSmall")
+	fileMedium, _, _ := r.FormFile("imageMedium")
+	fileLarge, fileHeader, _ := r.FormFile("imageLarge")
 	// Storing photo in local file system
-	imageName, _ := storage.StorePlantImage(newPlant.ID, file, fileHeader)
+	imageName, _ := storage.StorePlantImage(newPlant.ID, fileSmall, fileMedium, fileLarge, fileHeader)
 	newPlant.ProfileImage = imageName
 	// Storing into database
 	storage.PlantHandler.AddPlant(&newPlant)
@@ -140,7 +142,8 @@ func DeletePlant(w http.ResponseWriter, r *http.Request) {
 
 func DownloadImage(w http.ResponseWriter, r *http.Request) {
 	var imageName string = mux.Vars(r)["imageName"]
-	data, err := storage.GetPlantImage(imageName)
+	var size string = mux.Vars(r)["size"]
+	data, err := storage.GetPlantImage(size, imageName)
 	if err != nil {
 		w.Write(nil)
 	}

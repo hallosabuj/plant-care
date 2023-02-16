@@ -17,6 +17,6 @@ func Uri_init_plant(router *mux.Router) {
 	// This can be used to update name, details, dob, imagename
 	router.HandleFunc("/api/plant/update/{field}/{plantId}/{value}", api.UpdatePlant).Methods(http.MethodPut)
 	router.HandleFunc("/api/plant/deleteImage/{imageName}", api.DeletePlantPhoto).Methods(http.MethodDelete)
-	router.HandleFunc("/api/plant/downloadImage/{imageName}", api.DownloadImage).Methods(http.MethodGet)
+	router.HandleFunc("/api/plant/downloadImage/{size}/{imageName}", api.DownloadImage).Methods(http.MethodGet)
 	router.HandleFunc("/api/plant/uploadImages", api.AddImages).Methods(http.MethodPost)
 }
