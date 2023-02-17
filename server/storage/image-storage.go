@@ -92,17 +92,8 @@ func StorePlantImage(id string, fileSmall, fileMedium, fileLarge multipart.File,
 	return imageName, nil
 }
 
-func StorePlantImages(plantId string, files []*multipart.FileHeader, imageNames *[]string) error {
-	i := 1
-	for _, fileHeader := range files {
-		// Open the file
-		file, err := fileHeader.Open()
-		if err != nil {
-			return err
-		}
-
-		defer file.Close()
-
+func StorePlantImages(plantId string, filesSmall, filesMedium, filesLarge []*multipart.FileHeader, imageNames *[]string) error {
+	for i := 0; i < len(filesSmall); i++ {
 		now := time.Now()
 		imageName := fmt.Sprintf("%s_%d%s%s_%s%s%s%s",
 			plantId,
@@ -112,16 +103,56 @@ func StorePlantImages(plantId string, files []*multipart.FileHeader, imageNames 
 			makeTwoDigitRepresentation(now.Hour()),
 			makeTwoDigitRepresentation(now.Minute()),
 			makeTwoDigitRepresentation(now.Second()+i),
-			filepath.Ext(fileHeader.Filename),
+			filepath.Ext(filesSmall[0].Filename),
 		)
-		dst, err := os.Create(fmt.Sprintf("./images/%s", imageName))
-		i++
+
+		// Storing small image
+		fileSmall, err := filesSmall[i].Open()
+		if err != nil {
+			return err
+		}
+		defer fileSmall.Close()
+		dst, err := os.Create(fmt.Sprintf("./images/plant/small/%s", imageName))
 		if err != nil {
 			return err
 		}
 		defer dst.Close()
 
-		_, err = io.Copy(dst, file)
+		_, err = io.Copy(dst, fileSmall)
+		if err != nil {
+			return err
+		}
+
+		// Storing medium image
+		fileMedium, err := filesMedium[i].Open()
+		if err != nil {
+			return err
+		}
+		defer fileMedium.Close()
+		dst, err = os.Create(fmt.Sprintf("./images/plant/medium/%s", imageName))
+		if err != nil {
+			return err
+		}
+		defer dst.Close()
+
+		_, err = io.Copy(dst, fileMedium)
+		if err != nil {
+			return err
+		}
+
+		// Storing large image
+		fileLarge, err := filesLarge[i].Open()
+		if err != nil {
+			return err
+		}
+		defer fileLarge.Close()
+		dst, err = os.Create(fmt.Sprintf("./images/plant/large/%s", imageName))
+		if err != nil {
+			return err
+		}
+		defer dst.Close()
+
+		_, err = io.Copy(dst, fileLarge)
 		if err != nil {
 			return err
 		}
@@ -132,14 +163,43 @@ func StorePlantImages(plantId string, files []*multipart.FileHeader, imageNames 
 }
 
 func DeletePlantImage(fileName string) error {
-	if err := os.Remove(fmt.Sprintf("./images/%v", fileName)); err != nil {
+	if err := os.Remove(fmt.Sprintf("./images/plant/large/%v", fileName)); err != nil {
+		return fmt.Errorf("no such file or directory")
+	}
+	if err := os.Remove(fmt.Sprintf("./images/plant/medium/%v", fileName)); err != nil {
+		return fmt.Errorf("no such file or directory")
+	}
+	if err := os.Remove(fmt.Sprintf("./images/plant/small/%v", fileName)); err != nil {
 		return fmt.Errorf("no such file or directory")
 	}
 	return nil
 }
 
 func DeletePlantImages(plantId string) error {
-	files, err := filepath.Glob(fmt.Sprintf("./images/%s*", plantId))
+	// Deleting large images
+	files, err := filepath.Glob(fmt.Sprintf("./images/plant/large/%s*", plantId))
+	if err != nil {
+		return err
+	}
+	for _, f := range files {
+		if err := os.Remove(f); err != nil {
+			return err
+		}
+	}
+
+	// Deleting medium images
+	files, err = filepath.Glob(fmt.Sprintf("./images/plant/medium/%s*", plantId))
+	if err != nil {
+		return err
+	}
+	for _, f := range files {
+		if err := os.Remove(f); err != nil {
+			return err
+		}
+	}
+
+	// Deleting small images
+	files, err = filepath.Glob(fmt.Sprintf("./images/plant/small/%s*", plantId))
 	if err != nil {
 		return err
 	}

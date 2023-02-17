@@ -71,9 +71,11 @@ func AddImages(w http.ResponseWriter, r *http.Request) {
 	plantId := r.FormValue("id")
 	// Get a reference to the fileHeaders.
 	// They are accessible only after ParseMultipartForm is called
-	files := r.MultipartForm.File["image"]
+	filesSmall := r.MultipartForm.File["imageSmall"]
+	filesMedium := r.MultipartForm.File["imageMedium"]
+	filesLarge := r.MultipartForm.File["imageLarge"]
 	var imageNames []string
-	storage.StorePlantImages(plantId, files, &imageNames)
+	storage.StorePlantImages(plantId, filesSmall, filesMedium, filesLarge, &imageNames)
 
 	// Now store image names to the database
 	storage.PlantHandler.UpdateImageNames(plantId, imageNames)
