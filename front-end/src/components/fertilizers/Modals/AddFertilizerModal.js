@@ -61,6 +61,8 @@ class AddFertilizerModal extends Component {
     let compressedImage=null
     new Compressor(originalImage,{
       quality:0.6,
+      maxHeight:720,
+      maxWidth:720,
       success(result){
         compressedImage=result
       }
