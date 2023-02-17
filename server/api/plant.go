@@ -3,7 +3,9 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/google/uuid"
@@ -150,4 +152,43 @@ func DownloadImage(w http.ResponseWriter, r *http.Request) {
 		w.Write(nil)
 	}
 	w.Write(data)
+}
+
+func CompressedImages(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// 32 MB is the default used by FormFile()
+	if err := r.ParseMultipartForm(32 << 25); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Get a reference to the fileHeaders.
+	// They are accessible only after ParseMultipartForm is called
+	files := r.MultipartForm.File["image"]
+
+	for i := 0; i < len(files); i++ {
+		fileName := files[i].Filename
+		// Storing small image
+		file, err := files[i].Open()
+		if err != nil {
+			return
+		}
+		defer file.Close()
+		dst, err := os.Create(fmt.Sprintf("./images/compressed/%s", fileName))
+		if err != nil {
+			return
+		}
+		defer dst.Close()
+
+		_, err = io.Copy(dst, file)
+		if err != nil {
+			return
+		}
+	}
+
+	json.NewEncoder(w).Encode("Multiple images uploaded")
 }

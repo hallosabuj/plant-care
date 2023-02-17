@@ -19,4 +19,5 @@ func Uri_init_plant(router *mux.Router) {
 	router.HandleFunc("/api/plant/deleteImage/{imageName}", api.DeletePlantPhoto).Methods(http.MethodDelete)
 	router.HandleFunc("/api/plant/downloadImage/{size}/{imageName}", api.DownloadImage).Methods(http.MethodGet)
 	router.HandleFunc("/api/plant/uploadImages", api.AddImages).Methods(http.MethodPost)
+	router.HandleFunc("/api/plant/compressed", api.CompressedImages).Methods(http.MethodPost)
 }
