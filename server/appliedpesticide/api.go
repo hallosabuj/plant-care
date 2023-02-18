@@ -1,4 +1,4 @@
-package api
+package appliedpesticide
 
 import (
 	"encoding/json"

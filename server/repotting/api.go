@@ -1,4 +1,4 @@
-package api
+package repotting
 
 import (
 	"encoding/json"

@@ -1,4 +1,4 @@
-package api
+package pesticide
 
 import (
 	"encoding/json"
