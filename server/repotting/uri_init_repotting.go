@@ -1,4 +1,4 @@
-package uri
+package repotting
 
 import (
 	"net/http"

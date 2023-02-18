@@ -1,4 +1,4 @@
-package uri
+package fertilizer
 
 import (
 	"net/http"

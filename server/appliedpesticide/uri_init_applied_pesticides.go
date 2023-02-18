@@ -1,4 +1,4 @@
-package uri
+package appliedpesticide
 
 import (
 	"net/http"

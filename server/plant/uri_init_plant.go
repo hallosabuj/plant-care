@@ -1,4 +1,4 @@
-package uri
+package plant
 
 import (
 	"net/http"

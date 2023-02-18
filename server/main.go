@@ -8,9 +8,15 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
+	"github.com/hallosabuj/plant-care/server/appliedfertilizer"
+	"github.com/hallosabuj/plant-care/server/appliedpesticide"
 	"github.com/hallosabuj/plant-care/server/config"
+	"github.com/hallosabuj/plant-care/server/fertilizer"
+	"github.com/hallosabuj/plant-care/server/neededfertilizer"
+	"github.com/hallosabuj/plant-care/server/pesticide"
+	"github.com/hallosabuj/plant-care/server/plant"
+	"github.com/hallosabuj/plant-care/server/repotting"
 	"github.com/hallosabuj/plant-care/server/storage"
-	"github.com/hallosabuj/plant-care/server/uri"
 )
 
 //go:embed build
@@ -29,13 +35,13 @@ func main() {
 		http.ServeFile(w, r, "static/index.html")
 	})
 
-	uri.Uri_init_plant(router)
-	uri.Uri_init_fertilizer(router)
-	uri.Uri_init_applied_fertilizer(router)
-	uri.Uri_init_needed_fertilizers(router)
-	uri.Uri_init_repotting(router)
-	uri.Uri_init_pesticides(router)
-	uri.Uri_init_applied_pesticides(router)
+	plant.Uri_init_plant(router)
+	fertilizer.Uri_init_fertilizer(router)
+	appliedfertilizer.Uri_init_applied_fertilizer(router)
+	neededfertilizer.Uri_init_needed_fertilizers(router)
+	repotting.Uri_init_repotting(router)
+	pesticide.Uri_init_pesticides(router)
+	appliedpesticide.Uri_init_applied_pesticides(router)
 	//////////////////////////////////////////////////////////////
 	// Setting database config
 	config.Global.DBName = "plant-care"
