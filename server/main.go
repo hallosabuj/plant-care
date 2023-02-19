@@ -8,14 +8,13 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
-	"github.com/hallosabuj/plant-care/server/appliedfertilizer"
-	"github.com/hallosabuj/plant-care/server/appliedpesticide"
-	"github.com/hallosabuj/plant-care/server/config"
-	"github.com/hallosabuj/plant-care/server/fertilizer"
-	"github.com/hallosabuj/plant-care/server/neededfertilizer"
-	"github.com/hallosabuj/plant-care/server/pesticide"
-	"github.com/hallosabuj/plant-care/server/plant"
-	"github.com/hallosabuj/plant-care/server/repotting"
+	"github.com/hallosabuj/plant-care/server/api/appliedfertilizer"
+	"github.com/hallosabuj/plant-care/server/api/appliedpesticide"
+	"github.com/hallosabuj/plant-care/server/api/fertilizer"
+	"github.com/hallosabuj/plant-care/server/api/neededfertilizer"
+	"github.com/hallosabuj/plant-care/server/api/pesticide"
+	"github.com/hallosabuj/plant-care/server/api/plant"
+	"github.com/hallosabuj/plant-care/server/api/repotting"
 )
 
 //go:embed build
@@ -41,10 +40,6 @@ func main() {
 	repotting.Uri_init_repotting(router)
 	pesticide.Uri_init_pesticides(router)
 	appliedpesticide.Uri_init_applied_pesticides(router)
-	//////////////////////////////////////////////////////////////
-	// Setting database config
-	config.Global.DBName = "plant-care"
-	config.Global.MongoURL = "mongodb://localhost:27017"
 	////////////////////////////////////////////////////////////
 	// Setting up the http server to embed the UI also
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
