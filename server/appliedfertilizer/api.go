@@ -6,14 +6,13 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/hallosabuj/plant-care/server/models"
-	"github.com/hallosabuj/plant-care/server/storage"
 )
 
 func AddAppliedFertilizer(w http.ResponseWriter, r *http.Request) {
 	var appliedFertilizers []models.AppliedFertilizer
 	json.NewDecoder(r.Body).Decode(&appliedFertilizers)
 	result := make(map[string]bool)
-	if err := storage.AppliedFertilizerHandler.AddEntry(appliedFertilizers, result); err != nil {
+	if err := AppliedFertilizerHandler.AddEntry(appliedFertilizers, result); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 	json.NewEncoder(w).Encode(result)
@@ -21,7 +20,7 @@ func AddAppliedFertilizer(w http.ResponseWriter, r *http.Request) {
 
 func GetAppliedFertilizers(w http.ResponseWriter, r *http.Request) {
 	var allAppliedFertilizer []models.AppliedFertilizer
-	err := storage.AppliedFertilizerHandler.GetAllAppliedFertilizers(&allAppliedFertilizer)
+	err := AppliedFertilizerHandler.GetAllAppliedFertilizers(&allAppliedFertilizer)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -33,7 +32,7 @@ func GetFilteredAppliedFertilizers(w http.ResponseWriter, r *http.Request) {
 	var field string = mux.Vars(r)["field"]
 	var value string = mux.Vars(r)["value"]
 	var allAppliedFertilizer []models.AppliedFertilizer
-	err := storage.AppliedFertilizerHandler.GetFilteredAllAppliedFertilizers(field, value, &allAppliedFertilizer)
+	err := AppliedFertilizerHandler.GetFilteredAllAppliedFertilizers(field, value, &allAppliedFertilizer)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

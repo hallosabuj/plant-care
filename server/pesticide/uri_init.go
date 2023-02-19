@@ -14,4 +14,5 @@ func Uri_init_pesticides(router *mux.Router) {
 	// This API can be used to update
 	router.HandleFunc(("/api/pesticide/update/{field}/{pesticideId}/{value}"), UpdatePesticide).Methods(http.MethodPut)
 	router.HandleFunc("/api/pesticide/downloadImage/{imageName}", DownloadPesticideImage).Methods(http.MethodGet)
+	Connect()
 }

@@ -1,4 +1,4 @@
-package storage
+package fertilizer
 
 import (
 	"database/sql"
@@ -19,6 +19,16 @@ var FertilizerHandler HandlerF
 
 type fertilizerHandler struct {
 	db *sql.DB
+}
+
+func Connect() {
+	var err error
+	DB, err := sql.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/plantcare")
+	if err != nil {
+		fmt.Println("Database connection filed")
+	}
+	fmt.Println("Connected to database")
+	FertilizerHandler = fertilizerHandler{db: DB}
 }
 
 func (f fertilizerHandler) AddFertilizer(newFertilizer models.Fertilizer) error {

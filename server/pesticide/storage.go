@@ -1,4 +1,4 @@
-package storage
+package pesticide
 
 import (
 	"database/sql"
@@ -19,6 +19,16 @@ var PesticideHandler HandlerPest
 
 type pesticideHandler struct {
 	db *sql.DB
+}
+
+func Connect() {
+	var err error
+	DB, err := sql.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/plantcare")
+	if err != nil {
+		fmt.Println("Database connection filed")
+	}
+	fmt.Println("Connected to database")
+	PesticideHandler = pesticideHandler{db: DB}
 }
 
 func (f pesticideHandler) AddPesticides(newPesticide models.Pesticides) error {

@@ -11,12 +11,11 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"github.com/hallosabuj/plant-care/server/models"
-	"github.com/hallosabuj/plant-care/server/storage"
 )
 
 func GetAllPlants(w http.ResponseWriter, r *http.Request) {
 	var allPlants []models.Plant
-	if err := storage.PlantHandler.GetAllPlants(&allPlants); err != nil {
+	if err := PlantHandler.GetAllPlants(&allPlants); err != nil {
 		json.NewEncoder(w).Encode(err)
 	}
 	w.Header().Add("content-type", "application/json")
@@ -40,19 +39,19 @@ func AddPlant(w http.ResponseWriter, r *http.Request) {
 	fileMedium, _, _ := r.FormFile("imageMedium")
 	fileLarge, fileHeader, _ := r.FormFile("imageLarge")
 	// Storing photo in local file system
-	imageName, _ := storage.StorePlantImage(newPlant.ID, fileSmall, fileMedium, fileLarge, fileHeader)
+	imageName, _ := StorePlantImage(newPlant.ID, fileSmall, fileMedium, fileLarge, fileHeader)
 	newPlant.ProfileImage = imageName
 	// Storing into database
-	storage.PlantHandler.AddPlant(&newPlant)
+	PlantHandler.AddPlant(&newPlant)
 	w.Header().Add("content-type", "application/json")
 	json.NewEncoder(w).Encode(newPlant)
 }
 
 func DeletePlantPhoto(w http.ResponseWriter, r *http.Request) {
 	fileName := mux.Vars(r)["imageName"]
-	if err := storage.PlantHandler.RemoveImageNameFromDB(fileName); err != nil {
+	if err := PlantHandler.RemoveImageNameFromDB(fileName); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-	} else if err := storage.DeletePlantImage(fileName); err != nil {
+	} else if err := DeletePlantImage(fileName); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 	json.NewEncoder(w).Encode("Image deleted")
@@ -77,10 +76,10 @@ func AddImages(w http.ResponseWriter, r *http.Request) {
 	filesMedium := r.MultipartForm.File["imageMedium"]
 	filesLarge := r.MultipartForm.File["imageLarge"]
 	var imageNames []string
-	storage.StorePlantImages(plantId, filesSmall, filesMedium, filesLarge, &imageNames)
+	StorePlantImages(plantId, filesSmall, filesMedium, filesLarge, &imageNames)
 
 	// Now store image names to the database
-	storage.PlantHandler.UpdateImageNames(plantId, imageNames)
+	PlantHandler.UpdateImageNames(plantId, imageNames)
 
 	json.NewEncoder(w).Encode("Multiple images uploaded")
 }
@@ -89,7 +88,7 @@ func GetPlant(w http.ResponseWriter, r *http.Request) {
 	var plantId string = mux.Vars(r)["plantId"]
 	var plant models.Plant
 	plant.ImageNames = make(map[int]string)
-	err := storage.PlantHandler.GetPlantDetails(plantId, &plant)
+	err := PlantHandler.GetPlantDetails(plantId, &plant)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	} else {
@@ -100,7 +99,7 @@ func GetPlant(w http.ResponseWriter, r *http.Request) {
 func GetPlantForAFertilizer(w http.ResponseWriter, r *http.Request) {
 	var fertilizerId string = mux.Vars(r)["fertilizerId"]
 	var allPlants []models.PlantForAFertilizer
-	if err := storage.PlantHandler.GetPlantsForAFertilizer(fertilizerId, &allPlants); err != nil {
+	if err := PlantHandler.GetPlantsForAFertilizer(fertilizerId, &allPlants); err != nil {
 		json.NewEncoder(w).Encode(err)
 	}
 	w.Header().Add("content-type", "application/json")
@@ -110,7 +109,7 @@ func GetPlantForAFertilizer(w http.ResponseWriter, r *http.Request) {
 func GetPlantForAPesticide(w http.ResponseWriter, r *http.Request) {
 	var pesticideId string = mux.Vars(r)["pesticideId"]
 	var allPlants []models.PlantForAPesticide
-	if err := storage.PlantHandler.GetPlantsForAPesticide(pesticideId, &allPlants); err != nil {
+	if err := PlantHandler.GetPlantsForAPesticide(pesticideId, &allPlants); err != nil {
 		json.NewEncoder(w).Encode(err)
 	}
 	w.Header().Add("content-type", "application/json")
@@ -123,7 +122,7 @@ func UpdatePlant(w http.ResponseWriter, r *http.Request) {
 	var value string = mux.Vars(r)["value"]
 	if strings.Contains("name dob details profileimage soiltype", field) {
 		// List of string field
-		if err := storage.PlantHandler.UpdatePlant(field, plantId, value); err != nil {
+		if err := PlantHandler.UpdatePlant(field, plantId, value); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 		json.NewEncoder(w).Encode("Updated")
@@ -136,9 +135,9 @@ func UpdatePlant(w http.ResponseWriter, r *http.Request) {
 
 func DeletePlant(w http.ResponseWriter, r *http.Request) {
 	var plantId string = mux.Vars(r)["plantId"]
-	if err := storage.PlantHandler.DeleteDetails(plantId); err != nil {
+	if err := PlantHandler.DeleteDetails(plantId); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-	} else if err := storage.DeletePlantImages(plantId); err != nil {
+	} else if err := DeletePlantImages(plantId); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 	json.NewEncoder(w).Encode("Plant Deleted")
@@ -147,7 +146,7 @@ func DeletePlant(w http.ResponseWriter, r *http.Request) {
 func DownloadImage(w http.ResponseWriter, r *http.Request) {
 	var imageName string = mux.Vars(r)["imageName"]
 	var size string = mux.Vars(r)["size"]
-	data, err := storage.GetPlantImage(size, imageName)
+	data, err := GetPlantImage(size, imageName)
 	if err != nil {
 		w.Write(nil)
 	}

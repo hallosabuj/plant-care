@@ -10,7 +10,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"github.com/hallosabuj/plant-care/server/models"
-	"github.com/hallosabuj/plant-care/server/storage"
 )
 
 func AddFertilizer(w http.ResponseWriter, r *http.Request) {
@@ -23,17 +22,17 @@ func AddFertilizer(w http.ResponseWriter, r *http.Request) {
 	newFertilizer.ID = fmt.Sprintf("%v", uuid.New())
 	// Getting the image from the request
 	file, fileHeader, _ := r.FormFile("image")
-	storage.StoreFertilizerImage(newFertilizer.ID, file, *fileHeader)
+	StoreFertilizerImage(newFertilizer.ID, file, *fileHeader)
 	// Generating the filename
 	newFertilizer.ProfileImage = fmt.Sprintf("%s%s", newFertilizer.ID, filepath.Ext(fileHeader.Filename))
 	// Storing image for the fertilizer
-	storage.FertilizerHandler.AddFertilizer(newFertilizer)
+	FertilizerHandler.AddFertilizer(newFertilizer)
 	json.NewEncoder(w).Encode(newFertilizer)
 }
 
 func GetAllFertilizers(w http.ResponseWriter, r *http.Request) {
 	var allFertilizer []models.Fertilizer
-	storage.FertilizerHandler.GetAllFertilizers(&allFertilizer)
+	FertilizerHandler.GetAllFertilizers(&allFertilizer)
 	w.Header().Add("content-type", "application/json")
 	json.NewEncoder(w).Encode(allFertilizer)
 }
@@ -41,7 +40,7 @@ func GetAllFertilizers(w http.ResponseWriter, r *http.Request) {
 func GetFertilizer(w http.ResponseWriter, r *http.Request) {
 	var fertilizerId string = mux.Vars(r)["fertilizerId"]
 	var fertilizer models.Fertilizer
-	err := storage.FertilizerHandler.GetFertilizerDetails(fertilizerId, &fertilizer)
+	err := FertilizerHandler.GetFertilizerDetails(fertilizerId, &fertilizer)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	} else {
@@ -52,7 +51,7 @@ func GetFertilizer(w http.ResponseWriter, r *http.Request) {
 func DownloadFertilizerImage(w http.ResponseWriter, r *http.Request) {
 	var imageName string = mux.Vars(r)["imageName"]
 	fmt.Println("plantId", imageName)
-	data, err := storage.GetFertilizerImage(imageName)
+	data, err := GetFertilizerImage(imageName)
 	if err != nil {
 		w.Write(nil)
 	}
@@ -61,13 +60,13 @@ func DownloadFertilizerImage(w http.ResponseWriter, r *http.Request) {
 
 func DeleteFertilizer(w http.ResponseWriter, r *http.Request) {
 	var fertilizerId string = mux.Vars(r)["fertilizerId"]
-	if err := storage.FertilizerHandler.DeleteFertilizerDetails(fertilizerId); err != nil {
+	if err := FertilizerHandler.DeleteFertilizerDetails(fertilizerId); err != nil {
 		if strings.Contains(err.Error(), "Error 1451:") {
 			http.Error(w, "Can not delete, some plants using this fertilizer", http.StatusInternalServerError)
 		} else {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
-	} else if err := storage.DeleteFertilizerImage(fertilizerId); err != nil {
+	} else if err := DeleteFertilizerImage(fertilizerId); err != nil {
 		http.Error(w, "Image not deleted", http.StatusOK)
 	} else {
 
@@ -85,7 +84,7 @@ func UpdateFertilizer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := storage.FertilizerHandler.UpdateFertilizer(fertilizerId, field, value)
+	err := FertilizerHandler.UpdateFertilizer(fertilizerId, field, value)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

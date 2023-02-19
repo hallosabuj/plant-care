@@ -1,7 +1,8 @@
-package storage
+package appliedfertilizer
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/hallosabuj/plant-care/server/models"
 )
@@ -16,6 +17,16 @@ var AppliedFertilizerHandler HandlerAF
 
 type appliedFertilizeHnadler struct {
 	db *sql.DB
+}
+
+func Connect() {
+	var err error
+	DB, err := sql.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/plantcare")
+	if err != nil {
+		fmt.Println("Database connection filed")
+	}
+	fmt.Println("Connected to database")
+	AppliedFertilizerHandler = appliedFertilizeHnadler{db: DB}
 }
 
 func (a appliedFertilizeHnadler) AddEntry(appliedFertilizers []models.AppliedFertilizer, result map[string]bool) error {

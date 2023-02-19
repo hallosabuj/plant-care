@@ -10,7 +10,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"github.com/hallosabuj/plant-care/server/models"
-	"github.com/hallosabuj/plant-care/server/storage"
 )
 
 func AddPesticides(w http.ResponseWriter, r *http.Request) {
@@ -23,17 +22,17 @@ func AddPesticides(w http.ResponseWriter, r *http.Request) {
 	newPesticide.ID = fmt.Sprintf("%v", uuid.New())
 	// Getting the image from the request
 	file, fileHeader, _ := r.FormFile("image")
-	storage.StorePesticideImage(newPesticide.ID, file, *fileHeader)
+	StorePesticideImage(newPesticide.ID, file, *fileHeader)
 	// Generating the filename
 	newPesticide.ProfileImage = fmt.Sprintf("%s%s", newPesticide.ID, filepath.Ext(fileHeader.Filename))
 	// Storing image for the fertilizer
-	storage.PesticideHandler.AddPesticides(newPesticide)
+	PesticideHandler.AddPesticides(newPesticide)
 	json.NewEncoder(w).Encode(newPesticide)
 }
 
 func GetAllPesticides(w http.ResponseWriter, r *http.Request) {
 	var allPesticides []models.Pesticides
-	storage.PesticideHandler.GetAllPesticides(&allPesticides)
+	PesticideHandler.GetAllPesticides(&allPesticides)
 	w.Header().Add("content-type", "application/json")
 	json.NewEncoder(w).Encode(allPesticides)
 }
@@ -41,7 +40,7 @@ func GetAllPesticides(w http.ResponseWriter, r *http.Request) {
 func GetPesticide(w http.ResponseWriter, r *http.Request) {
 	var pesticideId string = mux.Vars(r)["pesticideId"]
 	var pesticide models.Pesticides
-	err := storage.PesticideHandler.GetPesticideDetails(pesticideId, &pesticide)
+	err := PesticideHandler.GetPesticideDetails(pesticideId, &pesticide)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	} else {
@@ -51,13 +50,13 @@ func GetPesticide(w http.ResponseWriter, r *http.Request) {
 
 func DeletePesticide(w http.ResponseWriter, r *http.Request) {
 	var pesticideId string = mux.Vars(r)["pesticideId"]
-	if err := storage.PesticideHandler.DeletePesticideDetails(pesticideId); err != nil {
+	if err := PesticideHandler.DeletePesticideDetails(pesticideId); err != nil {
 		if strings.Contains(err.Error(), "Error 1451:") {
 			http.Error(w, "Can not delete, some plants using this pesticide", http.StatusInternalServerError)
 		} else {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
-	} else if err := storage.DeletePesticideImage(pesticideId); err != nil {
+	} else if err := DeletePesticideImage(pesticideId); err != nil {
 		http.Error(w, "Image not deleted", http.StatusOK)
 	} else {
 
@@ -67,7 +66,7 @@ func DeletePesticide(w http.ResponseWriter, r *http.Request) {
 func DownloadPesticideImage(w http.ResponseWriter, r *http.Request) {
 	var imageName string = mux.Vars(r)["imageName"]
 	fmt.Println("plantId", imageName)
-	data, err := storage.GetPesticideImage(imageName)
+	data, err := GetPesticideImage(imageName)
 	if err != nil {
 		w.Write(nil)
 	}
@@ -85,7 +84,7 @@ func UpdatePesticide(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := storage.PesticideHandler.UpdatePesticide(pesticideId, field, value)
+	err := PesticideHandler.UpdatePesticide(pesticideId, field, value)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

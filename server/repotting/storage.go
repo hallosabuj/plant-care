@@ -1,4 +1,4 @@
-package storage
+package repotting
 
 import (
 	"database/sql"
@@ -16,6 +16,16 @@ var RepottingHandler HandlerR
 
 type repottingHandler struct {
 	db *sql.DB
+}
+
+func Connect() {
+	var err error
+	DB, err := sql.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/plantcare")
+	if err != nil {
+		fmt.Println("Database connection filed")
+	}
+	fmt.Println("Connected to database")
+	RepottingHandler = repottingHandler{db: DB}
 }
 
 func (r repottingHandler) AddRepotting(repotting models.Repotting) error {

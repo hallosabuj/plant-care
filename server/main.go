@@ -16,7 +16,6 @@ import (
 	"github.com/hallosabuj/plant-care/server/pesticide"
 	"github.com/hallosabuj/plant-care/server/plant"
 	"github.com/hallosabuj/plant-care/server/repotting"
-	"github.com/hallosabuj/plant-care/server/storage"
 )
 
 //go:embed build
@@ -46,7 +45,6 @@ func main() {
 	// Setting database config
 	config.Global.DBName = "plant-care"
 	config.Global.MongoURL = "mongodb://localhost:27017"
-	storage.Connect()
 	////////////////////////////////////////////////////////////
 	// Setting up the http server to embed the UI also
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

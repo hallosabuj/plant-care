@@ -14,4 +14,5 @@ func Uri_init_fertilizer(router *mux.Router) {
 	// This API can be used to update
 	router.HandleFunc(("/api/fertilizer/update/{field}/{fertilizerId}/{value}"), UpdateFertilizer).Methods(http.MethodPut)
 	router.HandleFunc("/api/fertilizer/downloadImage/{imageName}", DownloadFertilizerImage).Methods(http.MethodGet)
+	Connect()
 }
