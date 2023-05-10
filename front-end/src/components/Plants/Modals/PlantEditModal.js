@@ -30,7 +30,7 @@ class PlantEditModal extends Component {
         }
         let url="/api/plant/update/"+this.state.editValues.fieldName+"/"+this.state.editValues.plantId+"/"+this.state.editValues.fieldValue
         console.log(url)
-        await axios.put(url).then((response)=>{
+        await axios.post(url).then((response)=>{
             console.log(response)
         }).catch((error)=>{
             console.log(error)
