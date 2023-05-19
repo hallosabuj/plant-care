@@ -69,7 +69,7 @@ func DeleteFertilizer(w http.ResponseWriter, r *http.Request) {
 	} else if err := DeleteFertilizerImage(fertilizerId); err != nil {
 		http.Error(w, "Image not deleted", http.StatusOK)
 	} else {
-
+		json.NewEncoder(w).Encode("Fertilizer deleted")
 	}
 }
 

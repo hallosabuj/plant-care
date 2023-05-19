@@ -206,7 +206,7 @@ func (p plantHandler) GetPlantDetails(plantId string, plant *models.Plant) error
 		if err != nil {
 			return nil
 		}
-		plant.ImageNames[imageId] = imageName
+		plant.ImageNames[string(imageId)] = imageName
 	}
 	return nil
 }

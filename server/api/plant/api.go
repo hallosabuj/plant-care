@@ -14,6 +14,8 @@ import (
 )
 
 func GetAllPlants(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	fmt.Println("GetPlants")
 	var allPlants []models.Plant
 	if err := PlantHandler.GetAllPlants(&allPlants); err != nil {
 		json.NewEncoder(w).Encode(err)
@@ -23,6 +25,8 @@ func GetAllPlants(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddPlant(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	fmt.Println("Add plant")
 	// bytes, _ := ioutil.ReadAll(r.Body)
 	var newPlant models.Plant = models.Plant{
 		Name:     r.FormValue("name"),
@@ -48,6 +52,7 @@ func AddPlant(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeletePlantPhoto(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	fileName := mux.Vars(r)["imageName"]
 	if err := PlantHandler.RemoveImageNameFromDB(fileName); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -58,6 +63,7 @@ func DeletePlantPhoto(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddImages(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -85,9 +91,10 @@ func AddImages(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetPlant(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	var plantId string = mux.Vars(r)["plantId"]
 	var plant models.Plant
-	plant.ImageNames = make(map[int]string)
+	plant.ImageNames = make(map[string]string)
 	err := PlantHandler.GetPlantDetails(plantId, &plant)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -97,6 +104,7 @@ func GetPlant(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetPlantForAFertilizer(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	var fertilizerId string = mux.Vars(r)["fertilizerId"]
 	var allPlants []models.PlantForAFertilizer
 	if err := PlantHandler.GetPlantsForAFertilizer(fertilizerId, &allPlants); err != nil {
@@ -107,6 +115,7 @@ func GetPlantForAFertilizer(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetPlantForAPesticide(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	var pesticideId string = mux.Vars(r)["pesticideId"]
 	var allPlants []models.PlantForAPesticide
 	if err := PlantHandler.GetPlantsForAPesticide(pesticideId, &allPlants); err != nil {
@@ -117,6 +126,8 @@ func GetPlantForAPesticide(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdatePlant(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	fmt.Println("Updating plant")
 	var field string = mux.Vars(r)["field"]
 	var plantId string = mux.Vars(r)["plantId"]
 	var value string = mux.Vars(r)["value"]
@@ -134,6 +145,7 @@ func UpdatePlant(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeletePlant(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	var plantId string = mux.Vars(r)["plantId"]
 	if err := PlantHandler.DeleteDetails(plantId); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -144,6 +156,7 @@ func DeletePlant(w http.ResponseWriter, r *http.Request) {
 }
 
 func DownloadImage(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	var imageName string = mux.Vars(r)["imageName"]
 	var size string = mux.Vars(r)["size"]
 	data, err := GetPlantImage(size, imageName)
@@ -154,6 +167,7 @@ func DownloadImage(w http.ResponseWriter, r *http.Request) {
 }
 
 func CompressedImages(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
