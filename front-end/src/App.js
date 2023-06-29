@@ -12,6 +12,7 @@ import Disease from './components/disease/Disease';
 import PesticideDetails from './components/pesticides/PesticideDetails';
 import ApplyPesticide from './components/apply/ApplyPesticide';
 import CompressImage from './components/CompressImage';
+import SwaggerUIPage from './components/swagger/SwaggerUIPage';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route exact path='/web/pesticides/:pesticideId' element={<PesticideDetails/>}></Route>
           <Route exact path='/web/disease' element={<Disease/>}></Route>
           <Route exact path='/web/compress' element={<CompressImage/>}></Route>
+          <Route exact path='/swagger-ui' element={<SwaggerUIPage/>}></Route>
         </Routes>
       </Router>
       <Footer />

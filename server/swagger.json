@@ -1,0 +1,1110 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "the purpose of this application is to provide an application\nthat will help gardeners in maintaining their planta\n\nOther detils about the application",
+    "title": "Plant Care.",
+    "termsOfService": "there are no TOS at this moment",
+    "contact": {
+      "name": "Sabuj Mondal",
+      "email": "hallosabuj@gmail.com"
+    },
+    "version": "0.0.1"
+  },
+  "host": "localhost:8080",
+  "basePath": "/api",
+  "paths": {
+    "/applied-fertilizer": {
+      "get": {
+        "description": "List all applied-fertilizers",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "getAppliedFertilizer",
+        "responses": {
+          "200": {
+            "description": "AppliedFertilizer",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AppliedFertilizer"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Add applied-fertilizers",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "addAppliedFertilizer",
+        "parameters": [
+          {
+            "x-go-name": "AppliedFertilizers",
+            "description": "List of applied fertilizers",
+            "name": "appliedFertilizers",
+            "in": "body",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ReqAppliedFertilizer"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "RespAddAppliedFertilizer",
+            "schema": {
+              "$ref": "#/definitions/RespAddAppliedFertilizer"
+            }
+          }
+        }
+      }
+    },
+    "/applied-fertilizer/{filteringField}/{value}": {
+      "get": {
+        "description": "List applied fertilizers after filtering based on a field",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "getFilteredAppliedFertilizers",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "FilteringField",
+            "description": "Field on which filtering should be done",
+            "name": "filteringField",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "x-go-name": "Value",
+            "description": "Value of the field",
+            "name": "value",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "AppliedFertilizer",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AppliedFertilizer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/applied-pesticide": {
+      "get": {
+        "description": "List all applied-pesticides",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "getAppliedPesticide",
+        "responses": {
+          "200": {
+            "description": "AppliedPesticide",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AppliedPesticide"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Add applied-pesticides",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "addAppliedPesticide",
+        "parameters": [
+          {
+            "x-go-name": "AppliedPesticides",
+            "description": "List of applied pesticides",
+            "name": "appliedPesticides",
+            "in": "body",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ReqAppliedPesticide"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "RespAddAppliedPesticide",
+            "schema": {
+              "$ref": "#/definitions/RespAddAppliedPesticide"
+            }
+          }
+        }
+      }
+    },
+    "/applied-pesticide/{filteringField}/{value}": {
+      "get": {
+        "description": "List applied pesticides after filtering based on a field",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "getFilteredAppliedPesticides",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "FilteringField",
+            "description": "Field on which filtering should be done",
+            "name": "filteringField",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "x-go-name": "Value",
+            "description": "Value of the field",
+            "name": "value",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "AppliedPesticide",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AppliedPesticide"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fertilizer": {
+      "get": {
+        "description": "List all the fertilizers",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "getFertilizers",
+        "responses": {
+          "200": {
+            "description": "Fertilizer",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Fertilizer"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Add a fertilizer",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "addFertilizer",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "Name",
+            "description": "Fertilizer Name\nin: string",
+            "name": "name",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "x-go-name": "Details",
+            "description": "Details about the fertilizer\nin: string",
+            "name": "details",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "x-go-name": "Composition",
+            "description": "Composition of the fertilizer\nin: string",
+            "name": "composition",
+            "in": "query"
+          },
+          {
+            "type": "file",
+            "x-go-name": "ProfileImage",
+            "description": "Profile Image",
+            "name": "image",
+            "in": "formData",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fertilizer",
+            "schema": {
+              "$ref": "#/definitions/Fertilizer"
+            }
+          }
+        }
+      }
+    },
+    "/fertilizer/downloadImage/{imageName}": {
+      "get": {
+        "description": "Used to download image of a fertilizer",
+        "produces": [
+          "image/jpeg"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "downloadFertilizerImage",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "ImageName",
+            "description": "Image name",
+            "name": "imageName",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/fertilizer/update/{field}/{fertilizerId}/{value}": {
+      "post": {
+        "description": "Update values for a fertilizer",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "updateFertilizer",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "Field",
+            "description": "Name of the field that need to be updated",
+            "name": "field",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "x-go-name": "FertilizerId",
+            "description": "Fertilizer Id whose value would be updated",
+            "name": "fertilizerId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "x-go-name": "Value",
+            "description": "New value for the field",
+            "name": "value",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/fertilizer/{fertilizerId}": {
+      "get": {
+        "description": "Show details for a fertilizer",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "fertilizerDetails",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "FertilizerId",
+            "description": "Fertilizer Id",
+            "name": "fertilizerId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fertilizer",
+            "schema": {
+              "$ref": "#/definitions/Fertilizer"
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a fertilizer",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "deleteFertilizer",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "FertilizerId",
+            "description": "Fertilizer Id",
+            "name": "fertilizerId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/plant": {
+      "get": {
+        "description": "Lists all the plants from the database",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "getAllPlants",
+        "responses": {
+          "200": {
+            "description": "Plant",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Plant"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Lists all the plants from the database",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "addPlant",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "Name",
+            "description": "Name of the Plant",
+            "name": "name",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "x-go-name": "DOB",
+            "description": "Date when plant was planted",
+            "name": "dob",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "x-go-name": "Details",
+            "description": "Details about the plant",
+            "name": "details",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "x-go-name": "SoilType",
+            "description": "Favourable soil type for the plant",
+            "name": "soilType",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "file",
+            "x-go-name": "Small",
+            "description": "Small sized image",
+            "name": "imageSmall",
+            "in": "formData",
+            "required": true
+          },
+          {
+            "type": "file",
+            "x-go-name": "Medium",
+            "description": "Medium sized image",
+            "name": "imageMedium",
+            "in": "formData",
+            "required": true
+          },
+          {
+            "type": "file",
+            "x-go-name": "Large",
+            "description": "Large sized image",
+            "name": "imageLarge",
+            "in": "formData",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Plant",
+            "schema": {
+              "$ref": "#/definitions/Plant"
+            }
+          }
+        }
+      }
+    },
+    "/plant/deleteImage/{imageName}": {
+      "delete": {
+        "description": "Delete a plant image",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "deletePlantPhoto",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "ImageName",
+            "description": "Image name that needs to be deleted",
+            "name": "imageName",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/plant/downloadImage/{size}/{imageName}": {
+      "get": {
+        "description": "Download a plant image",
+        "produces": [
+          "image/jpeg"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "downloadImage",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "Size",
+            "description": "Size of the image",
+            "name": "size",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "x-go-name": "ImageName",
+            "description": "Name of the image",
+            "name": "imageName",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/plant/update/{field}/{plantId}/{value}": {
+      "put": {
+        "description": "Update a field for a plant",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "updatePlant",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "Field",
+            "description": "Field that need to be updated",
+            "name": "field",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "x-go-name": "PlantId",
+            "description": "Plant Id",
+            "name": "plantId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "x-go-name": "Value",
+            "description": "New value for the field",
+            "name": "value",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/plant/uploadImages": {
+      "get": {
+        "description": "Get all plant that uses a perticular fertilizer",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "addImages",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "PlantId",
+            "description": "Plant Id",
+            "name": "id",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "file",
+            "x-go-name": "Large",
+            "description": "Large Image",
+            "name": "imageLarge",
+            "in": "formData",
+            "required": true
+          },
+          {
+            "type": "file",
+            "x-go-name": "Medium",
+            "description": "Medium Image",
+            "name": "imageMedium",
+            "in": "formData",
+            "required": true
+          },
+          {
+            "type": "file",
+            "x-go-name": "Small",
+            "description": "Large Image",
+            "name": "imageSmall",
+            "in": "formData",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/plant/{plantId}": {
+      "get": {
+        "description": "Show details for a plant",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "plantDetails",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "ID",
+            "description": "The ID of the plant",
+            "name": "plantId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Plant",
+            "schema": {
+              "$ref": "#/definitions/Plant"
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a plant for a given id",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "deletePlant",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "ID",
+            "description": "The ID of the plant",
+            "name": "plantId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/plants/fertilizer/{fertilizerId}": {
+      "get": {
+        "description": "Get all plant that uses a perticular fertilizer",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "getPlantForAFertilizer",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "FertilizerId",
+            "description": "Fertilizer Id",
+            "name": "fertilizerId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PlantForAFertilizer",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PlantForAFertilizer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/plants/pesticide/{pesticideId}": {
+      "get": {
+        "description": "Get all plant that uses a perticular pesticide",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "operationId": "getPlantForAPesticide",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "PesticideId",
+            "description": "Pesticide Id",
+            "name": "pesticideId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PlantForAPesticide",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PlantForAPesticide"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AppliedFertilizer": {
+      "description": "AppliedFertilizer",
+      "type": "object",
+      "properties": {
+        "appliedDate": {
+          "description": "Applied Date\nin: string",
+          "type": "string",
+          "x-go-name": "AppliedDate"
+        },
+        "fertilizerId": {
+          "description": "Fertilizer Id\nin: string",
+          "type": "string",
+          "x-go-name": "FertilizerID"
+        },
+        "fertilizerName": {
+          "description": "Fertilizer Name\nin: string",
+          "type": "string",
+          "x-go-name": "FertilizerName"
+        },
+        "plantId": {
+          "description": "Plant Id\nin: string",
+          "type": "string",
+          "x-go-name": "PlantId"
+        },
+        "plantName": {
+          "description": "Plant Name\nin: string",
+          "type": "string",
+          "x-go-name": "PlantName"
+        }
+      },
+      "x-go-package": "github.com/hallosabuj/plant-care/server/models"
+    },
+    "AppliedPesticide": {
+      "description": "AppliedPesticide",
+      "type": "object",
+      "properties": {
+        "appliedDate": {
+          "description": "Applied date\nin: string",
+          "type": "string",
+          "x-go-name": "AppliedDate"
+        },
+        "pesticideId": {
+          "description": "Pesticide Id\nin: string",
+          "type": "string",
+          "x-go-name": "PesticideID"
+        },
+        "pesticideName": {
+          "description": "Pesticide Name\nin string",
+          "type": "string",
+          "x-go-name": "PesticideName"
+        },
+        "plantId": {
+          "description": "Plant Id\nin: string",
+          "type": "string",
+          "x-go-name": "PlantId"
+        },
+        "plantName": {
+          "description": "Plant Name\nin: string",
+          "type": "string",
+          "x-go-name": "PlantName"
+        }
+      },
+      "x-go-package": "github.com/hallosabuj/plant-care/server/models"
+    },
+    "Fertilizer": {
+      "description": "Fertilizer",
+      "type": "object",
+      "properties": {
+        "available": {
+          "description": "Availability\nin: string",
+          "type": "string",
+          "x-go-name": "Available"
+        },
+        "composition": {
+          "description": "Composition of the fertilizer\nin: string",
+          "type": "string",
+          "x-go-name": "Composition"
+        },
+        "details": {
+          "description": "Details about the fertilizer\nin: string",
+          "type": "string",
+          "x-go-name": "Details"
+        },
+        "fertilizerId": {
+          "description": "Fertilizer Id\nin: string",
+          "type": "string",
+          "x-go-name": "ID"
+        },
+        "name": {
+          "description": "Fertilizer Name\nin: string",
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "profileImage": {
+          "description": "Profile Image\nin: string",
+          "type": "string",
+          "x-go-name": "ProfileImage"
+        }
+      },
+      "x-go-package": "github.com/hallosabuj/plant-care/server/models"
+    },
+    "Plant": {
+      "description": "Plant",
+      "type": "object",
+      "properties": {
+        "details": {
+          "description": "Details about the plant\nin: string",
+          "type": "string",
+          "x-go-name": "Details"
+        },
+        "dob": {
+          "description": "Date when plant was planted\nin: string",
+          "type": "string",
+          "x-go-name": "DOB"
+        },
+        "imageNames": {
+          "description": "List of image IDs\nin: map[string]string",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-go-name": "ImageNames"
+        },
+        "name": {
+          "description": "Name of the Plant\nin: string",
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "numberId": {
+          "description": "Number Id of the plant\nin: int",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "NumberId"
+        },
+        "plantId": {
+          "description": "Id of the plant\nin: string",
+          "type": "string",
+          "x-go-name": "ID"
+        },
+        "profileImage": {
+          "description": "Profile image Id\nin: string",
+          "type": "string",
+          "x-go-name": "ProfileImage"
+        },
+        "soilType": {
+          "description": "Favourable soil type for the plant\nin: string",
+          "type": "string",
+          "x-go-name": "SoilType"
+        }
+      },
+      "x-go-package": "github.com/hallosabuj/plant-care/server/models"
+    },
+    "PlantForAFertilizer": {
+      "description": "Plants for a given fertilizer",
+      "type": "object",
+      "properties": {
+        "applyInterval": {
+          "description": "Apply interval for a fertilizer for the plant\nin: string",
+          "type": "string",
+          "x-go-name": "ApplyInterval"
+        },
+        "fertilizerId": {
+          "description": "Fertilizer ID\nin: string",
+          "type": "string",
+          "x-go-name": "FertilizerId"
+        },
+        "lastAppliedDate": {
+          "description": "Last applied date of the fertilizer\nin: string",
+          "type": "string",
+          "x-go-name": "LastAppliedDate"
+        },
+        "numberId": {
+          "description": "Number Id of a plant\nin: string",
+          "type": "string",
+          "x-go-name": "NumberId"
+        },
+        "numberOfDaysElapsed": {
+          "description": "Number of days elapsed since last fertilization\nin: string",
+          "type": "string",
+          "x-go-name": "NumberOfDaysElapsed"
+        },
+        "plantId": {
+          "description": "Plant Id\nin: string",
+          "type": "string",
+          "x-go-name": "PlantId"
+        },
+        "plantName": {
+          "description": "Plant name\nin: string",
+          "type": "string",
+          "x-go-name": "PlantName"
+        },
+        "profileImage": {
+          "description": "Profile image name\nin: string",
+          "type": "string",
+          "x-go-name": "ProfileImage"
+        }
+      },
+      "x-go-package": "github.com/hallosabuj/plant-care/server/models"
+    },
+    "PlantForAPesticide": {
+      "description": "Plants for a given pesticides",
+      "type": "object",
+      "properties": {
+        "lastAppliedDate": {
+          "description": "Last applied date of the pesticide\nin: string",
+          "type": "string",
+          "x-go-name": "LastAppliedDate"
+        },
+        "numberId": {
+          "description": "Number Id of a plant\nin: string",
+          "type": "string",
+          "x-go-name": "NumberId"
+        },
+        "numberOfDaysElapsed": {
+          "description": "Number of days elapsed since last pesticide applied\nin: string",
+          "type": "string",
+          "x-go-name": "NumberOfDaysElapsed"
+        },
+        "pesticideId": {
+          "description": "Pedticide ID\nin: string",
+          "type": "string",
+          "x-go-name": "PesticideId"
+        },
+        "plantId": {
+          "description": "Plant Id\nin: string",
+          "type": "string",
+          "x-go-name": "PlantId"
+        },
+        "plantName": {
+          "description": "Plant name\nin: string",
+          "type": "string",
+          "x-go-name": "PlantName"
+        },
+        "profileImage": {
+          "description": "Profile image name\nin: string",
+          "type": "string",
+          "x-go-name": "ProfileImage"
+        }
+      },
+      "x-go-package": "github.com/hallosabuj/plant-care/server/models"
+    },
+    "ReqAppliedFertilizer": {
+      "type": "object",
+      "properties": {
+        "appliedDate": {
+          "description": "Applied Date\nin: string",
+          "type": "string",
+          "x-go-name": "AppliedDate"
+        },
+        "fertilizerId": {
+          "description": "Fertilizer Id\nin: string",
+          "type": "string",
+          "x-go-name": "FertilizerID"
+        },
+        "plantId": {
+          "description": "Plant Id\nin: string",
+          "type": "string",
+          "x-go-name": "PlantId"
+        }
+      },
+      "x-go-package": "github.com/hallosabuj/plant-care/server/api/appliedfertilizer"
+    },
+    "ReqAppliedPesticide": {
+      "type": "object",
+      "properties": {
+        "appliedDate": {
+          "description": "Applied Date\nin: string",
+          "type": "string",
+          "x-go-name": "AppliedDate"
+        },
+        "pesticideId": {
+          "description": "Pesticide Id\nin: string",
+          "type": "string",
+          "x-go-name": "PesticideID"
+        },
+        "plantId": {
+          "description": "Plant Id\nin: string",
+          "type": "string",
+          "x-go-name": "PlantId"
+        }
+      },
+      "x-go-package": "github.com/hallosabuj/plant-care/server/api/appliedpesticide"
+    },
+    "RespAddAppliedFertilizer": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "x-go-package": "github.com/hallosabuj/plant-care/server/api/appliedfertilizer"
+    },
+    "RespAddAppliedPesticide": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "x-go-package": "github.com/hallosabuj/plant-care/server/api/appliedpesticide"
+    }
+  }
+}

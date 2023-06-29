@@ -1,3 +1,27 @@
+//	Plant Care.
+//
+//	the purpose of this application is to provide an application
+//	that will help gardeners in maintaining their planta
+//
+//	Other detils about the application
+//
+//	Terms Of Service:
+//
+//	there are no TOS at this moment
+//
+//	Schemes: http
+//	Host: localhost:8080
+//	BasePath: /api
+//	Version: 0.0.1
+//	Contact: Sabuj Mondal<hallosabuj@gmail.com>
+//
+//	Consumes:
+//	- application/json
+//
+//	Produces:
+//	- application/json
+//
+// swagger:meta
 package main
 
 import (
@@ -33,6 +57,12 @@ func main() {
 		http.ServeFile(w, r, "static/index.html")
 	})
 
+	router.HandleFunc("/api/docs/swagger.json", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("Access-Control-Allow-Origin", "*")
+		w.Header().Add("Content-type", "application/json")
+		http.ServeFile(w, r, "swagger.json")
+	}).Methods(http.MethodGet)
+
 	plant.Uri_init_plant(router)
 	fertilizer.Uri_init_fertilizer(router)
 	appliedfertilizer.Uri_init_applied_fertilizer(router)
@@ -43,13 +73,6 @@ func main() {
 	////////////////////////////////////////////////////////////
 	// Setting up the http server to embed the UI also
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		//////////////////////////////////////////////////////////////////////////////////////////
-		// We can not navigate directly by clicking the url so we are redirecting to the base url
-		// if strings.HasPrefix(r.URL.Path, "/web") {
-		// 	http.Redirect(w, r, "/", http.StatusFound)
-		// 	return
-		// }
-		//////////////////////////////////////////////////////////////////////////////////////////
 		if strings.HasPrefix(r.URL.Path, "/api") {
 			router.ServeHTTP(w, r)
 			return

@@ -1,9 +1,22 @@
 package models
 
+//	AppliedFertilizer
+//
+//	swagger:model
 type AppliedFertilizer struct {
-	FertilizerID   string `json:"fertilizerId"`
+	//	Fertilizer Id
+	//	in: string
+	FertilizerID string `json:"fertilizerId"`
+	//	Fertilizer Name
+	//	in: string
 	FertilizerName string `json:"fertilizerName"`
-	PlantId        string `json:"plantId"`
-	PlantName      string `json:"plantName"`
-	AppliedDate    string `json:"appliedDate"`
+	//	Plant Id
+	//	in: string
+	PlantId string `json:"plantId"`
+	//	Plant Name
+	//	in: string
+	PlantName string `json:"plantName"`
+	//	Applied Date
+	//	in: string
+	AppliedDate string `json:"appliedDate"`
 }

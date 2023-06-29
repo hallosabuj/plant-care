@@ -1,9 +1,21 @@
 package models
 
+// AppliedPesticide
+//	swagger:model
 type AppliedPesticide struct {
-	PesticideID   string `json:"pesticideId"`
+	// Pesticide Id
+	// in: string
+	PesticideID string `json:"pesticideId"`
+	// Pesticide Name
+	// in string
 	PesticideName string `json:"pesticideName"`
-	PlantId       string `json:"plantId"`
-	PlantName     string `json:"plantName"`
-	AppliedDate   string `json:"appliedDate"`
+	// Plant Id
+	// in: string
+	PlantId string `json:"plantId"`
+	// Plant Name
+	// in: string
+	PlantName string `json:"plantName"`
+	// Applied date
+	// in: string
+	AppliedDate string `json:"appliedDate"`
 }

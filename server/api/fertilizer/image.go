@@ -3,7 +3,6 @@ package fertilizer
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"mime/multipart"
 	"os"
 	"path/filepath"
@@ -46,7 +45,7 @@ func GetFertilizerImage(fileName string) ([]byte, error) {
 	for _, file := range files {
 		fmt.Println(file)
 		// http.ServeFile(w, r, file)
-		data, _ := ioutil.ReadFile(file)
+		data, _ := os.ReadFile(file)
 		return data, nil
 	}
 	return nil, fmt.Errorf("unknown Error")
