@@ -10,7 +10,7 @@ class Fertilizers extends Component {
       this.state = {
          fertilizers:null
       }
-      this.reRenderOnAddOrDelete=this.reRenderOnAddOrDelete.bind(this)
+      this.reRenderOnAddOrDelete = this.reRenderOnAddOrDelete.bind(this)
     }
     async getFertilizers(){
         let fertilizers=await axios.get("/api/fertilizer").then((response)=>{
@@ -42,7 +42,7 @@ class Fertilizers extends Component {
             <div className=' bg-blue-400 grid lg:grid-cols-6 md:grid-cols-3 grid-cols-2'>
                 {/* Short Circuit to check null */}
                 {this.state.fertilizers && this.state.fertilizers.map((fertilizer,index)=>(
-                    <FertilizerCard key={index} fertilizer={fertilizer} reRenderOnDelete={this.reRenderOnAddOrDelete}/>
+                    <FertilizerCard key={fertilizer.fertilizerId} fertilizer={fertilizer} reRenderOnDelete={this.reRenderOnAddOrDelete}/>
                 ))}
             </div>
         </div>

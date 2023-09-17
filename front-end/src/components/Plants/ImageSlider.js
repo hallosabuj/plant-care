@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md'
 import axios from 'axios'
 import removeIcon from '../../remove.png';
-import ShowImageModal from './Modals/Show_ImageModal';
 class ImageSlider extends Component {
     constructor(props) {
         super(props)

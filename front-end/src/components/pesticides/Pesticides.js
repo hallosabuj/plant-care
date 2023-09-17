@@ -42,7 +42,7 @@ class Pesticides extends Component {
           <div className=' bg-blue-400 grid lg:grid-cols-6 md:grid-cols-3 grid-cols-2'>
               {/* Short Circuit to check null */}
               {this.state.pesticides && this.state.pesticides.map((pesticide,index)=>(
-                  <PesticideCard key={index} pesticide={pesticide} reRenderOnDelete={this.reRenderOnAddOrDelete}/>
+                  <PesticideCard key={pesticide.pesticideId} pesticide={pesticide} reRenderOnDelete={this.reRenderOnAddOrDelete}/>
               ))}
           </div>
       </div>

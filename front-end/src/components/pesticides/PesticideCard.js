@@ -24,12 +24,12 @@ export class PesticideCard extends Component {
     return (
       <div className='pr-1 pl-1 pt-3 pb-3 shadow-lg hover:scale-105'>
         <div className='h-[400px]'>
-          <Link to={"/web/pesticides/"+this.state.pesticide.pesticideId}>
           <div className='h-[300px] flex justify-center items-center border-[6px] border-black rounded-md relative overflow-hidden' >
-            <img src={imageUrl} style={{maxHeight:"100%",maxWidth:"100%"}} alt={this.state.pesticide.name}/>
+            <Link to={"/web/pesticides/"+this.state.pesticide.pesticideId}>
+              <img src={imageUrl} style={{maxHeight:"100%",maxWidth:"100%"}} alt={this.state.pesticide.name}/>
+            </Link>
             <img src={deleteIcon} onClick={()=>this.deletePesticide()} alt="delete" className='hover:opacity-100 opacity-60 top-3 right-3 absolute'/>
           </div>
-          </Link>
           <div className=' bg-orange-200 h-[100px] rounded-md flex justify-center items-center'>
             <div className='grid grid-cols-1 gap-2 w-full p-2'>
               {/* Row 1 */}

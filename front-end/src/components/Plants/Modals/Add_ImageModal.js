@@ -52,66 +52,60 @@ class AddImageModal extends Component {
     for (let i = 0; i < originalImages.length; i++) {
       let isCompressed=false;
       // for large image
-      {
-        new Compressor(originalImages[i],{
-          quality:0.6,
-          maxHeight:1280,
-          maxWidth:1280,
-          success(result){
-            compressedImagesLarge[i]=result
-            isCompressed=true
-          }
-        })
-        while(true){
-          // console.log("While-1")
-          if(isCompressed===true){
-            break;
-          }
-          await new Promise(r => setTimeout(r, 100));
+      new Compressor(originalImages[i],{
+        quality:0.6,
+        maxHeight:1280,
+        maxWidth:1280,
+        success(result){
+          compressedImagesLarge[i]=result
+          isCompressed=true
         }
+      })
+      while(true){
+        // console.log("While-1")
+        if(isCompressed===true){
+          break;
+        }
+        await new Promise(r => setTimeout(r, 100));
       }
 
       isCompressed = false;
       // for medium image
-      {
-        new Compressor(originalImages[i],{
-          quality:0.6,
-          maxHeight:512,
-          maxWidth:512,
-          success(result){
-            compressedImagesMedium[i]=result
-            isCompressed=true
-          }
-        })
-        while(true){
-          // console.log("While-2")
-          if(isCompressed===true){
-            break;
-          }
-          await new Promise(r => setTimeout(r, 100));
+      new Compressor(originalImages[i],{
+        quality:0.6,
+        maxHeight:512,
+        maxWidth:512,
+        success(result){
+          compressedImagesMedium[i]=result
+          isCompressed=true
         }
+      })
+      while(true){
+        // console.log("While-2")
+        if(isCompressed===true){
+          break;
+        }
+        await new Promise(r => setTimeout(r, 100));
       }
 
       isCompressed=false;
       // for small image
-      {
-        new Compressor(originalImages[i],{
-          quality:0.6,
-          maxHeight:164,
-          maxWidth:164,
-          success(result){
-            compressedImagesSmall[i]=result
-            isCompressed=true
-          }
-        })
-        while(true){
-          // console.log("While-3")
-          if(isCompressed===true){
-            break;
-          }
-          await new Promise(r => setTimeout(r, 100));
+      new Compressor(originalImages[i],{
+        quality:0.6,
+        maxHeight:164,
+        maxWidth:164,
+        success(result){
+          compressedImagesSmall[i]=result
+          isCompressed=true
         }
-      }      
+      })
+      while(true){
+        // console.log("While-3")
+        if(isCompressed===true){
+          break;
+        }
+        await new Promise(r => setTimeout(r, 100));
+      }   
     }
 
     this.setState({

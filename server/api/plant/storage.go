@@ -69,15 +69,15 @@ func (p plantHandler) AddPlant(newPlant *models.Plant) error {
 }
 func (p plantHandler) GetPlantsForAFertilizer(fertilizerId string, plantsForAFertilizer *[]models.PlantForAFertilizer) error {
 	res, err := p.db.Query(`
-	SELECT IFNULL(plants.plantId,''),IFNULL(plants.name,''),IFNULL(plants.profileImage,''),IFNULL(plants.applyInterval,''), IFNULL(MAX(applied.appliedDate),''), IFNULL(MAX(plants.numberId),'') from (
+	SELECT IFNULL(plants.plantId,''),IFNULL(plants.name,''),IFNULL(plants.profileImage,''),IFNULL(plants.applyInterval,''), IFNULL(applied.appliedDate,''), IFNULL(plants.numberId,'') from (
 		SELECT n.plantId as plantId,p.name as name,p.profileImage as profileImage, n.applyInterval as applyInterval, p.numberId as numberId
 		from neededfertilizers n, plants p 
 		where n.plantId=p.plantId and n.fertilizerId=?
 	) plants LEFT JOIN (
-		SELECT plantId, appliedDate FROM appliedfertilizer 
-		where fertilizerId=?
+		SELECT plantId, MAX(appliedDate) appliedDate FROM appliedfertilizer 
+		where fertilizerId=? GROUP BY plantId 
 	) applied
-	on plants.plantId=applied.plantId GROUP BY plants.plantId order by plants.name`,
+	on plants.plantId=applied.plantId`,
 		fertilizerId, fertilizerId)
 	if err != nil {
 		return err
