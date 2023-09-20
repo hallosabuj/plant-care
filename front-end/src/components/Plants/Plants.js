@@ -32,14 +32,12 @@ class Plants extends Component {
     render() {
         return (
             <div>
-                <div className=' bg-blue-500'>
-                        <div className="relative flex h-16 items-center justify-between">
-                            <div className='sm:ml-6 sm:block flex '>
-                                <AddPlantModal reRenderOnAdd={this.reRenderOnAddOrDelete} />
-                            </div>
-                        </div>
+                <div className="relative flex h-16 items-center justify-between">
+                    <div className='sm:ml-6 sm:block flex '>
+                        <AddPlantModal reRenderOnAdd={this.reRenderOnAddOrDelete} />
+                    </div>
                 </div>
-                <div className=' bg-blue-400 grid lg:grid-cols-6 md:grid-cols-3 grid-cols-2'>
+                <div className=' grid lg:grid-cols-6 md:grid-cols-3 grid-cols-2'>
                     {/* Short Circuit to check null */}
                     {this.state.plants && this.state.plants.map((plant, index) => (
                         <PlantCard key={plant.plantId} plant={plant} reRenderOnDelete={this.reRenderOnAddOrDelete} />
