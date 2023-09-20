@@ -13,29 +13,37 @@ import PesticideDetails from './components/pesticides/PesticideDetails';
 import ApplyPesticide from './components/apply/ApplyPesticide';
 import CompressImage from './components/CompressImage';
 import SwaggerUIPage from './components/swagger/SwaggerUIPage';
+import Login from './components/user/login/Login';
 
 function App() {
   return (
     <div className="App">
-      <Router>
-        <NavBar/>
-        <Routes>
-          <Route exact path='/' element={<Home/>}></Route>
-          <Route exact path='/web' element={<Home/>}></Route>
-          <Route exact path='/web/plants' element={<Plants/>}></Route>
-          <Route exact path='/web/plants/:plantId' element={<PlantDetails/>}></Route>
-          <Route exact path='/web/fertilizers' element={<Fertilizers/>}></Route>
-          <Route exact path='/web/fertilizers/:fertilizerId' element={<FertilizerDetails/>}></Route>
-          <Route exact path='/web/apply-fertilizer' element={<ApplyFertilizer/>}></Route>
-          <Route exact path='/web/pesticides' element={<Pesticides/>}></Route>
-          <Route exact path='/web/apply-pesticide' element={<ApplyPesticide/>}></Route>
-          <Route exact path='/web/pesticides/:pesticideId' element={<PesticideDetails/>}></Route>
-          <Route exact path='/web/disease' element={<Disease/>}></Route>
-          <Route exact path='/web/compress' element={<CompressImage/>}></Route>
-          <Route exact path='/swagger-ui' element={<SwaggerUIPage/>}></Route>
-        </Routes>
-      </Router>
-      <Footer />
+    <div className='bg-slate-300 min-h-screen flex flex-col'>
+      <div className='w-full h-auto'>
+        <Router>
+          <NavBar/>
+          <Routes>
+            <Route exact path='/' element={<Home/>}></Route>
+            <Route exact path='/web' element={<Home/>}></Route>
+            <Route exact path='/web/plants' element={<Plants/>}></Route>
+            <Route exact path='/web/plants/:plantId' element={<PlantDetails/>}></Route>
+            <Route exact path='/web/fertilizers' element={<Fertilizers/>}></Route>
+            <Route exact path='/web/fertilizers/:fertilizerId' element={<FertilizerDetails/>}></Route>
+            <Route exact path='/web/apply-fertilizer' element={<ApplyFertilizer/>}></Route>
+            <Route exact path='/web/pesticides' element={<Pesticides/>}></Route>
+            <Route exact path='/web/apply-pesticide' element={<ApplyPesticide/>}></Route>
+            <Route exact path='/web/pesticides/:pesticideId' element={<PesticideDetails/>}></Route>
+            <Route exact path='/web/disease' element={<Disease/>}></Route>
+            <Route exact path='/web/compress' element={<CompressImage/>}></Route>
+            <Route exact path='/swagger-ui' element={<SwaggerUIPage/>}></Route>
+            <Route exact path='/login' element={<Login/>}></Route>
+          </Routes>
+        </Router>
+      </div>
+      <div className='w-full mt-auto'>
+        <Footer />
+      </div>
+    </div>
     </div>
   );
 }
