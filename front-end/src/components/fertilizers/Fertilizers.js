@@ -31,21 +31,19 @@ class Fertilizers extends Component {
     }
     render() {
         return (
-        <div>
-            <div className=' bg-blue-500'>
+            <div>
                 <div className="relative flex h-16 items-center justify-between">
                     <div className='sm:ml-6 sm:block flex'>
                         <AddFertilizerModal reRenderOnAdd={this.reRenderOnAddOrDelete}/>
                     </div>
                 </div>
+                <div className='grid lg:grid-cols-6 md:grid-cols-3 grid-cols-2'>
+                    {/* Short Circuit to check null */}
+                    {this.state.fertilizers && this.state.fertilizers.map((fertilizer,index)=>(
+                        <FertilizerCard key={fertilizer.fertilizerId} fertilizer={fertilizer} reRenderOnDelete={this.reRenderOnAddOrDelete}/>
+                    ))}
+                </div>
             </div>
-            <div className=' bg-blue-400 grid lg:grid-cols-6 md:grid-cols-3 grid-cols-2'>
-                {/* Short Circuit to check null */}
-                {this.state.fertilizers && this.state.fertilizers.map((fertilizer,index)=>(
-                    <FertilizerCard key={fertilizer.fertilizerId} fertilizer={fertilizer} reRenderOnDelete={this.reRenderOnAddOrDelete}/>
-                ))}
-            </div>
-        </div>
         )
     }
 }
