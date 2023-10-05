@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { Component } from 'react'
-import editIcon from '../../edit.png';
+import editIcon from '../../assets/edit.png';
 import PesticideEditModal from './Modals/PesticideEditModal';
 
 export class PesticideDetails extends Component {

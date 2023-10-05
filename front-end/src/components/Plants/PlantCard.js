@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import deleteIcon from '../../delete.png';
-import waterIcon from '../../water.png';
+import deleteIcon from '../../assets/delete.png';
+import waterIcon from '../../assets/water.png';
 import axios from 'axios';
 import { Link } from 'react-router-dom'
 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
-import deleteIcon from '../../delete.png';
+import deleteIcon from '../../assets/delete.png';
 
 export class FertilizerCard extends Component {
   constructor(props) {

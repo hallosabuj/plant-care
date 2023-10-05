@@ -10,10 +10,6 @@ module.exports = {
     maxWidth:{
       '1/2':'50%',
       '1':'100%',
-    },
-    borderRadius:{
-      '1/2':'50%',
-      '1':'100%',
     }
   },
   plugins: [

@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, { Component } from 'react'
 import ImageSlider from './ImageSlider';
-import editIcon from '../../edit.png';
-import addIcon from '../../add.png';
-import addPhotoIcon from '../../add-photo.png';
+import editIcon from '../../assets/edit.png';
+import addIcon from '../../assets/add.png';
+import addPhotoIcon from '../../assets/add-photo.png';
 import PlantEditModal from './Modals/PlantEditModal';
 import AddNeededFertilizerModal from './Modals/Add_NeededFertilizerModal';
 import AddAppliedFertilizerModal from './Modals/Add_AppliedFertilizerModal';
