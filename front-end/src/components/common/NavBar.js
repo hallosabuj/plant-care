@@ -24,6 +24,7 @@ class NavBar2 extends Component {
 
             profileNavigation: [
                 { name: 'Profile Information', href: '#' },
+                { name: 'My Plants', href: '#' },
                 { name: 'Logout', href: '#' },
             ],
             profileMenuOpen: false
