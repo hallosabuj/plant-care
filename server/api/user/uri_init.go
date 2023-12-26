@@ -8,6 +8,6 @@ import (
 
 func Uri_init_user(router *mux.Router) {
 	router.HandleFunc("/api/signin", SignIn).Methods(http.MethodPost)
-	router.HandleFunc("/api/signup", SignUp).Methods(http.MethodGet)
+	router.HandleFunc("/api/signup", SignUp).Methods(http.MethodPost)
 	Connect()
 }

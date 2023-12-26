@@ -39,6 +39,7 @@ import (
 	"github.com/hallosabuj/plant-care/server/api/pesticide"
 	"github.com/hallosabuj/plant-care/server/api/plant"
 	"github.com/hallosabuj/plant-care/server/api/repotting"
+	"github.com/hallosabuj/plant-care/server/api/user"
 )
 
 //go:embed build
@@ -70,6 +71,7 @@ func main() {
 	repotting.Uri_init_repotting(router)
 	pesticide.Uri_init_pesticides(router)
 	appliedpesticide.Uri_init_applied_pesticides(router)
+	user.Uri_init_user(router)
 	////////////////////////////////////////////////////////////
 	// Setting up the http server to embed the UI also
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

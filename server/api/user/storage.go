@@ -8,7 +8,7 @@ import (
 )
 
 type HandlerU interface {
-	SignIn(models.User) error
+	SignIn(models.User) (int, error)
 	SignUp(models.User) error
 }
 
@@ -28,10 +28,28 @@ func Connect() {
 	UserHandler = userHandler{db: DB}
 }
 
-func (u userHandler) SignIn(models.User) error {
-	return nil
+func (u userHandler) SignIn(userDetails models.User) (int, error) {
+	sqlQuery := fmt.Sprintf("select count(*) from user where email='%v' and password='%v'", userDetails.Email, userDetails.Password)
+	res, err := u.db.Query(sqlQuery)
+	if err != nil {
+		return 0, err
+	}
+	defer res.Close()
+	var isCorrect int
+	for res.Next() {
+		err := res.Scan(&isCorrect)
+		if err != nil {
+			return 0, err
+		}
+	}
+	return isCorrect, nil
 }
 
-func (u userHandler) SignUp(models.User) error {
+func (u userHandler) SignUp(userDetails models.User) error {
+	sqlQuery := fmt.Sprintf("insert into user(id, fname, mname, lname, email, password) values('%v', '%v', '%v', '%v', '%v', '%v')", userDetails.ID, userDetails.FName, userDetails.MName, userDetails.LName, userDetails.Email, userDetails.Password)
+	_, err := u.db.Exec(sqlQuery)
+	if err != nil {
+		return err
+	}
 	return nil
 }

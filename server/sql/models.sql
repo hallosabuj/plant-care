@@ -73,6 +73,16 @@ CREATE Table appliedpesticide(
     FOREIGN KEY (pesticideId) REFERENCES pesticides(pesticideId)
 );
 
+CREATE Table User(
+    id VARCHAR(50) PRIMARY KEY,
+    fname VARCHAR(50),
+    mname VARCHAR(50),
+    lname VARCHAR(50),
+    email VARCHAR(100) UNIQUE,
+    password VARCHAR(20)
+)
+
+SELECT COUNT(*) from user where email='hallosabuj@gmail.com' and password='1234';
 -- Delete all tables
 DROP Table appliedfertilizer;
 DROP Table appliedpesticide;
@@ -82,3 +92,4 @@ DROP Table neededfertilizers;
 DROP Table pesticides;
 DROP Table plants;
 DROP Table fertilizers;
+DROP Table `user`;
