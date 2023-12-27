@@ -28,7 +28,7 @@ func AddPesticides(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	newPesticide := models.Pesticides{
@@ -62,7 +62,7 @@ func GetAllPesticides(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	var allPesticides []models.Pesticides
@@ -85,7 +85,7 @@ func GetPesticide(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	var pesticideId string = mux.Vars(r)["pesticideId"]
@@ -112,7 +112,7 @@ func DeletePesticide(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	var pesticideId string = mux.Vars(r)["pesticideId"]
@@ -143,7 +143,7 @@ func DownloadPesticideImage(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	var imageName string = mux.Vars(r)["imageName"]
@@ -169,7 +169,7 @@ func UpdatePesticide(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	queryParams := mux.Vars(r)

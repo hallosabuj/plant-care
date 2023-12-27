@@ -24,7 +24,7 @@ func AddAppliedPesticide(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	var appliedPesticides []models.AppliedPesticide
@@ -50,7 +50,7 @@ func GetAppliedPesticides(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	var allAppliedPesticide []models.AppliedPesticide
@@ -76,7 +76,7 @@ func GetFilteredAppliedPesticides(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	var field string = mux.Vars(r)["field"]

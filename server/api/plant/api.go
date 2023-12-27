@@ -29,7 +29,7 @@ func GetAllPlants(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
@@ -56,7 +56,7 @@ func AddPlant(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
@@ -99,7 +99,7 @@ func DeletePlantPhoto(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
@@ -126,7 +126,7 @@ func AddImages(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
@@ -170,7 +170,7 @@ func GetPlant(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
@@ -199,7 +199,7 @@ func GetPlantForAFertilizer(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
@@ -226,7 +226,7 @@ func GetPlantForAPesticide(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
@@ -253,7 +253,7 @@ func UpdatePlant(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
@@ -288,7 +288,7 @@ func DeletePlant(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
@@ -315,7 +315,7 @@ func DownloadImage(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
@@ -342,7 +342,7 @@ func CompressedImages(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")

@@ -11,6 +11,8 @@ import (
 	"github.com/hallosabuj/plant-care/server/models"
 )
 
+var TokenTimeOut time.Duration = 15 * time.Minute
+
 func SignIn(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Signing in")
 	userDetails := models.User{
@@ -27,7 +29,7 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 			http.SetCookie(w, &http.Cookie{
 				Name:    "token",
 				Value:   token,
-				Expires: time.Now().Add(15 * time.Minute),
+				Expires: time.Now().Add(TokenTimeOut),
 			})
 			json.NewEncoder(w).Encode(map[string]string{"msg": "login success"})
 		}

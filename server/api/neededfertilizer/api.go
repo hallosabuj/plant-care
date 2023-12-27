@@ -25,7 +25,7 @@ func AddNeededFertilizer(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	var neededFertilizer models.NeededFertilizer
@@ -52,7 +52,7 @@ func GetNeededFertilizers(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	var neededFertilizers []models.NeededFertilizer
@@ -77,7 +77,7 @@ func GetFilteredNeededFertilizers(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   newToken,
-		Expires: time.Now().Add(15 * time.Second),
+		Expires: time.Now().Add(user.TokenTimeOut),
 	})
 
 	field := mux.Vars(r)["field"]
