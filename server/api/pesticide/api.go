@@ -6,13 +6,31 @@ import (
 	"net/http"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
+	"github.com/hallosabuj/plant-care/server/api/user"
 	"github.com/hallosabuj/plant-care/server/models"
 )
 
 func AddPesticides(w http.ResponseWriter, r *http.Request) {
+	oldToken, _ := r.Cookie("token")
+	if oldToken == nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	newToken, err := user.VerifyJWT(oldToken.Value)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	http.SetCookie(w, &http.Cookie{
+		Name:    "token",
+		Value:   newToken,
+		Expires: time.Now().Add(15 * time.Second),
+	})
+
 	newPesticide := models.Pesticides{
 		Name:        r.FormValue("name"),
 		Details:     r.FormValue("details"),
@@ -31,6 +49,22 @@ func AddPesticides(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllPesticides(w http.ResponseWriter, r *http.Request) {
+	oldToken, _ := r.Cookie("token")
+	if oldToken == nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	newToken, err := user.VerifyJWT(oldToken.Value)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	http.SetCookie(w, &http.Cookie{
+		Name:    "token",
+		Value:   newToken,
+		Expires: time.Now().Add(15 * time.Second),
+	})
+
 	var allPesticides []models.Pesticides
 	PesticideHandler.GetAllPesticides(&allPesticides)
 	w.Header().Add("content-type", "application/json")
@@ -38,9 +72,25 @@ func GetAllPesticides(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetPesticide(w http.ResponseWriter, r *http.Request) {
+	oldToken, _ := r.Cookie("token")
+	if oldToken == nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	newToken, err := user.VerifyJWT(oldToken.Value)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	http.SetCookie(w, &http.Cookie{
+		Name:    "token",
+		Value:   newToken,
+		Expires: time.Now().Add(15 * time.Second),
+	})
+
 	var pesticideId string = mux.Vars(r)["pesticideId"]
 	var pesticide models.Pesticides
-	err := PesticideHandler.GetPesticideDetails(pesticideId, &pesticide)
+	err = PesticideHandler.GetPesticideDetails(pesticideId, &pesticide)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	} else {
@@ -49,6 +99,22 @@ func GetPesticide(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeletePesticide(w http.ResponseWriter, r *http.Request) {
+	oldToken, _ := r.Cookie("token")
+	if oldToken == nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	newToken, err := user.VerifyJWT(oldToken.Value)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	http.SetCookie(w, &http.Cookie{
+		Name:    "token",
+		Value:   newToken,
+		Expires: time.Now().Add(15 * time.Second),
+	})
+
 	var pesticideId string = mux.Vars(r)["pesticideId"]
 	if err := PesticideHandler.DeletePesticideDetails(pesticideId); err != nil {
 		if strings.Contains(err.Error(), "Error 1451:") {
@@ -64,6 +130,22 @@ func DeletePesticide(w http.ResponseWriter, r *http.Request) {
 }
 
 func DownloadPesticideImage(w http.ResponseWriter, r *http.Request) {
+	oldToken, _ := r.Cookie("token")
+	if oldToken == nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	newToken, err := user.VerifyJWT(oldToken.Value)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	http.SetCookie(w, &http.Cookie{
+		Name:    "token",
+		Value:   newToken,
+		Expires: time.Now().Add(15 * time.Second),
+	})
+
 	var imageName string = mux.Vars(r)["imageName"]
 	fmt.Println("plantId", imageName)
 	data, err := GetPesticideImage(imageName)
@@ -74,6 +156,22 @@ func DownloadPesticideImage(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdatePesticide(w http.ResponseWriter, r *http.Request) {
+	oldToken, _ := r.Cookie("token")
+	if oldToken == nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	newToken, err := user.VerifyJWT(oldToken.Value)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	http.SetCookie(w, &http.Cookie{
+		Name:    "token",
+		Value:   newToken,
+		Expires: time.Now().Add(15 * time.Second),
+	})
+
 	queryParams := mux.Vars(r)
 	var pesticideId string = queryParams["pesticideId"]
 	var field string = queryParams["field"]
@@ -84,7 +182,7 @@ func UpdatePesticide(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := PesticideHandler.UpdatePesticide(pesticideId, field, value)
+	err = PesticideHandler.UpdatePesticide(pesticideId, field, value)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

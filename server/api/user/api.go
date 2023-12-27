@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/hallosabuj/plant-care/server/models"
@@ -18,9 +19,21 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 	}
 	isCorrect, _ := UserHandler.SignIn(userDetails)
 	if isCorrect == 1 {
-		json.NewEncoder(w).Encode(map[string]string{"msg": "login success", "auth": "123456"})
+		token, err := CreateJWT(userDetails.Email)
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+			json.NewEncoder(w).Encode(map[string]string{"msg": "login failed"})
+		} else {
+			http.SetCookie(w, &http.Cookie{
+				Name:    "token",
+				Value:   token,
+				Expires: time.Now().Add(15 * time.Minute),
+			})
+			json.NewEncoder(w).Encode(map[string]string{"msg": "login success"})
+		}
 	} else {
-		json.NewEncoder(w).Encode(map[string]string{"msg": "login failed", "auth": ""})
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(map[string]string{"msg": "login failed"})
 	}
 }
 
@@ -42,7 +55,6 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		} else {
 			json.NewEncoder(w).Encode("signup failed")
 		}
-		fmt.Println(err)
 	} else {
 		json.NewEncoder(w).Encode("signup success")
 	}

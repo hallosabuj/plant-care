@@ -3,12 +3,30 @@ package appliedpesticide
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/hallosabuj/plant-care/server/api/user"
 	"github.com/hallosabuj/plant-care/server/models"
 )
 
 func AddAppliedPesticide(w http.ResponseWriter, r *http.Request) {
+	oldToken, _ := r.Cookie("token")
+	if oldToken == nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	newToken, err := user.VerifyJWT(oldToken.Value)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	http.SetCookie(w, &http.Cookie{
+		Name:    "token",
+		Value:   newToken,
+		Expires: time.Now().Add(15 * time.Second),
+	})
+
 	var appliedPesticides []models.AppliedPesticide
 	json.NewDecoder(r.Body).Decode(&appliedPesticides)
 	result := make(map[string]bool)
@@ -19,8 +37,24 @@ func AddAppliedPesticide(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAppliedPesticides(w http.ResponseWriter, r *http.Request) {
+	oldToken, _ := r.Cookie("token")
+	if oldToken == nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	newToken, err := user.VerifyJWT(oldToken.Value)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	http.SetCookie(w, &http.Cookie{
+		Name:    "token",
+		Value:   newToken,
+		Expires: time.Now().Add(15 * time.Second),
+	})
+
 	var allAppliedPesticide []models.AppliedPesticide
-	err := AppliedPesticideHandler.GetAllAppliedPesticides(&allAppliedPesticide)
+	err = AppliedPesticideHandler.GetAllAppliedPesticides(&allAppliedPesticide)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -29,10 +63,26 @@ func GetAppliedPesticides(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetFilteredAppliedPesticides(w http.ResponseWriter, r *http.Request) {
+	oldToken, _ := r.Cookie("token")
+	if oldToken == nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	newToken, err := user.VerifyJWT(oldToken.Value)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	http.SetCookie(w, &http.Cookie{
+		Name:    "token",
+		Value:   newToken,
+		Expires: time.Now().Add(15 * time.Second),
+	})
+
 	var field string = mux.Vars(r)["field"]
 	var value string = mux.Vars(r)["value"]
 	var allAppliedPesticide []models.AppliedPesticide
-	err := AppliedPesticideHandler.GetFilteredAllAppliedPesticides(field, value, &allAppliedPesticide)
+	err = AppliedPesticideHandler.GetFilteredAllAppliedPesticides(field, value, &allAppliedPesticide)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
