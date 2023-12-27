@@ -35,7 +35,7 @@ func CreateJWT(email string) (string, error) {
 		Email: email,
 		StandardClaims: jwt.StandardClaims{
 			IssuedAt:  time.Now().Unix(),
-			ExpiresAt: time.Now().Add(time.Second * 15).Unix(),
+			ExpiresAt: time.Now().Add(TokenTimeOut).Unix(),
 		},
 	}
 	// Generating access token
