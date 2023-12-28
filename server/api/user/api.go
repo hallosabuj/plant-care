@@ -61,3 +61,12 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode("signup success")
 	}
 }
+
+func Logout(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Signing out")
+	http.SetCookie(w, &http.Cookie{
+		Name:    "token",
+		Value:   "",
+		Expires: time.Now(),
+	})
+}
