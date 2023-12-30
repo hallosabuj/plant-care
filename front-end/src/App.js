@@ -35,7 +35,7 @@ class App extends Component {
           <div className='bg-slate-300 min-h-screen flex flex-col'>
             <div className='w-full h-auto'>
               <Router>
-                <NavBar isSignedIn={this.state.isSignedIn}/>
+                <NavBar isSignedIn={this.state.isSignedIn} toggleSignedIn={this.toggleSignedIn}/>
                 <Routes>
                   <Route exact path='/' element={<Home />}></Route>
                   <Route exact path='/web' element={<Home />}></Route>

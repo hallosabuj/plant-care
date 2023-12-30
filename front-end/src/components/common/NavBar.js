@@ -3,6 +3,7 @@ import { Bars3Icon, BellIcon, XMarkIcon, UserCircleIcon } from '@heroicons/react
 import { NavLink } from 'react-router-dom'
 
 import React, { Component } from 'react'
+import axios from 'axios'
 
 class NavBar2 extends Component {
     constructor(props) {
@@ -12,6 +13,7 @@ class NavBar2 extends Component {
             navigation: [
                 { name: 'Home', href: '/web' },
                 { name: 'Plants', href: '/web/plants' },
+                { name: 'My Plants', href: '/web/user/plants' },
                 { name: 'Fertilizers', href: '/web/fertilizers' },
                 { name: 'Apply Fertilizer', href: '/web/apply-fertilizer' },
                 { name: 'Pesticides', href: '/web/pesticides' },
@@ -23,11 +25,9 @@ class NavBar2 extends Component {
             menuOpen: false,
 
             profileNavigation: [
-                { name: 'Profile Information', href: '#' },
-                { name: 'My Plants', href: '#' },
-                { name: 'Logout', href: '#' },
+                { name: 'Profile Information', href: '/web/profile' },
             ],
-            profileMenuOpen: false
+            profileMenuOpen: false,
         }
     }
     handleFunc = (currentPage) => {
@@ -60,6 +60,12 @@ class NavBar2 extends Component {
         })
     }
 
+    signOut = () =>{
+        axios.get("/api/signout")
+        this.props.toggleSignedIn()
+        this.toggleProfileMenuIcon()
+    };
+
     render() {
         return (
             <div as="nav" className="">
@@ -78,7 +84,7 @@ class NavBar2 extends Component {
                     <div className='hidden lg:inline'>
                         <div className='bg-gray-800 w-auto flex items-center gap[4vh] gap-1 px-10'>
                             {this.state.navigation.map((item) => {
-                                return (
+                                return (item.href!="/web/user/plants" || this.props.isSignedIn)&&(
                                     <NavLink
                                         key={item.name}
                                         to={item.href}
@@ -132,7 +138,7 @@ class NavBar2 extends Component {
                     {(this.state.menuOpen) && (
                         <div className='bg-gray-800 min-w-[200px] top-[70px] flex flex-col gap-1 px-5 pb-3 mr-4 lg:hidden rounded-b-md'>
                             {this.state.navigation.map((item) => {
-                                return (
+                                return (item.href!="/web/user/plants" || this.props.isSignedIn)&&(
                                     <NavLink
                                         key={item.name}
                                         to={item.href}
@@ -161,6 +167,7 @@ class NavBar2 extends Component {
                                     > {item.name} </NavLink>
                                 )
                             })}
+                            <NavLink onClick={this.signOut} to={'/'} className='hover:bg-gray-700 w-fit text-gray-300 hover:text-white px-3 py-1 rounded-t-[5%] rounded-b-[5%] rounded-l-full rounded-r-full text-sm font-medium'>Sign Out</NavLink>
                         </div>
                     )}
                 </div>
