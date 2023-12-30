@@ -51,6 +51,8 @@ class App extends Component {
                   <Route exact path='/web/compress' element={<CompressImage />}></Route>
                   <Route exact path='/swagger-ui' element={<SwaggerUIPage />}></Route>
 
+                  <Route exact path='/web/user/plants' element={<Plants />}></Route>
+
                   <Route exact path='/web/signin' element={<SingIn toggleSignedIn={this.toggleSignedIn}/>}></Route>
                 </Routes>
               </Router>
