@@ -20,5 +20,8 @@ func Uri_init_plant(router *mux.Router) {
 	router.HandleFunc("/api/plant/uploadImages", AddImages).Methods(http.MethodPost)
 	// This api is for uploading compressed images through the react UI
 	router.HandleFunc("/api/plant/compressed", CompressedImages).Methods(http.MethodPost)
+	// User specific APIs
+	router.HandleFunc("/api/user/plant", GetAllPlantsOfUser).Methods(http.MethodGet)
+	router.HandleFunc("/api/user/plant/{plantId}", GetUserPlant).Methods(http.MethodGet)
 	Connect()
 }

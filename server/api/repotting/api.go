@@ -39,25 +39,9 @@ func AddRepotting(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetRepottingForAPlant(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
-
 	var repottingList []models.Repotting
 	plantId := mux.Vars(r)["plantId"]
-	err = RepottingHandler.GetRepottingForAPlant(plantId, &repottingList)
+	err := RepottingHandler.GetRepottingForAPlant(plantId, &repottingList)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

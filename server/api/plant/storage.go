@@ -15,6 +15,7 @@ import (
 type HandlerP interface {
 	AddPlant(*models.Plant) error
 	GetAllPlants(*[]models.Plant) error
+	GetAllPlantsOfUser(string, *[]models.Plant) error
 	GetPlantsForAFertilizer(string, *[]models.PlantForAFertilizer) error
 	GetPlantsForAPesticide(string, *[]models.PlantForAPesticide) error
 	DeleteDetails(string) error
@@ -144,6 +145,24 @@ func (p plantHandler) GetPlantsForAPesticide(pesticideId string, plantsForAFerti
 
 func (p plantHandler) GetAllPlants(allPlants *[]models.Plant) error {
 	res, err := p.db.Query("select IFNULL(plantId,''),IFNULL(name,''),IFNULL(dob,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(soiltype,''),IFNULL(numberId,'') from plants order by name")
+	if err != nil {
+		return nil
+	}
+	defer res.Close()
+	for res.Next() {
+		var plant models.Plant
+		err := res.Scan(&plant.ID, &plant.Name, &plant.DOB, &plant.Details, &plant.ProfileImage, &plant.SoilType, &plant.NumberId)
+		if err != nil {
+			return err
+		}
+		*allPlants = append(*allPlants, plant)
+	}
+	return nil
+}
+
+func (p plantHandler) GetAllPlantsOfUser(email string, allPlants *[]models.Plant) error {
+	sqlQuery := fmt.Sprintf("select IFNULL(plantId,''),IFNULL(name,''),IFNULL(dob,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(soiltype,''),IFNULL(numberId,'') from plants where user_email='%v' order by name", email)
+	res, err := p.db.Query(sqlQuery)
 	if err != nil {
 		return nil
 	}
