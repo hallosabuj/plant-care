@@ -1,5 +1,5 @@
 import logo from '../../assets/logo.png'
-import { Bars3Icon, BellIcon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/outline'
 import { NavLink } from 'react-router-dom'
 
 import React, { Component } from 'react'
@@ -84,7 +84,7 @@ class NavBar2 extends Component {
                     <div className='hidden lg:inline'>
                         <div className='bg-gray-800 w-auto flex items-center gap[4vh] gap-1 px-10'>
                             {this.state.navigation.map((item) => {
-                                return (item.href!="/web/user/plants" || this.props.isSignedIn)&&(
+                                return (item.href!=="/web/user/plants" || this.props.isSignedIn)&&(
                                     <NavLink
                                         key={item.name}
                                         to={item.href}
@@ -138,7 +138,7 @@ class NavBar2 extends Component {
                     {(this.state.menuOpen) && (
                         <div className='bg-gray-800 min-w-[200px] top-[70px] flex flex-col gap-1 px-5 pb-3 mr-4 lg:hidden rounded-b-md'>
                             {this.state.navigation.map((item) => {
-                                return (item.href!="/web/user/plants" || this.props.isSignedIn)&&(
+                                return (item.href!=="/web/user/plants" || this.props.isSignedIn)&&(
                                     <NavLink
                                         key={item.name}
                                         to={item.href}
