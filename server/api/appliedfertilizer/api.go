@@ -36,53 +36,11 @@ func AddAppliedFertilizer(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(result)
 }
 
-func GetAppliedFertilizers(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
-
-	var allAppliedFertilizer []models.AppliedFertilizer
-	err = AppliedFertilizerHandler.GetAllAppliedFertilizers(&allAppliedFertilizer)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-	w.Header().Add("content-type", "application/json")
-	json.NewEncoder(w).Encode(allAppliedFertilizer)
-}
-
 func GetFilteredAppliedFertilizers(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
-
 	var field string = mux.Vars(r)["field"]
 	var value string = mux.Vars(r)["value"]
 	var allAppliedFertilizer []models.AppliedFertilizer
-	err = AppliedFertilizerHandler.GetFilteredAllAppliedFertilizers(field, value, &allAppliedFertilizer)
+	err := AppliedFertilizerHandler.GetFilteredAllAppliedFertilizers(field, value, &allAppliedFertilizer)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
