@@ -11,7 +11,7 @@ import AddImageModal from './Modals/Add_ImageModal';
 import ShowImageModal from './Modals/Show_ImageModal';
 import AddRepotting from './Modals/Add_Repotting';
 
-class PlantDetails extends Component {
+class MyPlantDetails extends Component {
   constructor(props) {
     super(props)
 
@@ -31,9 +31,9 @@ class PlantDetails extends Component {
     }
   }
   async getDetails() {
-    let plantId = window.location.href.split('/')[6]
+    let plantId = window.location.href.split('/')[7]
     // Getting basic details
-    await axios.get("/api/plant/" + plantId).then((response) => {
+    await axios.get("/api/user/plant/" + plantId).then((response) => {
       this.setState({
         plantDetails: response.data
       })
@@ -319,4 +319,4 @@ class PlantDetails extends Component {
   }
 }
 
-export default PlantDetails
+export default MyPlantDetails

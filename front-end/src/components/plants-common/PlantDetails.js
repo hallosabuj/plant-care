@@ -1,17 +1,9 @@
 import axios from 'axios';
 import React, { Component } from 'react'
 import ImageSlider from './ImageSlider';
-import editIcon from '../../assets/edit.png';
-import addIcon from '../../assets/add.png';
-import addPhotoIcon from '../../assets/add-photo.png';
-import PlantEditModal from './Modals/PlantEditModal';
-import AddNeededFertilizerModal from './Modals/Add_NeededFertilizerModal';
-import AddAppliedFertilizerModal from './Modals/Add_AppliedFertilizerModal';
-import AddImageModal from './Modals/Add_ImageModal';
 import ShowImageModal from './Modals/Show_ImageModal';
-import AddRepotting from './Modals/Add_Repotting';
 
-class MyPlantDetails extends Component {
+class PlantDetails extends Component {
   constructor(props) {
     super(props)
 
@@ -20,14 +12,8 @@ class MyPlantDetails extends Component {
       neededFertilizers: null,
       appliedFertilizers: null,
       repottingList:null,
-      editModal: false,
-      editValues: null,
-      addNeededFertilizerModal: false,
-      addappliedFertilizerModal: false,
-      addImageModal: false,
       showImageModal: false,
-      imageUrlForShowModal:"",
-      addRepottingModal:false
+      imageUrlForShowModal:""
     }
   }
   async getDetails() {
@@ -72,73 +58,6 @@ class MyPlantDetails extends Component {
     this.getDetails()
   }
 
-  showEditModal = (displayName, fieldName, fieldValue) => {
-    console.log(fieldName)
-    let textTypes = "name soilType details"
-    let dateTypes = "dob"
-
-    let editValues = { plantId: this.state.plantDetails.plantId, displayName: null, fieldName: null, fieldValue: null, fieldType: null }
-    editValues.displayName = displayName
-    editValues.fieldName = fieldName
-    editValues.fieldValue = fieldValue
-
-    if (textTypes.includes(fieldName)) {
-      editValues.fieldType = "text"
-    } else if (dateTypes.includes(fieldName)) {
-      editValues.fieldType = "date"
-    }
-    console.log(editValues)
-    this.setState({
-      editValues: editValues
-    })
-    this.setState({
-      editModal: true
-    })
-  }
-  closeEditModal = () => {
-    this.setState({
-      editModal: false,
-      editValues: null
-    })
-    this.getDetails()
-  }
-
-  showAddNeededFertilizersModal = () => {
-    this.setState({
-      addNeededFertilizerModal: true
-    })
-  }
-  closeAddNeededFertilizersModal = () => {
-    this.setState({
-      addNeededFertilizerModal: false
-    })
-    this.getDetails()
-  }
-
-  showAddAppliedFertilizersModal = () => {
-    this.setState({
-      addappliedFertilizerModal: true
-    })
-  }
-  closeAddAppliedFertilizerModal = () => {
-    this.setState({
-      addappliedFertilizerModal: false
-    })
-    this.getDetails()
-  }
-
-  showAddImageModal = () => {
-    this.setState({
-      addImageModal: true
-    })
-  }
-  closeAddImageModal = () => {
-    this.setState({
-      addImageModal: false
-    })
-    this.getDetails()
-  }
-
   openShowImageModal = (imageUrl) => {
     console.log("Opening",imageUrl)
     this.setState({
@@ -154,20 +73,6 @@ class MyPlantDetails extends Component {
     })
   }
 
-  openAddRepottingModal = (imageUrl) => {
-    console.log("Opening",imageUrl)
-    this.setState({
-      addRepottingModal: true
-    })
-  }
-  closeAddRepottingModal = () => {
-    console.log("Closing")
-    this.setState({
-      addRepottingModal: false
-    })
-    this.getDetails()
-  }
-
   render() {
     return !(this.state.plantDetails) ? (<div>Details Not Found</div>) : (
       <div>
@@ -175,22 +80,18 @@ class MyPlantDetails extends Component {
           {/* Row 1 */}
           <div className=' bg-slate-500 h-14 flex justify-center items-center text-4xl relative'>
             <h1>{this.state.plantDetails.numberId}: {this.state.plantDetails.name}</h1>
-            <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={() => this.showEditModal("Name", "name", this.state.plantDetails.name)} alt={"Edit"} />
           </div>
           {/* Row 2 */}
           <div className=' bg-slate-400 flex justify-center items-center overflow-hidden relative'>
             {this.state.plantDetails && (<ImageSlider openShowImageModal={this.openShowImageModal} imageNames={this.state.plantDetails.imageNames} />)}
-            <img src={addPhotoIcon} className="w-6 h-6 top-1 right-4 absolute" onClick={this.showAddImageModal} alt="PlantImage" />
           </div>
           {/* Row 3 */}
           <div className='flex justify-left items-center bg-slate-500 pl-10 h-8 relative'>
             <div>DOB: {this.state.plantDetails.dob} </div>
-            <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={() => this.showEditModal("Date of birth", "dob", this.state.plantDetails.dob)} alt={"Edit"} />
           </div>
           {/* Row 4 */}
           <div className=' bg-slate-400 flex justify-left items-center pl-10 h-8 relative'>
             Soil type : {this.state.plantDetails.soilType}
-            <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={() => this.showEditModal("Soil type", "soiltype", this.state.plantDetails.soilType)} alt={"Edit"} />
           </div>
           {/* Row 5 */}
           <div className='flex justify-left items-center pl-10 bg-slate-500 min-h-[32px] relative'>
@@ -198,7 +99,6 @@ class MyPlantDetails extends Component {
               <h2>About the plant</h2>
               {this.state.plantDetails.details}
             </div>
-            <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={() => this.showEditModal("About the plant", "details", this.state.plantDetails.details)} alt={"Edit"} />
           </div>
           {/* Row 6 */}
           <div className=''>
@@ -207,7 +107,6 @@ class MyPlantDetails extends Component {
                 <tr>
                   <th colSpan={3} className=' text-center text-2xl relative'>
                     Fertilizers needed for this plant
-                    <img src={addIcon} className="h-6 w-6 absolute top-1 right-4" alt={"Add"} onClick={this.showAddNeededFertilizersModal} />
                   </th>
                 </tr>
                 <tr>
@@ -249,7 +148,6 @@ class MyPlantDetails extends Component {
                 <tr>
                   <th colSpan={2} className=' text-center text-2xl relative'>
                     Fertilizers applied
-                    <img src={addIcon} className="h-6 w-6 absolute top-1 right-4" alt="Add" onClick={this.showAddAppliedFertilizersModal} />
                   </th>
                 </tr>
                 <tr>
@@ -285,7 +183,6 @@ class MyPlantDetails extends Component {
                 <tr>
                   <th className=' text-center text-2xl relative'>
                     Repotting Details
-                    <img src={addIcon} className="h-6 w-6 absolute top-1 right-4" alt="Add" onClick={this.openAddRepottingModal} />
                   </th>
                 </tr>
                 <tr>
@@ -308,15 +205,10 @@ class MyPlantDetails extends Component {
             </table>
           </div>
         </div>
-        <PlantEditModal isOpen={this.state.editModal} editValues={this.state.editValues} closeModal={this.closeEditModal} />
-        <AddNeededFertilizerModal isOpen={this.state.addNeededFertilizerModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeAddNeededFertilizersModal} />
-        <AddAppliedFertilizerModal isOpen={this.state.addappliedFertilizerModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeAddAppliedFertilizerModal} />
-        <AddImageModal isOpen={this.state.addImageModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeAddImageModal} />
         <ShowImageModal isOpen={this.state.showImageModal} imageUrl={this.state.imageUrlForShowModal} plantId={this.state.plantDetails.plantId} plantName={this.state.plantDetails.name} closeModal={this.closeShowImageModal} />
-        <AddRepotting isOpen={this.state.addRepottingModal} plantId={this.state.plantDetails.plantId} closeModal={this.closeAddRepottingModal} />
       </div>
     )
   }
 }
 
-export default MyPlantDetails
+export default PlantDetails

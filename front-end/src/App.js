@@ -1,10 +1,10 @@
 import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 import Home from './components/Home';
 import NavBar from './components/common/NavBar';
-import Plants from './components/Plants/Plants';
+import Plants from './components/plants-common/Plants';
 import Fertilizers from './components/fertilizers/Fertilizers';
 import Footer from './components/common/Footer';
-import PlantDetails from './components/Plants/PlantDetails';
+import PlantDetails from './components/plants-common/PlantDetails';
 import FertilizerDetails from './components/fertilizers/FertilizerDetails';
 import ApplyFertilizer from './components/apply/ApplyFertilizer';
 import Pesticides from './components/pesticides/Pesticides';
@@ -15,6 +15,9 @@ import CompressImage from './components/CompressImage';
 import SwaggerUIPage from './components/swagger/SwaggerUIPage';
 import SingIn from './components/user/SignIn';
 import { Component } from 'react';
+import UserPlants from './components/plants-user/UserPlants';
+import UserPlantDetails from './components/plants-user/UserPlantDetails';
+import axios from 'axios';
 
 class App extends Component {
   constructor(props){
@@ -23,6 +26,9 @@ class App extends Component {
       isSignedIn: false
     }
     this.toggleSignedIn=this.toggleSignedIn.bind(this)
+    axios.get("/api/checklogin").then(()=>{
+      this.toggleSignedIn()
+    })
   }
   toggleSignedIn(){
     this.setState({
@@ -51,7 +57,8 @@ class App extends Component {
                   <Route exact path='/web/compress' element={<CompressImage />}></Route>
                   <Route exact path='/swagger-ui' element={<SwaggerUIPage />}></Route>
 
-                  <Route exact path='/web/user/plants' element={<Plants />}></Route>
+                  <Route exact path='/web/user/plants' element={<UserPlants isSignedIn={this.state.isSignedIn}/>}></Route>
+                  <Route exact path='/web/user/plants/:plantId' element={<UserPlantDetails isSignedIn={this.state.isSignedIn}/>}></Route>
 
                   <Route exact path='/web/signin' element={<SingIn toggleSignedIn={this.toggleSignedIn}/>}></Route>
                 </Routes>

@@ -12,13 +12,6 @@ class PlantCard extends Component {
       plant: this.props.plant
     }
   }
-  async deletePlant() {
-    console.log("Deleting", this.state.plant.plantId)
-    await axios.delete("/api/plant/" + this.state.plant.plantId).catch(function (error) {
-      console.log(error);
-    });
-    this.props.reRenderOnDelete()
-  }
   render() {
     let imageUrl = "/api/plant/downloadImage/medium/" + this.state.plant.profileImage
     return (
@@ -28,7 +21,6 @@ class PlantCard extends Component {
             <Link to={"/web/plants/" + this.state.plant.plantId}>
               <img src={imageUrl} className=' max-h-1 max-w-1 rounded-md' alt={this.state.plant.name} />
             </Link>
-            <img src={deleteIcon} onClick={() => this.deletePlant()} alt="delete" className='hover:opacity-100 opacity-60 top-3 right-3 absolute'/>
           </div>
           <div className=' h-[100px] rounded-lg flex justify-center items-center bg-slate-500 border-2 border-slate-900'>
             <div className='grid grid-cols-2 grid-rows-2 gap-2 w-full p-2'>

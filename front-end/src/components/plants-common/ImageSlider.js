@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md'
-import axios from 'axios'
-import removeIcon from '../../assets/remove.png';
 class ImageSlider extends Component {
     constructor(props) {
         super(props)
@@ -17,22 +15,6 @@ class ImageSlider extends Component {
     slideRight=()=>{
         var slider=document.getElementById("slider")
         slider.scrollLeft=slider.scrollLeft+500
-    }
-    deleteImage=async(key)=>{
-        console.log(key)
-        if (key===""){
-            return
-        }
-        await axios.delete("/api/plant/deleteImage/"+this.state.imageNames[key]).then((response)=>{
-            console.log("Deleted")
-            let imageNames=this.state.imageNames
-            delete imageNames[key]
-            this.setState({
-                imageNames:imageNames
-            })
-        }).catch((error)=>{
-            console.log(error)
-        })
     }
     sendImageUrlToParent=(imageUrl)=>{
         console.log("Need to send URL to parent")
@@ -50,7 +32,6 @@ class ImageSlider extends Component {
                         return (
                             <div className='h-[220px] inline-block p-2 cursor-pointer hover:scale-105 ease-in-out duration-300 relative' key={key}>
                                 <img onClick={()=>{this.sendImageUrlToParent(imageUrlLarge)}} className='h-full w-auto' src={imageUrlMedium} alt="Plant"/>
-                                <img onClick={()=>{this.deleteImage(key)}} src={removeIcon} className="h-6 w-6 top-3 right-3 opacity-60 hover:opacity-100 absolute" alt='Delete'/>
                             </div>
                         )
                     })}
