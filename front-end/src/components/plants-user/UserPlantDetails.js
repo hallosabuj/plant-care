@@ -10,8 +10,13 @@ import AddAppliedFertilizerModal from './Modals/Add_AppliedFertilizerModal';
 import AddImageModal from './Modals/Add_ImageModal';
 import ShowImageModal from './Modals/Show_ImageModal';
 import AddRepotting from './Modals/Add_Repotting';
+import { useNavigate } from 'react-router-dom';
 
-class MyPlantDetails extends Component {
+const MyPlantDetails = (props) =>{
+  const navigate = useNavigate()
+  return(<MyPlantDetailsClass navigate={navigate} isSignedIn={props.isSignedIn}/>)
+}
+class MyPlantDetailsClass extends Component {
   constructor(props) {
     super(props)
 
@@ -69,6 +74,10 @@ class MyPlantDetails extends Component {
     });
   }
   componentDidMount() {
+    // If it's not logged in then redirect to home page
+    if(!this.props.isSignedIn){
+      this.props.navigate('/');
+    }
     this.getDetails()
   }
 

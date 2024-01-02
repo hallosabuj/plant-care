@@ -2,8 +2,14 @@ import axios from 'axios'
 import React, { Component } from 'react'
 import UserPlantCard from './UserPlantCard'
 import AddPlantModal from './Modals/Add_PlantModal'
+import { useNavigate } from 'react-router-dom'
 
-class UserPlants extends Component {
+const UserPlants = (props) => {
+    const navigate = useNavigate();
+    return (<UserPlantsClass navigate={navigate} isSignedIn={props.isSignedIn} />)
+}
+
+class UserPlantsClass extends Component {
     constructor(props) {
         super(props)
 
@@ -24,6 +30,10 @@ class UserPlants extends Component {
         console.log(plants)
     }
     componentDidMount() {
+        // If it's not logged in then redirect to home page
+        if(!this.props.isSignedIn){
+            this.props.navigate('/');
+        }
         this.getPlants()
     }
     reRenderOnAddOrDelete() {
