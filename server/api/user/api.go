@@ -70,3 +70,21 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 		Expires: time.Now(),
 	})
 }
+
+func CheckLogin(w http.ResponseWriter, r *http.Request) {
+	oldToken, _ := r.Cookie("token")
+	if oldToken == nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	newToken, err := VerifyJWT(oldToken.Value)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	http.SetCookie(w, &http.Cookie{
+		Name:    "token",
+		Value:   newToken,
+		Expires: time.Now().Add(TokenTimeOut),
+	})
+}
