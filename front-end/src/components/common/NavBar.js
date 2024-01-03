@@ -11,15 +11,15 @@ class NavBar2 extends Component {
         console.log(window.location.href.split('#')[1])
         this.state = {
             navigation: [
-                { name: 'Home', href: '/web' },
-                { name: 'Plants', href: '/web/plants' },
-                { name: 'My Plants', href: '/web/user/plants' },
-                { name: 'Fertilizers', href: '/web/fertilizers' },
-                { name: 'Apply Fertilizer', href: '/web/apply-fertilizer' },
-                { name: 'Pesticides', href: '/web/pesticides' },
-                { name: 'Apply Pesticide', href: '/web/apply-pesticide' },
-                { name: 'Disease', href: '/web/disease' },
-                { name: 'Swagger-UI', href: '/swagger-ui' },
+                { name: 'Home',             href: '/web' ,                      public: true},
+                { name: 'Plants',           href: '/web/plants',                public: true },
+                { name: 'My Plants',        href: '/web/user/plants',           public: false },
+                { name: 'Fertilizers',      href: '/web/user/fertilizers',      public: false },
+                { name: 'Apply Fertilizer', href: '/web/user/apply-fertilizer', public: false },
+                { name: 'Pesticides',       href: '/web/user/pesticides',       public: false },
+                { name: 'Apply Pesticide',  href: '/web/user/apply-pesticide',  public: false },
+                { name: 'Disease',          href: '/web/disease',               public: true },
+                { name: 'Swagger-UI',       href: '/swagger-ui',                public: true },
             ],
             currentPage: (window.location.href.split('#')[1] === "" || window.location.href.split('#')[1] === undefined) ? "/web" : window.location.href.split('#')[1],
             menuOpen: false,
@@ -84,7 +84,7 @@ class NavBar2 extends Component {
                     <div className='hidden lg:inline'>
                         <div className='bg-gray-800 w-auto flex items-center gap[4vh] gap-1 px-10'>
                             {this.state.navigation.map((item) => {
-                                return (item.href!=="/web/user/plants" || this.props.isSignedIn)&&(
+                                return (item.public || this.props.isSignedIn)&&(
                                     <NavLink
                                         key={item.name}
                                         to={item.href}
@@ -138,7 +138,7 @@ class NavBar2 extends Component {
                     {(this.state.menuOpen) && (
                         <div className='bg-gray-800 min-w-[200px] top-[70px] flex flex-col gap-1 px-5 pb-3 mr-4 lg:hidden rounded-b-md'>
                             {this.state.navigation.map((item) => {
-                                return (item.href!=="/web/user/plants" || this.props.isSignedIn)&&(
+                                return (item.public || this.props.isSignedIn)&&(
                                     <NavLink
                                         key={item.name}
                                         to={item.href}

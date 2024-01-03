@@ -2,8 +2,14 @@ import axios from 'axios'
 import React, { Component } from 'react'
 import editIcon from '../../assets/edit.png';
 import FertilizerEditModal from './Modals/FertilizerEditModal';
+import { useNavigate } from 'react-router-dom';
 
-export class FertilizerDetails extends Component {
+const FertilizerDetails = (props) =>{
+  const navigate = useNavigate()
+  return (<FertilizerDetailsClass navigate={navigate} isSignedIn={props.isSignedIn}/>)
+}
+
+export class FertilizerDetailsClass extends Component {
   constructor(props) {
     super(props)
   
@@ -14,7 +20,7 @@ export class FertilizerDetails extends Component {
     }
   }
   async getDetails(){
-    let fertilizerId = window.location.href.split('/')[6]
+    let fertilizerId = window.location.href.split('/')[7]
     // Getting basic details
     await axios.get("/api/fertilizer/" + fertilizerId).then((response) => {
       this.setState({
@@ -26,6 +32,10 @@ export class FertilizerDetails extends Component {
     });
   }
   componentDidMount(){
+    // If it's not logged in then redirect to home page
+    if(!this.props.isSignedIn){
+      this.props.navigate('/');
+    }
     this.getDetails()
   }
   showEditModal=(displayName,fieldName,fieldValue)=>{

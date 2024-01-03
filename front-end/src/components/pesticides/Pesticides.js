@@ -2,8 +2,14 @@ import React, { Component } from 'react'
 import axios  from 'axios'
 import PesticideCard from './PesticideCard'
 import AddPesticideModal from './Modals/AddPesticideModal'
+import { useNavigate } from 'react-router-dom'
 
-class Pesticides extends Component {
+const Pesticides = (props) =>{
+    const navigate = useNavigate()
+    return (<PesticidesClass navigate={navigate} isSignedIn={props.isSignedIn}/>)
+}
+
+class PesticidesClass extends Component {
   constructor(props) {
     super(props)
   
@@ -24,7 +30,11 @@ class Pesticides extends Component {
       console.log(pesticides)
   }
   componentDidMount(){
-      this.getPesticides()
+    // If it's not logged in then redirect to home page
+    if(!this.props.isSignedIn){
+        this.props.navigate('/');
+    }
+    this.getPesticides()
   }
   reRenderOnAddOrDelete(){
       this.getPesticides()

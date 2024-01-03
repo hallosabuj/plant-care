@@ -2,8 +2,14 @@ import axios from 'axios'
 import React, { Component } from 'react'
 import AddFertilizerModal from './Modals/AddFertilizerModal'
 import FertilizerCard from './FertilizerCard'
+import { useNavigate } from 'react-router-dom'
 
-class Fertilizers extends Component {
+const Fertilizers = (props) =>{
+    const navigate = useNavigate()
+    return (<FertilizersClass navigate={navigate} isSignedIn={props.isSignedIn}/>)
+}
+
+class FertilizersClass extends Component {
     constructor(props) {
       super(props)
     
@@ -24,6 +30,10 @@ class Fertilizers extends Component {
         console.log(fertilizers)
     }
     componentDidMount(){
+        // If it's not logged in then redirect to home page
+        if(!this.props.isSignedIn){
+            this.props.navigate('/');
+        }
         this.getFertilizers()
     }
     reRenderOnAddOrDelete(){

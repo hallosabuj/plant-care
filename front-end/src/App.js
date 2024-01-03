@@ -47,18 +47,18 @@ class App extends Component {
                   <Route exact path='/web' element={<Home />}></Route>
                   <Route exact path='/web/plants' element={<Plants />}></Route>
                   <Route exact path='/web/plants/:plantId' element={<PlantDetails />}></Route>
-                  <Route exact path='/web/fertilizers' element={<Fertilizers />}></Route>
-                  <Route exact path='/web/fertilizers/:fertilizerId' element={<FertilizerDetails />}></Route>
-                  <Route exact path='/web/apply-fertilizer' element={<ApplyFertilizer />}></Route>
-                  <Route exact path='/web/pesticides' element={<Pesticides />}></Route>
-                  <Route exact path='/web/apply-pesticide' element={<ApplyPesticide />}></Route>
-                  <Route exact path='/web/pesticides/:pesticideId' element={<PesticideDetails />}></Route>
                   <Route exact path='/web/disease' element={<Disease />}></Route>
                   <Route exact path='/web/compress' element={<CompressImage />}></Route>
                   <Route exact path='/swagger-ui' element={<SwaggerUIPage />}></Route>
 
                   <Route exact path='/web/user/plants' element={<UserPlants isSignedIn={this.state.isSignedIn}/>}></Route>
                   <Route exact path='/web/user/plants/:plantId' element={<UserPlantDetails isSignedIn={this.state.isSignedIn}/>}></Route>
+                  <Route exact path='/web/user/fertilizers' element={<Fertilizers isSignedIn={this.state.isSignedIn}/>}></Route>
+                  <Route exact path='/web/user/fertilizers/:fertilizerId' element={<FertilizerDetails isSignedIn={this.state.isSignedIn}/>}></Route>
+                  <Route exact path='/web/user/apply-fertilizer' element={<ApplyFertilizer isSignedIn={this.state.isSignedIn}/>}></Route>
+                  <Route exact path='/web/user/pesticides' element={<Pesticides isSignedIn={this.state.isSignedIn}/>}></Route>
+                  <Route exact path='/web/user/pesticides/:pesticideId' element={<PesticideDetails isSignedIn={this.state.isSignedIn}/>}></Route>
+                  <Route exact path='/web/user/apply-pesticide' element={<ApplyPesticide isSignedIn={this.state.isSignedIn}/>}></Route>
 
                   <Route exact path='/web/signin' element={<SingIn toggleSignedIn={this.toggleSignedIn}/>}></Route>
                 </Routes>

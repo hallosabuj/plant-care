@@ -25,7 +25,7 @@ export class FertilizerCard extends Component {
       <div className='pr-1 pl-1 pt-3 pb-3 hover:scale-105'>
         <div className='h-[400px] shadow-lg'>
           <div className='h-[300px] flex justify-center items-center bg-slate-500 border-2 border-slate-900 rounded-md relative overflow-hidden p-3'>
-            <Link to={"/web/fertilizers/"+this.state.fertilizer.fertilizerId}>
+            <Link to={"/web/user/fertilizers/"+this.state.fertilizer.fertilizerId}>
               <img src={imageUrl} style={{maxHeight:"100%",maxWidth:"100%"}} className='rounded-md' alt={this.state.fertilizer.name}/>
             </Link>
             <img src={deleteIcon} onClick={()=>this.deleteFertilizer()} alt="delete" className='hover:opacity-100 opacity-60 top-3 right-3 absolute'/>

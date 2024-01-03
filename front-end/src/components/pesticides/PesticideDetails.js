@@ -2,8 +2,14 @@ import axios from 'axios'
 import React, { Component } from 'react'
 import editIcon from '../../assets/edit.png';
 import PesticideEditModal from './Modals/PesticideEditModal';
+import { useNavigate } from 'react-router-dom';
 
-export class PesticideDetails extends Component {
+const PesticideDetails = (props) =>{
+  const navigate = useNavigate()
+  return (<PesticideDetailsClass navigate={navigate} isSignedIn={props.isSignedIn}/>)
+}
+
+export class PesticideDetailsClass extends Component {
   constructor(props) {
     super(props)
   
@@ -14,7 +20,7 @@ export class PesticideDetails extends Component {
     }
   }
   async getDetails(){
-    let pesticideId = window.location.href.split('/')[6]
+    let pesticideId = window.location.href.split('/')[7]
     // Getting basic details
     await axios.get("/api/pesticide/" + pesticideId).then((response) => {
       this.setState({
@@ -26,6 +32,10 @@ export class PesticideDetails extends Component {
     });
   }
   componentDidMount(){
+    // If it's not logged in then redirect to home page
+    if(!this.props.isSignedIn){
+      this.props.navigate('/');
+    }
     this.getDetails()
   }
   showEditModal=(displayName,fieldName,fieldValue)=>{

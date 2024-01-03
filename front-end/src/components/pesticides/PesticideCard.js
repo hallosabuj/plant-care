@@ -25,7 +25,7 @@ export class PesticideCard extends Component {
       <div className='pr-1 pl-1 pt-3 pb-3 hover:scale-105'>
         <div className='h-[400px] shadow-lg'>
           <div className='h-[300px] flex justify-center items-center border-2 bg-slate-500 border-slate-900 rounded-md relative overflow-hidden p-3' >
-            <Link to={"/web/pesticides/"+this.state.pesticide.pesticideId}>
+            <Link to={"/web/user/pesticides/"+this.state.pesticide.pesticideId}>
               <img src={imageUrl} style={{maxHeight:"100%",maxWidth:"100%"}} alt={this.state.pesticide.name} className='rounded-lg'/>
             </Link>
             <img src={deleteIcon} onClick={()=>this.deletePesticide()} alt="delete" className='hover:opacity-100 opacity-60 top-3 right-3 absolute'/>
