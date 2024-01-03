@@ -30,36 +30,10 @@ func AddAppliedPesticide(w http.ResponseWriter, r *http.Request) {
 	var appliedPesticides []models.AppliedPesticide
 	json.NewDecoder(r.Body).Decode(&appliedPesticides)
 	result := make(map[string]bool)
-	if err := AppliedPesticideHandler.AddEntry(appliedPesticides, result); err != nil {
+	if err := AppliedPesticideHandler.AddAppliedPesticide(appliedPesticides, result); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 	json.NewEncoder(w).Encode(result)
-}
-
-func GetAppliedPesticides(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
-
-	var allAppliedPesticide []models.AppliedPesticide
-	err = AppliedPesticideHandler.GetAllAppliedPesticides(&allAppliedPesticide)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-	w.Header().Add("content-type", "application/json")
-	json.NewEncoder(w).Encode(allAppliedPesticide)
 }
 
 func GetFilteredAppliedPesticides(w http.ResponseWriter, r *http.Request) {
