@@ -23,7 +23,7 @@ class AddRepotting extends Component {
                 repottingDate: this.state.repottingDate
             }
             console.log(jsonBody)
-            axios.post("/api/repotting", jsonBody).then((response) => {
+            axios.post("/api/user/repotting", jsonBody).then((response) => {
                 console.log("Repotting date added")
             }).catch((error) => {
                 console.log(error)
