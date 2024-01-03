@@ -28,7 +28,7 @@ class PlantEditModal extends Component {
         if(this.state.editValues.fieldValue===""){
             alert("You are updating with empty value")
         }
-        let url="/api/plant/update/"+this.state.editValues.fieldName+"/"+this.state.editValues.plantId+"/"+this.state.editValues.fieldValue
+        let url="/api/user/plant/update/"+this.state.editValues.fieldName+"/"+this.state.editValues.plantId+"/"+this.state.editValues.fieldValue
         console.log(url)
         await axios.post(url).then((response)=>{
             console.log(response)

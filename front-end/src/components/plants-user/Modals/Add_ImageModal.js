@@ -122,7 +122,7 @@ class AddImageModal extends Component {
     this.state.imagesSmall.forEach((image)=>formData.append("imageSmall",image,image.name))
     this.state.imagesMedium.forEach((image)=>formData.append("imageMedium",image,image.name))
     this.state.imagesLarge.forEach((image)=>formData.append("imageLarge",image,image.name))
-    await axios.post("/api/plant/uploadImages",formData).then((response)=>{
+    await axios.post("/api/user/plant/uploadImages",formData).then((response)=>{
       console.log(response)
       this.props.closeModal()
     }).catch((error)=>{

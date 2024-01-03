@@ -14,7 +14,7 @@ class UserPlantCard extends Component {
   }
   async deletePlant() {
     console.log("Deleting", this.state.plant.plantId)
-    await axios.delete("/api/plant/" + this.state.plant.plantId).catch(function (error) {
+    await axios.delete("/api/user/plant/" + this.state.plant.plantId).catch(function (error) {
       console.log(error);
     });
     this.props.reRenderOnDelete()

@@ -23,7 +23,7 @@ class MyImageSlider extends Component {
         if (key===""){
             return
         }
-        await axios.delete("/api/plant/deleteImage/"+this.state.imageNames[key]).then((response)=>{
+        await axios.delete("/api/user/plant/deleteImage/"+this.state.imageNames[key]).then((response)=>{
             console.log("Deleted")
             let imageNames=this.state.imageNames
             delete imageNames[key]

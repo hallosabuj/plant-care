@@ -28,7 +28,7 @@ class ApplyFertilizerClass extends Component {
   }
   getPlantsForAFertilizer = async () => {
     if (this.state.appliedFertilizerId !== "") {
-      axios.get("/api/plants/fertilizer/" + this.state.appliedFertilizerId).then((response) => {
+      axios.get("/api/user/plants/fertilizer/" + this.state.appliedFertilizerId).then((response) => {
         let tempPlants = response.data.map(plant => { return { ...plant, isChecked: false } })
         this.setState({
           plants: tempPlants

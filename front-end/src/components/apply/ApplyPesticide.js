@@ -27,7 +27,7 @@ class ApplyPesticideClass extends Component {
     });
   }
   getPlants = async () => {
-    axios.get("/api/plants/pesticide/"+this.state.appliedPesticideId).then((response) => {
+    axios.get("/api/user/plants/pesticide/"+this.state.appliedPesticideId).then((response) => {
       console.log(response)
       let tempPlants = response.data.map(plant => { return { ...plant, isChecked: false } })
       this.setState({

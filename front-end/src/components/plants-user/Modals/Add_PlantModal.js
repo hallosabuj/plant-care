@@ -26,7 +26,7 @@ class AddPlantModal extends Component {
     formData.append("imageSmall", this.state.imageSmall,this.state.imageSmall.name)
     formData.append("imageMedium", this.state.imageMedium,this.state.imageMedium.name)
     formData.append("imageLarge", this.state.imageLarge,this.state.imageLarge.name)
-    await axios.post("/api/plant", formData).then(() => {
+    await axios.post("/api/user/plant", formData).then(() => {
       this.props.reRenderOnAdd()
     }).catch((error) => {
       console.log(error)
