@@ -28,7 +28,7 @@ class PesticideEditModal extends Component {
         if(this.state.editValues.fieldValue===""){
             alert("You are updating with empty value")
         }
-        let url="/api/pesticide/update/"+this.state.editValues.fieldName+"/"+this.state.editValues.pesticideId+"/"+this.state.editValues.fieldValue
+        let url="/api/user/pesticide/update/"+this.state.editValues.fieldName+"/"+this.state.editValues.pesticideId+"/"+this.state.editValues.fieldValue
         console.log(url)
         await axios.post(url).then((response)=>{
             console.log(response)

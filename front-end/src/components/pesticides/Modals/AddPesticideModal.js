@@ -24,7 +24,7 @@ class AddPesticideModal extends Component {
     formData.append("details", this.state.details)
     formData.append("composition", this.state.composition)
     formData.append("image", this.state.image,this.state.image.name)
-    await axios.post("/api/pesticide", formData).then(()=>{
+    await axios.post("/api/user/pesticide", formData).then(()=>{
       this.props.reRenderOnAdd()
     }).catch((error) => {
       console.log(error)

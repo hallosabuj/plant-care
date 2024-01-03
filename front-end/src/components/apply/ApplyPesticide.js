@@ -18,7 +18,7 @@ class ApplyPesticideClass extends Component {
     }
   }
   getPesticides = async () => {
-    await axios.get("/api/pesticide").then((response) => {
+    await axios.get("/api/user/pesticide").then((response) => {
       this.setState({
         pesticides: response.data
       })

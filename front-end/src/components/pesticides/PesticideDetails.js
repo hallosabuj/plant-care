@@ -22,7 +22,7 @@ export class PesticideDetailsClass extends Component {
   async getDetails(){
     let pesticideId = window.location.href.split('/')[7]
     // Getting basic details
-    await axios.get("/api/pesticide/" + pesticideId).then((response) => {
+    await axios.get("/api/user/pesticide/" + pesticideId).then((response) => {
       this.setState({
         pesticideDetails: response.data
       })
@@ -71,9 +71,9 @@ export class PesticideDetailsClass extends Component {
   render() {
     let imageUrl=""
     if (this.state.pesticideDetails==null){
-      imageUrl = "/api/pesticide/downloadImage/"
+      imageUrl = "/api/user/pesticide/downloadImage/"
     }else{
-      imageUrl = "/api/pesticide/downloadImage/" + this.state.pesticideDetails.profileImage
+      imageUrl = "/api/user/pesticide/downloadImage/" + this.state.pesticideDetails.profileImage
     }
     console.log(imageUrl)
     return !(this.state.pesticideDetails)?(<div>Details not found</div>):(

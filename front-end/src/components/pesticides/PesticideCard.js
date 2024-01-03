@@ -12,7 +12,7 @@ export class PesticideCard extends Component {
     }
   }
   async deletePesticide(){
-    await axios.delete("/api/pesticide/"+this.state.pesticide.pesticideId).then(()=>{
+    await axios.delete("/api/user/pesticide/"+this.state.pesticide.pesticideId).then(()=>{
       alert("Pesticide deleted successfully")
     }).catch(function(error) {
       alert(error.response.data)
@@ -20,7 +20,7 @@ export class PesticideCard extends Component {
     this.props.reRenderOnDelete()
   }
   render() {
-    let imageUrl = "/api/pesticide/downloadImage/" + this.state.pesticide.profileImage
+    let imageUrl = "/api/user/pesticide/downloadImage/" + this.state.pesticide.profileImage
     return (
       <div className='pr-1 pl-1 pt-3 pb-3 hover:scale-105'>
         <div className='h-[400px] shadow-lg'>

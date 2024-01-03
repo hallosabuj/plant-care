@@ -19,7 +19,7 @@ class PesticidesClass extends Component {
     this.reRenderOnAddOrDelete=this.reRenderOnAddOrDelete.bind(this)
   }
   async getPesticides(){
-      let pesticides=await axios.get("/api/pesticide").then((response)=>{
+      let pesticides=await axios.get("/api/user/pesticide").then((response)=>{
           console.log(response)
           this.setState({
             pesticides:response.data
