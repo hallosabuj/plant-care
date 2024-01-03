@@ -10,7 +10,6 @@ import (
 
 type HandlerPF interface {
 	AddNeededFertilizer(models.NeededFertilizer) error
-	GetNeededFertilizer(*[]models.NeededFertilizer) error
 	GetFilteredNeededFertilizers(string, string, *[]models.NeededFertilizer) error
 }
 
@@ -36,24 +35,6 @@ func (p plantFertilizerHandler) AddNeededFertilizer(neededFertilizer models.Need
 		fmt.Println(err)
 	}
 	return err
-}
-
-func (p plantFertilizerHandler) GetNeededFertilizer(neededFertilizers *[]models.NeededFertilizer) error {
-	res, err := p.db.Query("select IFNULL(n.plantId,''),IFNULL(p.name,''),IFNULL(n.fertilizerId,''),IFNULL(f.name,''),IFNULL(n.applyinterval,''),IFNULL(n.benefit,'') from neededfertilizers n,plants p,fertilizers f where p.plantId=n.plantId and n.fertilizerId=f.fertilizerId")
-	if err != nil {
-		return err
-	}
-	defer res.Close()
-	for res.Next() {
-		var neededFertilizer models.NeededFertilizer
-		err := res.Scan(&neededFertilizer.PlantId, &neededFertilizer.PlantName, &neededFertilizer.FertilizerId, &neededFertilizer.FertilizerName, &neededFertilizer.ApplyInterval, &neededFertilizer.Benefit)
-		if err != nil {
-			return nil
-		}
-		fmt.Println(neededFertilizer)
-		*neededFertilizers = append(*neededFertilizers, neededFertilizer)
-	}
-	return nil
 }
 
 func (p plantFertilizerHandler) GetFilteredNeededFertilizers(filed string, value string, filteredNeededFertilizers *[]models.NeededFertilizer) error {

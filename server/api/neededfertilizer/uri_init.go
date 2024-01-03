@@ -7,7 +7,12 @@ import (
 )
 
 func Uri_init_needed_fertilizers(router *mux.Router) {
-	router.HandleFunc("/api/plant-fertilizer", AddNeededFertilizer).Methods(http.MethodPost)
+	// API to list fertilizers needed for a plant
 	router.HandleFunc("/api/plant-fertilizer/{field}/{value}", GetFilteredNeededFertilizers).Methods(http.MethodGet)
+	//////////////////////////////////////////////////////////
+	// APIs for USER
+	//////////////////////////////////////////////////////////
+	// Add needed fertilizer for a plant
+	router.HandleFunc("/api/user/plant-fertilizer", AddNeededFertilizer).Methods(http.MethodPost)
 	Connect()
 }

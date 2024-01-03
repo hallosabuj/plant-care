@@ -55,7 +55,7 @@ class AddNeededFertilizerModal extends Component {
             benefit:this.state.benefit
         }
         console.log(jsonBody)
-        axios.post("/api/plant-fertilizer",jsonBody).then((response)=>{
+        axios.post("/api/user/plant-fertilizer",jsonBody).then((response)=>{
             console.log("Needed fertilizer added")
         }).then((response)=>{
             this.props.closeModal()
