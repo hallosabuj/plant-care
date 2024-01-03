@@ -19,7 +19,7 @@ class FertilizersClass extends Component {
       this.reRenderOnAddOrDelete = this.reRenderOnAddOrDelete.bind(this)
     }
     async getFertilizers(){
-        let fertilizers=await axios.get("/api/fertilizer").then((response)=>{
+        let fertilizers=await axios.get("/api/user/fertilizer").then((response)=>{
             console.log(response)
             this.setState({
                 fertilizers:response.data

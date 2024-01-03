@@ -22,7 +22,7 @@ export class FertilizerDetailsClass extends Component {
   async getDetails(){
     let fertilizerId = window.location.href.split('/')[7]
     // Getting basic details
-    await axios.get("/api/fertilizer/" + fertilizerId).then((response) => {
+    await axios.get("/api/user/fertilizer/" + fertilizerId).then((response) => {
       this.setState({
         fertilizerDetails: response.data
       })
@@ -71,9 +71,9 @@ export class FertilizerDetailsClass extends Component {
   render() {
     let imageUrl=""
     if (this.state.fertilizerDetails==null){
-      imageUrl = "/api/fertilizer/downloadImage/"
+      imageUrl = "/api/user/fertilizer/downloadImage/"
     }else{
-      imageUrl = "/api/fertilizer/downloadImage/" + this.state.fertilizerDetails.profileImage
+      imageUrl = "/api/user/fertilizer/downloadImage/" + this.state.fertilizerDetails.profileImage
     }
     console.log(imageUrl)
     return !(this.state.fertilizerDetails)?(<div>Details not found</div>):(

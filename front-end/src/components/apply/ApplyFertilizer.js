@@ -18,7 +18,7 @@ class ApplyFertilizerClass extends Component {
     }
   }
   getFertilizers = async () => {
-    await axios.get("/api/fertilizer").then((response) => {
+    await axios.get("/api/user/fertilizer").then((response) => {
       this.setState({
         fertilizers: response.data
       })

@@ -12,7 +12,7 @@ export class FertilizerCard extends Component {
     }
   }
   async deleteFertilizer(){
-    await axios.delete("/api/fertilizer/"+this.state.fertilizer.fertilizerId).then(()=>{
+    await axios.delete("/api/user/fertilizer/"+this.state.fertilizer.fertilizerId).then(()=>{
       alert("Fertilizer deleted successfully")
       this.props.reRenderOnDelete()
     }).catch(function(error) {
@@ -20,7 +20,7 @@ export class FertilizerCard extends Component {
     });
   }
   render() {
-    let imageUrl = "/api/fertilizer/downloadImage/" + this.state.fertilizer.profileImage
+    let imageUrl = "/api/user/fertilizer/downloadImage/" + this.state.fertilizer.profileImage
     return (
       <div className='pr-1 pl-1 pt-3 pb-3 hover:scale-105'>
         <div className='h-[400px] shadow-lg'>
