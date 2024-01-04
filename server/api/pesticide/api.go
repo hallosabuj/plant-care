@@ -30,6 +30,8 @@ func AddPesticides(w http.ResponseWriter, r *http.Request) {
 		Value:   newToken,
 		Expires: time.Now().Add(user.TokenTimeOut),
 	})
+	// Getting email from newToken
+	email := user.ParseAccessToken(newToken).Email
 
 	newPesticide := models.Pesticides{
 		Name:        r.FormValue("name"),
@@ -44,7 +46,7 @@ func AddPesticides(w http.ResponseWriter, r *http.Request) {
 	// Generating the filename
 	newPesticide.ProfileImage = fmt.Sprintf("%s%s", newPesticide.ID, filepath.Ext(fileHeader.Filename))
 	// Storing image for the fertilizer
-	PesticideHandler.AddPesticides(newPesticide)
+	PesticideHandler.AddPesticides(email, newPesticide)
 	json.NewEncoder(w).Encode(newPesticide)
 }
 
@@ -64,9 +66,11 @@ func GetAllPesticides(w http.ResponseWriter, r *http.Request) {
 		Value:   newToken,
 		Expires: time.Now().Add(user.TokenTimeOut),
 	})
+	// Getting email from newToken
+	email := user.ParseAccessToken(newToken).Email
 
 	var allPesticides []models.Pesticides
-	PesticideHandler.GetAllPesticides(&allPesticides)
+	PesticideHandler.GetAllPesticides(email, &allPesticides)
 	w.Header().Add("content-type", "application/json")
 	json.NewEncoder(w).Encode(allPesticides)
 }

@@ -72,6 +72,8 @@ func AddPlant(w http.ResponseWriter, r *http.Request) {
 		Value:   newToken,
 		Expires: time.Now().Add(user.TokenTimeOut),
 	})
+	// Getting email from newToken
+	email := user.ParseAccessToken(newToken).Email
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
 	fmt.Println("Add plant")
@@ -94,7 +96,7 @@ func AddPlant(w http.ResponseWriter, r *http.Request) {
 	imageName, _ := StorePlantImage(newPlant.ID, fileSmall, fileMedium, fileLarge, fileHeader)
 	newPlant.ProfileImage = imageName
 	// Storing into database
-	PlantHandler.AddPlant(&newPlant)
+	PlantHandler.AddPlant(email, &newPlant)
 	w.Header().Add("content-type", "application/json")
 	json.NewEncoder(w).Encode(newPlant)
 }

@@ -30,6 +30,8 @@ func AddFertilizer(w http.ResponseWriter, r *http.Request) {
 		Value:   newToken,
 		Expires: time.Now().Add(user.TokenTimeOut),
 	})
+	// Getting email from newToken
+	email := user.ParseAccessToken(newToken).Email
 
 	newFertilizer := models.Fertilizer{
 		Name:        r.FormValue("name"),
@@ -44,7 +46,7 @@ func AddFertilizer(w http.ResponseWriter, r *http.Request) {
 	// Generating the filename
 	newFertilizer.ProfileImage = fmt.Sprintf("%s%s", newFertilizer.ID, filepath.Ext(fileHeader.Filename))
 	// Storing image for the fertilizer
-	FertilizerHandler.AddFertilizer(newFertilizer)
+	FertilizerHandler.AddFertilizer(email, newFertilizer)
 	json.NewEncoder(w).Encode(newFertilizer)
 }
 
@@ -64,9 +66,11 @@ func GetAllFertilizers(w http.ResponseWriter, r *http.Request) {
 		Value:   newToken,
 		Expires: time.Now().Add(user.TokenTimeOut),
 	})
+	// Getting email from newToken
+	email := user.ParseAccessToken(newToken).Email
 
 	var allFertilizer []models.Fertilizer
-	FertilizerHandler.GetAllFertilizers(&allFertilizer)
+	FertilizerHandler.GetAllFertilizers(email, &allFertilizer)
 	w.Header().Add("content-type", "application/json")
 	json.NewEncoder(w).Encode(allFertilizer)
 }

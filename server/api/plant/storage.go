@@ -13,13 +13,14 @@ import (
 )
 
 type HandlerP interface {
-	AddPlant(*models.Plant) error
+	AddPlant(string, *models.Plant) error
 	GetAllPlants(*[]models.Plant) error
 	GetAllPlantsOfUser(string, *[]models.Plant) error
 	GetPlantsForAFertilizer(string, *[]models.PlantForAFertilizer) error
 	GetPlantsForAPesticide(string, *[]models.PlantForAPesticide) error
 	DeleteDetails(string) error
 	GetPlantDetails(string, *models.Plant) error
+	GetUserPlantDetails(string, *models.Plant) error
 	UpdatePlant(field, plantId, value string) error
 	UpdateImageNames(string, []string) error
 	RemoveImageNameFromDB(string) error
@@ -41,7 +42,7 @@ func Connect() {
 	PlantHandler = plantHandler{db: DB}
 }
 
-func (p plantHandler) AddPlant(newPlant *models.Plant) error {
+func (p plantHandler) AddPlant(email string, newPlant *models.Plant) error {
 	// Fetching max numberId from the plants table
 	sqlQuery := "select MAX(numberId) from plants"
 	res, err := p.db.Query(sqlQuery)
@@ -51,7 +52,7 @@ func (p plantHandler) AddPlant(newPlant *models.Plant) error {
 			newPlant.NumberId = newPlant.NumberId + 1
 		}
 	}
-	sqlQuery = fmt.Sprintf("insert into plants(plantId,name,dob,details,profileimage,soilType,numberId) values('%s','%s','%s','%s','%s','%s',%d)", newPlant.ID, newPlant.Name, newPlant.DOB, newPlant.Details, newPlant.ProfileImage, newPlant.SoilType, newPlant.NumberId)
+	sqlQuery = fmt.Sprintf("insert into plants(plantId,name,dob,details,profileimage,soilType,numberId, user_email) values('%s','%s','%s','%s','%s','%s',%d,'%s')", newPlant.ID, newPlant.Name, newPlant.DOB, newPlant.Details, newPlant.ProfileImage, newPlant.SoilType, newPlant.NumberId, email)
 	_, err = p.db.Exec(sqlQuery)
 	if err != nil {
 		return err
@@ -200,6 +201,37 @@ func (p plantHandler) UpdateImageNames(plantId string, newImageNames []string) e
 }
 
 func (p plantHandler) GetPlantDetails(plantId string, plant *models.Plant) error {
+	// Getting plant details
+	res, err := p.db.Query("select IFNULL(plantId,''),IFNULL(name,''),IFNULL(dob,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(soiltype,''),IFNULL(numberId,'') from plants where plantid=?", plantId)
+	if err != nil {
+		return nil
+	}
+	defer res.Close()
+	for res.Next() {
+		err := res.Scan(&plant.ID, &plant.Name, &plant.DOB, &plant.Details, &plant.ProfileImage, &plant.SoilType, &plant.NumberId)
+		if err != nil {
+			return err
+		}
+	}
+	// Getting imagenames
+	res, err = p.db.Query("select imageid,name from plantimages where plantid=?", plantId)
+	if err != nil {
+		return nil
+	}
+	defer res.Close()
+	for res.Next() {
+		var imageId int
+		var imageName string
+		err := res.Scan(&imageId, &imageName)
+		if err != nil {
+			return nil
+		}
+		plant.ImageNames[string(imageId)] = imageName
+	}
+	return nil
+}
+
+func (p plantHandler) GetUserPlantDetails(plantId string, plant *models.Plant) error {
 	// Getting plant details
 	res, err := p.db.Query("select IFNULL(plantId,''),IFNULL(name,''),IFNULL(dob,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(soiltype,''),IFNULL(numberId,'') from plants where plantid=?", plantId)
 	if err != nil {

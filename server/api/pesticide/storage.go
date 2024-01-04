@@ -9,8 +9,8 @@ import (
 )
 
 type HandlerPest interface {
-	AddPesticides(models.Pesticides) error
-	GetAllPesticides(*[]models.Pesticides) error
+	AddPesticides(string, models.Pesticides) error
+	GetAllPesticides(string, *[]models.Pesticides) error
 	GetPesticideDetails(string, *models.Pesticides) error
 	DeletePesticideDetails(string) error
 	UpdatePesticide(string, string, string) error
@@ -32,8 +32,8 @@ func Connect() {
 	PesticideHandler = pesticideHandler{db: DB}
 }
 
-func (f pesticideHandler) AddPesticides(newPesticide models.Pesticides) error {
-	sqlQuery := fmt.Sprintf("insert into pesticides(pesticideid,name,composition,details,profileimage) values('%s','%s','%s','%s','%s')", newPesticide.ID, newPesticide.Name, newPesticide.Composition, newPesticide.Details, newPesticide.ProfileImage)
+func (f pesticideHandler) AddPesticides(email string, newPesticide models.Pesticides) error {
+	sqlQuery := fmt.Sprintf("insert into pesticides(pesticideid,name,composition,details,profileimage, user_email) values('%s','%s','%s','%s','%s','%s')", newPesticide.ID, newPesticide.Name, newPesticide.Composition, newPesticide.Details, newPesticide.ProfileImage, email)
 	_, err := f.db.Exec(sqlQuery)
 	if err != nil {
 		return err
@@ -41,8 +41,9 @@ func (f pesticideHandler) AddPesticides(newPesticide models.Pesticides) error {
 	return nil
 }
 
-func (f pesticideHandler) GetAllPesticides(allPesticides *[]models.Pesticides) error {
-	res, err := f.db.Query("select IFNULL(pesticideid,''),IFNULL(name,''),IFNULL(composition,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(available,'') from pesticides order by name")
+func (f pesticideHandler) GetAllPesticides(email string, allPesticides *[]models.Pesticides) error {
+	sqlQuery := fmt.Sprintf("select IFNULL(pesticideid,''),IFNULL(name,''),IFNULL(composition,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(available,'') from pesticides where user_email='%v' order by name", email)
+	res, err := f.db.Query(sqlQuery)
 	if err != nil {
 		return err
 	}
