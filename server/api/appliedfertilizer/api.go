@@ -30,7 +30,7 @@ func AddAppliedFertilizer(w http.ResponseWriter, r *http.Request) {
 	var appliedFertilizers []models.AppliedFertilizer
 	json.NewDecoder(r.Body).Decode(&appliedFertilizers)
 	result := make(map[string]bool)
-	if err := AppliedFertilizerHandler.AddEntry(appliedFertilizers, result); err != nil {
+	if err := AppliedFertilizerHandler.AddAppliedFertilizer(appliedFertilizers, result); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 	json.NewEncoder(w).Encode(result)

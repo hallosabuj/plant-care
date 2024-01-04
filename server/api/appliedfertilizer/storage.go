@@ -9,8 +9,7 @@ import (
 )
 
 type HandlerAF interface {
-	AddEntry([]models.AppliedFertilizer, map[string]bool) error
-	GetAllAppliedFertilizers(*[]models.AppliedFertilizer) error
+	AddAppliedFertilizer([]models.AppliedFertilizer, map[string]bool) error
 	GetFilteredAllAppliedFertilizers(string, string, *[]models.AppliedFertilizer) error
 }
 
@@ -30,30 +29,13 @@ func Connect() {
 	AppliedFertilizerHandler = appliedFertilizeHnadler{db: DB}
 }
 
-func (a appliedFertilizeHnadler) AddEntry(appliedFertilizers []models.AppliedFertilizer, result map[string]bool) error {
+func (a appliedFertilizeHnadler) AddAppliedFertilizer(appliedFertilizers []models.AppliedFertilizer, result map[string]bool) error {
 	for _, appliedFertilizer := range appliedFertilizers {
 		_, err := a.db.Query("insert into AppliedFertilizer(plantId,fertilizerId,appliedDate) values(?,?,?)", appliedFertilizer.PlantId, appliedFertilizer.FertilizerID, appliedFertilizer.AppliedDate)
 		if err != nil {
 			result[appliedFertilizer.PlantId] = false
 		}
 		result[appliedFertilizer.PlantId] = true
-	}
-	return nil
-}
-
-func (a appliedFertilizeHnadler) GetAllAppliedFertilizers(allAppliedFertilizers *[]models.AppliedFertilizer) error {
-	res, err := a.db.Query("select IFNULL(a.plantid,''), IFNULL(p.name,''), IFNULL(a.fertilizerid,''), IFNULL(f.name,''), IFNULL(a.appliedDate,'') from appliedfertilizer a,plants p, fertilizers f where a.plantId=p.plantId and a.fertilizerId=f.fertilizerId order by a.appliedDate desc")
-	if err != nil {
-		return nil
-	}
-	defer res.Close()
-	for res.Next() {
-		var appliedFertilizer models.AppliedFertilizer
-		err := res.Scan(&appliedFertilizer.PlantId, &appliedFertilizer.PlantName, &appliedFertilizer.FertilizerID, &appliedFertilizer.FertilizerName, &appliedFertilizer.AppliedDate)
-		if err != nil {
-			return err
-		}
-		*allAppliedFertilizers = append(*allAppliedFertilizers, appliedFertilizer)
 	}
 	return nil
 }

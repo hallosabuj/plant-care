@@ -45,7 +45,7 @@ class AddAppliedFertilizerModal extends Component {
             fertilizerId:this.state.fertilizerId,
             appliedDate:this.state.appliedDate
         }]
-        axios.post("/api/applied-fertilizer",jsonBody).then((response)=>{
+        axios.post("/api/user/applied-fertilizer",jsonBody).then((response)=>{
             console.log("Applied fertilizer added")
         }).catch((error)=>{
             console.log(error)

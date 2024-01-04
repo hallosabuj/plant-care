@@ -92,7 +92,7 @@ class ApplyFertilizerClass extends Component {
     if (jsonBody.length === 0) {
       alert("Select at least one plant to save")
     } else {
-      axios.post("/api/applied-fertilizer", jsonBody).then((response) => {
+      axios.post("/api/user/applied-fertilizer", jsonBody).then((response) => {
         alert("Changes saved")
         this.getPlantsForAFertilizer()
       }).catch((error) => {
