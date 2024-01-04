@@ -87,7 +87,7 @@ class ApplyPesticideClass extends Component {
     if (jsonBody.length === 0) {
       alert("Select at least one plant to save")
     } else {
-      axios.post("/api/applied-pesticide", jsonBody).then((response) => {
+      axios.post("/api/user/applied-pesticide", jsonBody).then((response) => {
         alert("Changes saved")
         this.getPlants()
       }).catch((error) => {
