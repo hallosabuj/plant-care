@@ -145,7 +145,7 @@ func (p plantHandler) GetPlantsForAPesticide(pesticideId string, plantsForAFerti
 }
 
 func (p plantHandler) GetAllPlants(allPlants *[]models.Plant) error {
-	res, err := p.db.Query("select IFNULL(plantId,''),IFNULL(name,''),IFNULL(dob,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(soiltype,''),IFNULL(numberId,'') from plants order by name")
+	res, err := p.db.Query("select IFNULL(plantId,''),IFNULL(name,''),IFNULL(dob,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(soiltype,''),IFNULL(numberId,'') from plants where public='true' order by name")
 	if err != nil {
 		return nil
 	}
@@ -233,13 +233,13 @@ func (p plantHandler) GetPlantDetails(plantId string, plant *models.Plant) error
 
 func (p plantHandler) GetUserPlantDetails(plantId string, plant *models.Plant) error {
 	// Getting plant details
-	res, err := p.db.Query("select IFNULL(plantId,''),IFNULL(name,''),IFNULL(dob,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(soiltype,''),IFNULL(numberId,'') from plants where plantid=?", plantId)
+	res, err := p.db.Query("select IFNULL(plantId,''),IFNULL(name,''),IFNULL(dob,''),IFNULL(details,''),IFNULL(profileimage,''),IFNULL(soiltype,''),IFNULL(numberId,''),IFNULL(public,'') from plants where plantid=?", plantId)
 	if err != nil {
 		return nil
 	}
 	defer res.Close()
 	for res.Next() {
-		err := res.Scan(&plant.ID, &plant.Name, &plant.DOB, &plant.Details, &plant.ProfileImage, &plant.SoilType, &plant.NumberId)
+		err := res.Scan(&plant.ID, &plant.Name, &plant.DOB, &plant.Details, &plant.ProfileImage, &plant.SoilType, &plant.NumberId, &plant.Public)
 		if err != nil {
 			return err
 		}

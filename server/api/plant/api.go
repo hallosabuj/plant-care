@@ -205,7 +205,7 @@ func GetUserPlant(w http.ResponseWriter, r *http.Request) {
 	var plantId string = mux.Vars(r)["plantId"]
 	var plant models.Plant
 	plant.ImageNames = make(map[string]string)
-	err = PlantHandler.GetPlantDetails(plantId, &plant)
+	err = PlantHandler.GetUserPlantDetails(plantId, &plant)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	} else {
@@ -289,7 +289,7 @@ func UpdatePlant(w http.ResponseWriter, r *http.Request) {
 	var field string = mux.Vars(r)["field"]
 	var plantId string = mux.Vars(r)["plantId"]
 	var value string = mux.Vars(r)["value"]
-	if strings.Contains("name dob details profileimage soiltype", field) {
+	if strings.Contains("name dob details profileimage soiltype public", field) {
 		// List of string field
 		if err := PlantHandler.UpdatePlant(field, plantId, value); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

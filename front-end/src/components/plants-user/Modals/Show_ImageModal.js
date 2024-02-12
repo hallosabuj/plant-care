@@ -22,7 +22,7 @@ class ShowImageModal extends Component {
             alert("Unable to update try after sometime")
             return
         }
-        let imageName = this.props.imageUrl.split("/")[4]
+        let imageName = this.props.imageUrl.split("/")[5]
         let url = "/api/user/plant/update/profileimage/" + this.props.plantId + "/" + imageName
         await axios.post(url).then((response) => {
             console.log("Profile image updated")

@@ -13,6 +13,9 @@ type Plant struct {
 	// Name of the Plant
 	// in: string
 	Name string `json:"name" validate:"required"`
+	// Plant is public or not
+	// in: string
+	Public string `json:"public"`
 	// Date when plant was planted
 	// in: string
 	DOB string `json:"dob" validate:"required"`

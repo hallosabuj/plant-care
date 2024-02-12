@@ -22,6 +22,7 @@ class MyPlantDetailsClass extends Component {
 
     this.state = {
       plantDetails: null,
+      isPublic:null,
       neededFertilizers: null,
       appliedFertilizers: null,
       repottingList:null,
@@ -42,7 +43,21 @@ class MyPlantDetailsClass extends Component {
       this.setState({
         plantDetails: response.data
       })
-      console.log(response)
+      if (response.data !== null){
+        if (response.data.public === 'true'){
+          this.setState({
+            isPublic: true
+          })
+        }else{
+          this.setState({
+            isPublic: false
+          })
+        }
+      }else{
+        this.setState({
+          isPublic: false
+        })
+      }
     }).catch(function (error) {
       console.log(error);
     });
@@ -177,14 +192,27 @@ class MyPlantDetailsClass extends Component {
     this.getDetails()
   }
 
+  updatePublic = async () => {
+    let url="/api/user/plant/update/public/"+this.state.plantDetails.plantId+"/"+!this.state.isPublic
+    console.log(url)
+    await axios.post(url).then((response)=>{
+      this.setState({
+        isPublic: !this.state.isPublic
+      })
+    }).catch((error)=>{
+        console.log(error)
+    })
+  }
+
   render() {
     return !(this.state.plantDetails) ? (<div>Details Not Found</div>) : (
       <div>
         <div className='grid gap-2 p-2'>
           {/* Row 1 */}
           <div className=' bg-slate-500 h-14 flex justify-center items-center text-4xl relative'>
+            <input type='checkbox' checked={this.state.isPublic} onChange={this.updatePublic} className='absolute left-4 top-auto h-4 w-4'/>
             <h1>{this.state.plantDetails.numberId}: {this.state.plantDetails.name}</h1>
-            <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={() => this.showEditModal("Name", "name", this.state.plantDetails.name)} alt={"Edit"} />
+            <img src={editIcon} className="absolute top-auto right-4 h-6 w-6" onClick={() => this.showEditModal("Name", "name", this.state.plantDetails.name)} alt={"Edit"} />
           </div>
           {/* Row 2 */}
           <div className=' bg-slate-400 flex justify-center items-center overflow-hidden relative'>
@@ -194,12 +222,12 @@ class MyPlantDetailsClass extends Component {
           {/* Row 3 */}
           <div className='flex justify-left items-center bg-slate-500 pl-10 h-8 relative'>
             <div>DOB: {this.state.plantDetails.dob} </div>
-            <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={() => this.showEditModal("Date of birth", "dob", this.state.plantDetails.dob)} alt={"Edit"} />
+            <img src={editIcon} className="absolute top-auto right-4 h-6 w-6" onClick={() => this.showEditModal("Date of birth", "dob", this.state.plantDetails.dob)} alt={"Edit"} />
           </div>
           {/* Row 4 */}
           <div className=' bg-slate-400 flex justify-left items-center pl-10 h-8 relative'>
             Soil type : {this.state.plantDetails.soilType}
-            <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={() => this.showEditModal("Soil type", "soiltype", this.state.plantDetails.soilType)} alt={"Edit"} />
+            <img src={editIcon} className="absolute top-auto right-4 h-6 w-6" onClick={() => this.showEditModal("Soil type", "soiltype", this.state.plantDetails.soilType)} alt={"Edit"} />
           </div>
           {/* Row 5 */}
           <div className='flex justify-left items-center pl-10 bg-slate-500 min-h-[32px] relative'>
@@ -207,7 +235,7 @@ class MyPlantDetailsClass extends Component {
               <h2>About the plant</h2>
               {this.state.plantDetails.details}
             </div>
-            <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={() => this.showEditModal("About the plant", "details", this.state.plantDetails.details)} alt={"Edit"} />
+            <img src={editIcon} className="absolute top-auto right-4 h-6 w-6" onClick={() => this.showEditModal("About the plant", "details", this.state.plantDetails.details)} alt={"Edit"} />
           </div>
           {/* Row 6 */}
           <div className=''>
@@ -216,7 +244,7 @@ class MyPlantDetailsClass extends Component {
                 <tr>
                   <th colSpan={3} className=' text-center text-2xl relative'>
                     Fertilizers needed for this plant
-                    <img src={addIcon} className="h-6 w-6 absolute top-1 right-4" alt={"Add"} onClick={this.showAddNeededFertilizersModal} />
+                    <img src={addIcon} className="h-6 w-6 absolute top-auto right-4" alt={"Add"} onClick={this.showAddNeededFertilizersModal} />
                   </th>
                 </tr>
                 <tr>
@@ -258,7 +286,7 @@ class MyPlantDetailsClass extends Component {
                 <tr>
                   <th colSpan={2} className=' text-center text-2xl relative'>
                     Fertilizers applied
-                    <img src={addIcon} className="h-6 w-6 absolute top-1 right-4" alt="Add" onClick={this.showAddAppliedFertilizersModal} />
+                    <img src={addIcon} className="h-6 w-6 absolute top-auto right-4" alt="Add" onClick={this.showAddAppliedFertilizersModal} />
                   </th>
                 </tr>
                 <tr>
@@ -294,7 +322,7 @@ class MyPlantDetailsClass extends Component {
                 <tr>
                   <th className=' text-center text-2xl relative'>
                     Repotting Details
-                    <img src={addIcon} className="h-6 w-6 absolute top-1 right-4" alt="Add" onClick={this.openAddRepottingModal} />
+                    <img src={addIcon} className="h-6 w-6 absolute top-auto right-4" alt="Add" onClick={this.openAddRepottingModal} />
                   </th>
                 </tr>
                 <tr>
