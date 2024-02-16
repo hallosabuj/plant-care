@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import editIcon from '../../assets/edit.png';
 import FertilizerEditModal from './Modals/FertilizerEditModal';
 import { useNavigate } from 'react-router-dom';
+import addIcon from '../../assets/add.png';
 
 const FertilizerDetails = (props) =>{
   const navigate = useNavigate()
@@ -16,8 +17,24 @@ export class FertilizerDetailsClass extends Component {
     this.state = {
         fertilizerDetails:null,
         editModal:false,
-        editValues:null
+        editValues:null,
+        plantLists: null,
+        showPlantList:false
     }
+  }
+  async getPlantsUsingThisFertilizer(){
+    let fertilizerId = window.location.href.split('/')[7] 
+    // Getting basic details
+    await axios.get("/api/user/plants/fertilizer/" + fertilizerId).then((response) => {
+      this.setState({
+        plantLists: response.data
+      })
+    }).catch(function (error) {
+      console.log(error);
+    });
+  }
+  toggleShowPlantList = () =>{
+    this.setState({showPlantList:!this.state.showPlantList})
   }
   async getDetails(){
     let fertilizerId = window.location.href.split('/')[7]
@@ -26,7 +43,6 @@ export class FertilizerDetailsClass extends Component {
       this.setState({
         fertilizerDetails: response.data
       })
-      console.log(response.data)
     }).catch(function (error) {
       console.log(error);
     });
@@ -36,10 +52,10 @@ export class FertilizerDetailsClass extends Component {
     if(!this.props.isSignedIn){
       this.props.navigate('/');
     }
+    this.getPlantsUsingThisFertilizer()
     this.getDetails()
   }
   showEditModal=(displayName,fieldName,fieldValue)=>{
-    console.log(fieldName)
     let textTypes="name composition details"
 
     let editValues={fertilizerId:this.state.fertilizerDetails.fertilizerId,displayName:null,fieldName:null,fieldValue:null,fieldType:null,fieldValueOptionsIfAny:null}
@@ -53,7 +69,6 @@ export class FertilizerDetailsClass extends Component {
     }else if(textTypes.includes(fieldName)){
       editValues.fieldType="text"
     }
-    console.log(editValues)
     this.setState({
       editValues:editValues
     })
@@ -75,7 +90,6 @@ export class FertilizerDetailsClass extends Component {
     }else{
       imageUrl = "/api/user/fertilizer/downloadImage/" + this.state.fertilizerDetails.profileImage
     }
-    console.log(imageUrl)
     return !(this.state.fertilizerDetails)?(<div>Details not found</div>):(
       <div className='grid gap-2 p-2'>
           {/* Row 1 */}
@@ -88,21 +102,62 @@ export class FertilizerDetailsClass extends Component {
             <img src={imageUrl} className=" max-h-64" alt={this.state.fertilizerDetails.name}/>
           </div>
           {/* Row 2 */}
-          <div className='bg-slate-400 flex justify-left items-center pl-10 h-8 relative'>
+          <div className='bg-slate-500 flex justify-left items-center pl-10 h-8 relative'>
             <div>Available : {this.state.fertilizerDetails.available}</div>
             <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Availability","available",this.state.fertilizerDetails.available)} alt={"Edit"}/>
           </div>
           
           {/* Row 3 */}
-          <div className='bg-slate-500 flex justify-left items-center pl-10 h-8 relative'> 
+          <div className='bg-slate-400 flex justify-left items-center pl-10 h-8 relative'> 
             Composition : {this.state.fertilizerDetails.composition}
             <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Composition","composition",this.state.fertilizerDetails.composition)} alt={"Edit"}/>
           </div>
           {/* Row 4 */}
-          <div className='justify-left items-center bg-slate-500 pl-10 relative'>
+          <div className='justify-left items-center bg-slate-500 pl-10 h-8 relative'>
             <h2>Details:</h2>
             {this.state.fertilizerDetails.details}
             <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Details","details",this.state.fertilizerDetails.details)} alt={"Edit"}/>
+          </div>
+          {/* Row 5 */}
+          <div className='' onClick={this.toggleShowPlantList}>
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th colSpan={3} className=' text-center text-2xl relative'>
+                    Plant List
+                    <img src={addIcon} className="h-6 w-6 absolute top-auto right-4" alt="Add" onClick={this.showAddAppliedFertilizersModal} />
+                  </th>
+                </tr>
+                <tr>
+                  <th scope="col" className="py-3 px-6 text-center">
+                    Plant ID
+                  </th>
+                  <th scope="col" className="py-3 px-6 text-center">
+                    Plant Name
+                  </th>
+                  <th scope="col" className="py-3 px-6 text-center">
+                    Image
+                  </th>
+                </tr>
+              </thead>
+              {this.state.showPlantList && (<tbody>
+                {this.state.plantLists && this.state.plantLists.map((plant, index) => {
+                  return (
+                    <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600">
+                      <td className="py-4 px-6 text-center">
+                        {plant.numberId}
+                      </td>
+                      <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                        {plant.plantName}
+                      </th>
+                      <td className="py-4 px-6 text-center">
+                      <img src={"/api/plant/downloadImage/small/" + plant.profileImage} className="h-16 w-auto" alt={plant.plantName}/>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>)}
+            </table>
           </div>
           <FertilizerEditModal isOpen={this.state.editModal} editValues={this.state.editValues} closeModal={this.closeEditModal}/>
         </div>
