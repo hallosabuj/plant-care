@@ -17,6 +17,7 @@ type HandlerP interface {
 	GetAllPlants(*[]models.Plant) error
 	GetAllPlantsOfUser(string, *[]models.Plant) error
 	GetPlantsForAFertilizer(string, *[]models.PlantForAFertilizer) error
+	GetPlantsWithFertilizerUsage(string, string, *[]models.PlantWithFertilizerUsage) error
 	GetPlantsForAPesticide(string, *[]models.PlantForAPesticide) error
 	DeleteDetails(string) error
 	GetPlantDetails(string, *models.Plant) error
@@ -101,6 +102,36 @@ func (p plantHandler) GetPlantsForAFertilizer(fertilizerId string, plantsForAFer
 			month1, _ := strconv.Atoi(temp[1])
 			day1, _ := strconv.Atoi(temp[2])
 			plant.NumberOfDaysElapsed = strings.Split(fmt.Sprintf("%f", DateDifference(year1, month1, day1, year2, int(month2), day2)), ".")[0]
+		}
+		*plantsForAFertilizer = append(*plantsForAFertilizer, plant)
+	}
+	return nil
+}
+
+func (p plantHandler) GetPlantsWithFertilizerUsage(email, fertilizerId string, plantsForAFertilizer *[]models.PlantWithFertilizerUsage) error {
+	fmt.Println(email)
+	fmt.Println(fertilizerId)
+	res, err := p.db.Query(`
+	SELECT IFNULL(table1.plantId,''), IFNULL(name,''), IFNULL(profileimage,''), IFNULL(applyInterval,''), IFNULL(UsingOrNot,''), IFNULL(numberId,'') FROM
+	(SELECT plants.plantId,name,profileimage,numberId,
+		CASE 
+			WHEN plants.plantId IN (SELECT plantId FROM neededfertilizers WHERE fertilizerId = ?)
+			THEN 'true'
+			ELSE 'false'
+		END AS UsingOrNot
+	FROM plants WHERE user_email=?) table1 LEFT JOIN neededfertilizers ON table1.plantId = neededfertilizers.plantId AND neededfertilizers.fertilizerId=?`,
+		fertilizerId, email, fertilizerId)
+	if err != nil {
+		return err
+	}
+	defer res.Close()
+	for res.Next() {
+		fmt.Println("Data 1")
+		var plant models.PlantWithFertilizerUsage
+		err := res.Scan(&plant.PlantId, &plant.PlantName, &plant.ProfileImage, &plant.ApplyInterval, &plant.UsingOrNot, &plant.NumberId)
+		if err != nil {
+			fmt.Println(err)
+			return err
 		}
 		*plantsForAFertilizer = append(*plantsForAFertilizer, plant)
 	}

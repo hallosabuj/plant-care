@@ -32,6 +32,8 @@ func Uri_init_plant(router *mux.Router) {
 	router.HandleFunc("/api/user/plant/uploadImages", AddImages).Methods(http.MethodPost)
 	// API to list all plants that uses a fertilizer
 	router.HandleFunc("/api/user/plants/fertilizer/{fertilizerId}", GetPlantForAFertilizer).Methods(http.MethodGet)
+	// API to list all plants of a user with given fertilizer usage information
+	router.HandleFunc("/api/user/plants/fertilizer-usage/{fertilizerId}", GetPlantForAFertilizerWithUsage).Methods(http.MethodGet)
 	// API to list all plants that uses a pesticide
 	router.HandleFunc("/api/user/plants/pesticide/{pesticideId}", GetPlantForAPesticide).Methods(http.MethodGet)
 	// This API can be used to update name, details, dob, imagename

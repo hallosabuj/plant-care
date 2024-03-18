@@ -4,6 +4,7 @@ import editIcon from '../../assets/edit.png';
 import FertilizerEditModal from './Modals/FertilizerEditModal';
 import { useNavigate } from 'react-router-dom';
 import addIcon from '../../assets/add.png';
+import AddAppliedFertilizerModal from './Modals/AddAppliedFertilizerModal';
 
 const FertilizerDetails = (props) =>{
   const navigate = useNavigate()
@@ -16,10 +17,12 @@ export class FertilizerDetailsClass extends Component {
   
     this.state = {
         fertilizerDetails:null,
+        fertilizerId: null,
         editModal:false,
         editValues:null,
         plantLists: null,
-        showPlantList:false
+        showPlantList:true,
+        addAppliedFertilizerModal: false
     }
   }
   async getPlantsUsingThisFertilizer(){
@@ -42,6 +45,9 @@ export class FertilizerDetailsClass extends Component {
     await axios.get("/api/user/fertilizer/" + fertilizerId).then((response) => {
       this.setState({
         fertilizerDetails: response.data
+      })
+      this.setState({
+        fertilizerId: response.data.fertilizerId
       })
     }).catch(function (error) {
       console.log(error);
@@ -76,12 +82,22 @@ export class FertilizerDetailsClass extends Component {
       editModal:true
     })
   }
+  showAddAppliedFertilizersModal=()=>{
+    this.setState({
+      addAppliedFertilizerModal:true
+    })
+  }
   closeEditModal=()=>{
     this.setState({
       editModal:false,
       editValues:null
     })
     this.getDetails()
+  }
+  closeAddAppliedFertilizerModal=()=>{
+    this.setState({
+      addAppliedFertilizerModal: false,
+    })
   }
   render() {
     let imageUrl=""
@@ -113,13 +129,14 @@ export class FertilizerDetailsClass extends Component {
             <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Composition","composition",this.state.fertilizerDetails.composition)} alt={"Edit"}/>
           </div>
           {/* Row 4 */}
-          <div className='justify-left items-center bg-slate-500 pl-10 h-8 relative'>
+          <div className='justify-left items-center bg-slate-500 pl-10 h-auto relative'>
             <h2>Details:</h2>
             {this.state.fertilizerDetails.details}
             <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Details","details",this.state.fertilizerDetails.details)} alt={"Edit"}/>
           </div>
           {/* Row 5 */}
-          <div className='' onClick={this.toggleShowPlantList}>
+          {/* <div className='' onClick={this.toggleShowPlantList}> */}
+          <div className=''>
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -160,6 +177,7 @@ export class FertilizerDetailsClass extends Component {
             </table>
           </div>
           <FertilizerEditModal isOpen={this.state.editModal} editValues={this.state.editValues} closeModal={this.closeEditModal}/>
+          <AddAppliedFertilizerModal isOpen={this.state.addAppliedFertilizerModal} closeModal={this.closeAddAppliedFertilizerModal} fertilizerId={this.state.fertilizerId}/>
         </div>
     )
   }

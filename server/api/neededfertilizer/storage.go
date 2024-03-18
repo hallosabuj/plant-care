@@ -10,6 +10,7 @@ import (
 
 type HandlerPF interface {
 	AddNeededFertilizer(models.NeededFertilizer) error
+	DeleteNeededFertilizer(models.NeededFertilizer) error
 	GetFilteredNeededFertilizers(string, string, *[]models.NeededFertilizer) error
 }
 
@@ -30,10 +31,20 @@ func Connect() {
 }
 
 func (p plantFertilizerHandler) AddNeededFertilizer(neededFertilizer models.NeededFertilizer) error {
-	_, err := p.db.Query("insert into neededfertilizers(plantId,fertilizerId,applyInterval,benefit) values(?,?,?,?)", neededFertilizer.PlantId, neededFertilizer.FertilizerId, neededFertilizer.ApplyInterval, neededFertilizer.Benefit)
+	res, err := p.db.Query("insert into neededfertilizers(plantId,fertilizerId,applyInterval,benefit) values(?,?,?,?)", neededFertilizer.PlantId, neededFertilizer.FertilizerId, neededFertilizer.ApplyInterval, neededFertilizer.Benefit)
 	if err != nil {
 		fmt.Println(err)
 	}
+	defer res.Close()
+	return err
+}
+
+func (p plantFertilizerHandler) DeleteNeededFertilizer(neededFertilizer models.NeededFertilizer) error {
+	res, err := p.db.Query("delete from neededfertilizers where plantId = ? and fertilizerId = ?", neededFertilizer.PlantId, neededFertilizer.FertilizerId)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer res.Close()
 	return err
 }
 

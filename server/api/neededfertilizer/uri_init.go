@@ -14,5 +14,7 @@ func Uri_init_needed_fertilizers(router *mux.Router) {
 	//////////////////////////////////////////////////////////
 	// Add needed fertilizer for a plant
 	router.HandleFunc("/api/user/plant-fertilizer", AddNeededFertilizer).Methods(http.MethodPost)
+	// Add needed fertilizer for multiple plants
+	router.HandleFunc("/api/user/plants-fertilizer/{fertilizerId}", AddFertilizerForMultiplePlants).Methods(http.MethodPost)
 	Connect()
 }

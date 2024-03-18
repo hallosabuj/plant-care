@@ -240,6 +240,34 @@ func GetPlantForAFertilizer(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(allPlants)
 }
 
+func GetPlantForAFertilizerWithUsage(w http.ResponseWriter, r *http.Request) {
+	oldToken, _ := r.Cookie("token")
+	if oldToken == nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	newToken, err := user.VerifyJWT(oldToken.Value)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	http.SetCookie(w, &http.Cookie{
+		Name:    "token",
+		Value:   newToken,
+		Expires: time.Now().Add(user.TokenTimeOut),
+	})
+	email := user.ParseAccessToken(newToken).Email
+	fmt.Println(email)
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	var fertilizerId string = mux.Vars(r)["fertilizerId"]
+	var allPlants []models.PlantWithFertilizerUsage
+	if err := PlantHandler.GetPlantsWithFertilizerUsage(email, fertilizerId, &allPlants); err != nil {
+		json.NewEncoder(w).Encode(err)
+	}
+	w.Header().Add("content-type", "application/json")
+	json.NewEncoder(w).Encode(allPlants)
+}
+
 func GetPlantForAPesticide(w http.ResponseWriter, r *http.Request) {
 	oldToken, _ := r.Cookie("token")
 	if oldToken == nil {
