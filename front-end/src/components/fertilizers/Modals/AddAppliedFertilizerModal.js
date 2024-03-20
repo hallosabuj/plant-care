@@ -25,7 +25,8 @@ class AddAppliedFertilizerModal extends Component {
         });
     }
     handleChange = (event) => {
-        const { plantId, checked } = event.target
+        let plantId = event.target.name
+        let checked = event.target.checked
         if (plantId === "allSelect") {
             let tempPlants = this.state.plantLists.map(plant => { return { ...plant, using: checked } })
             this.setState({
@@ -39,7 +40,7 @@ class AddAppliedFertilizerModal extends Component {
         }
     }
     handleApplyIntervalChnage = (event) =>{
-        let plantId = event.target.name
+        let plantId = event.target.name.split("_")[1]
         let applyInterval = event.target.value
         let tempPlants = this.state.plantLists.map(plant => plant.plantId === plantId ? { ...plant, applyInterval: applyInterval } : plant)
         this.setState({
@@ -95,7 +96,7 @@ class AddAppliedFertilizerModal extends Component {
                                     return (
                                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-900">
                                             <td className='px-6 py-4'>
-                                                <input type="checkbox" name={plant.plantId} checked={plant.using ? plant.using : false} onChange={this.handleChange} className="w-4 h-4 focus:ring-green-500 dark:focus:ring-green-600 focus:ring-2"></input>
+                                                <input type="checkbox" name={plant.plantId} checked={plant.using} onChange={this.handleChange} className="w-4 h-4 focus:ring-green-500 dark:focus:ring-green-600 focus:ring-2"></input>
                                             </td>
                                             <td className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                 {plant.numberId}: {plant.plantName}
@@ -104,7 +105,7 @@ class AddAppliedFertilizerModal extends Component {
                                                 <img src={"/api/plant/downloadImage/small/" + plant.profileImage} className="h-16 w-auto" alt={plant.plantName} />
                                             </td>
                                             <td className="py-4 px-6">
-                                                <input name={plant.plantId} type='number' defaultValue={plant.applyInterval} onChange={this.handleApplyIntervalChnage}></input>
+                                                <input name={"plant_"+plant.plantId} type='number' defaultValue={plant.applyInterval} onChange={this.handleApplyIntervalChnage}></input>
                                             </td>
                                         </tr>
                                     )
