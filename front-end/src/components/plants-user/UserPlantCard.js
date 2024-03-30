@@ -14,7 +14,14 @@ class UserPlantCard extends Component {
   }
   async deletePlant() {
     console.log("Deleting", this.state.plant.plantId)
-    await axios.delete("/api/user/plant/" + this.state.plant.plantId).catch(function (error) {
+    const headers = {
+      'Authorization': localStorage.getItem("token")
+    };
+    await axios.delete("/api/user/plant/" + this.state.plant.plantId, {headers}).catch(function (error) {
+      if(error.response.status === 401){
+        localStorage.setItem("isSignedIn", false)
+        localStorage.removeItem("token")
+      }
       console.log(error);
     });
     this.props.reRenderOnDelete()

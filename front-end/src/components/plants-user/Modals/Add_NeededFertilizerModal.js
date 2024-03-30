@@ -16,13 +16,20 @@ class AddNeededFertilizerModal extends Component {
         this.getFertilizers()
     }
     async getFertilizers(){
-        let fertilizers=await axios.get("/api/user/fertilizer").then((response)=>{
+        const headers = {
+            'Authorization': localStorage.getItem("token")
+        };
+        let fertilizers=await axios.get("/api/user/fertilizer", {headers}).then((response)=>{
             console.log(response)
             this.setState({
                 listOfFertilizers:response.data
             })
         }).catch(function(error) {
             console.log(error);
+            if(error.response.status === 401){
+                localStorage.setItem("isSignedIn", false)
+                localStorage.removeItem("token")
+            }
         });
         console.log(fertilizers)
     }
@@ -55,12 +62,19 @@ class AddNeededFertilizerModal extends Component {
             benefit:this.state.benefit
         }
         console.log(jsonBody)
-        axios.post("/api/user/plant-fertilizer",jsonBody).then((response)=>{
+        const headers = {
+            'Authorization': localStorage.getItem("token")
+        };
+        axios.post("/api/user/plant-fertilizer",jsonBody, {headers}).then((response)=>{
             console.log("Needed fertilizer added")
         }).then((response)=>{
             this.props.closeModal()
         }).catch((error)=>{
             console.log(error)
+            if(error.response.status === 401){
+                localStorage.setItem("isSignedIn", false)
+                localStorage.removeItem("token")
+            }
         })
     }
     render() {

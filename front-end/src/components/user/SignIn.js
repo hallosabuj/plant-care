@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 const SignIn = (props) =>{
     const navigate = useNavigate();
-    return <SingInClass navigate={navigate} toggleSignedIn={props.toggleSignedIn}/>
+    return <SingInClass navigate={navigate}/>
 }
 class SingInClass extends Component {
     constructor(props) {
@@ -13,7 +13,6 @@ class SingInClass extends Component {
             email: "",
             password: "",
             invalidCredentials: false,
-            // navigate: useNavigate(),
         }
     }
 
@@ -21,12 +20,17 @@ class SingInClass extends Component {
         const formData = new FormData()
         formData.append("email", this.state.email)
         formData.append("password", this.state.password)
-        await axios.post("/api/signin", formData).then(()=>{
-            this.setState({
-                invalidCredentials: false
-            })
-            this.props.toggleSignedIn();
-            // Need to navigate to the login page
+        await axios.post("/api/signin", formData).then((response)=>{
+            if (response.status === 200){
+                // Success
+                this.setState({
+                    invalidCredentials: false
+                })
+                localStorage.setItem("isSignedIn",true)
+                localStorage.setItem("token",response.data.token)
+            }
+            window.location.reload()
+            console.log("after reload")
             this.props.navigate('/')
         }).catch((error)=>{
             console.log(error)

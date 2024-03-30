@@ -2,37 +2,59 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
-const ApplyFertilizer = (props) =>{
+const ApplyFertilizer = (props) => {
   const navigate = useNavigate()
-  return (<ApplyFertilizerClass navigate={navigate} isSignedIn={props.isSignedIn}/>)
+  return (<ApplyFertilizerClass navigate={navigate}/>)
 }
 
 class ApplyFertilizerClass extends Component {
   constructor(props) {
+    let newDate = new Date()
+    let date = newDate.getDate()
+    let month = newDate.getMonth() + 1
+    let year = newDate.getFullYear()
+    let currentDate = `${year}-${month < 10 ? `0${month}` : `${month}`}-${date < 10 ? `0${date}` : `${date}`}`
+
     super(props)
 
     this.state = {
       fertilizers: null,
       appliedFertilizerId: "",
-      plants: null
+      plants: null,
+      applieddate: currentDate
     }
   }
   getFertilizers = async () => {
-    await axios.get("/api/user/fertilizer").then((response) => {
+    const headers = {
+      'Authorization': localStorage.getItem("token")
+    };
+    await axios.get("/api/user/fertilizer", {headers}).then((response) => {
       this.setState({
         fertilizers: response.data
       })
     }).catch(function (error) {
+      if(error.response.status === 401){
+        localStorage.setItem("isSignedIn", false)
+        localStorage.removeItem("token")
+      }
       console.log(error);
     });
   }
   getPlantsForAFertilizer = async () => {
     if (this.state.appliedFertilizerId !== "") {
-      axios.get("/api/user/plants/fertilizer/" + this.state.appliedFertilizerId).then((response) => {
+      const headers = {
+        'Authorization': localStorage.getItem("token")
+      };
+      axios.get("/api/user/plants/fertilizer/" + this.state.appliedFertilizerId, {headers}).then((response) => {
         let tempPlants = response.data.map(plant => { return { ...plant, isChecked: false } })
         this.setState({
           plants: tempPlants
         })
+      }).catch(function (error){
+        if(error.response.status === 401){
+          localStorage.setItem("isSignedIn", false)
+          localStorage.removeItem("token")
+        }
       })
     } else {
       this.setState({
@@ -42,15 +64,15 @@ class ApplyFertilizerClass extends Component {
   }
   componentDidMount() {
     // If it's not logged in then redirect to home page
-    if(!this.props.isSignedIn){
+    if (!(localStorage.getItem("isSignedIn")==='true')) {
       this.props.navigate('/');
     }
     this.getFertilizers()
   }
   onFertilizerChangeHandler = (event) => {
-    if (event.target.value===""){
+    if (event.target.value === "") {
       this.setState({
-        plants:null
+        plants: null
       })
       return
     }
@@ -74,17 +96,20 @@ class ApplyFertilizerClass extends Component {
       })
     }
   }
+  applieddateChangeHandler = (event) => {
+    console.log("prev:", this.state.applieddate)
+    this.setState({
+      applieddate: event.target.value
+    }, () => {
+      console.log(this.state)
+    })
+  }
   saveChanges = () => {
     let jsonBody = []
-    let newDate = new Date()
-    let date = newDate.getDate()
-    let month = newDate.getMonth() + 1
-    let year = newDate.getFullYear()
-    let currentDate = `${year}-${month < 10 ? `0${month}` : `${month}`}-${date < 10 ? `0${date}` : `${date}`}`
 
     this.state.plants.map((plant) => {
       if (plant.isChecked === true) {
-        let tempPlant = { fertilizerId: this.state.appliedFertilizerId, plantId: plant.plantId, appliedDate: currentDate }
+        let tempPlant = { fertilizerId: this.state.appliedFertilizerId, plantId: plant.plantId, appliedDate: this.state.applieddate }
         jsonBody = [...jsonBody, tempPlant]
       }
     })
@@ -92,11 +117,18 @@ class ApplyFertilizerClass extends Component {
     if (jsonBody.length === 0) {
       alert("Select at least one plant to save")
     } else {
-      axios.post("/api/user/applied-fertilizer", jsonBody).then((response) => {
+      const headers = {
+        'Authorization': localStorage.getItem("token")
+      };
+      axios.post("/api/user/applied-fertilizer", jsonBody, {headers}).then((response) => {
         alert("Changes saved")
         this.getPlantsForAFertilizer()
       }).catch((error) => {
         console.log(error)
+        if(error.response.status === 401){
+          localStorage.setItem("isSignedIn", false)
+          localStorage.removeItem("token")
+        }
       })
     }
   }
@@ -115,10 +147,18 @@ class ApplyFertilizerClass extends Component {
               })}
             </select>
           </div>
-          <div></div>
           <div className='flex justify-center items-center'>
+
+          </div>
+          <div className='flex justify-center items-center'>
+            {this.state.plants &&
+              <input value={this.state.applieddate} onChange={this.applieddateChangeHandler}
+                className="shadow appearance-none border border-red-500 rounded w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mx-2"
+                type="date" />
+            }
+
             {this.state.plants && <button
-              className="bg-emerald-700 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              className="bg-emerald-700 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 mx-2"
               type="button"
               onClick={this.saveChanges}
             >
@@ -171,7 +211,7 @@ class ApplyFertilizerClass extends Component {
                               {plant.numberId}: {plant.plantName}
                             </td>
                             <td className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                              <img src={"/api/plant/downloadImage/small/" + plant.profileImage} className="h-16 w-auto" alt={plant.plantName}/>
+                              <img src={"/api/plant/downloadImage/small/" + plant.profileImage} className="h-16 w-auto" alt={plant.plantName} />
                             </td>
                             <td className="py-4 px-6">
                               {plant.lastAppliedDate}

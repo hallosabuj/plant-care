@@ -26,10 +26,17 @@ class AddFertilizerModal extends Component {
     formData.append("composition", this.state.composition)
     formData.append("applyInterval", this.state.applyInterval)
     formData.append("image", this.state.image,this.state.image.name)
-    await axios.post("/api/user/fertilizer", formData).then(() => {
+    const headers = {
+      'Authorization': localStorage.getItem("token")
+    };
+    await axios.post("/api/user/fertilizer", formData, {headers}).then(() => {
       this.props.reRenderOnAdd()
     }).catch((error) => {
       console.log(error)
+      if(error.response.status === 401){
+        localStorage.setItem("isSignedIn", false)
+        localStorage.removeItem("token")
+      }
     })
     this.toggleShowModal()
     // event.preventDefault()

@@ -26,10 +26,17 @@ class AddPlantModal extends Component {
     formData.append("imageSmall", this.state.imageSmall,this.state.imageSmall.name)
     formData.append("imageMedium", this.state.imageMedium,this.state.imageMedium.name)
     formData.append("imageLarge", this.state.imageLarge,this.state.imageLarge.name)
-    await axios.post("/api/user/plant", formData).then(() => {
+    const headers = {
+      'Authorization': localStorage.getItem("token")
+    };
+    await axios.post("/api/user/plant", formData, {headers}).then(() => {
       this.props.reRenderOnAdd()
     }).catch((error) => {
       console.log(error)
+      if(error.response.status === 401){
+        localStorage.setItem("isSignedIn", false)
+        localStorage.removeItem("token")
+      }
     })
     this.toggleShowModal()
     // event.preventDefault()

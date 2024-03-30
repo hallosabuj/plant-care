@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 const ApplyPesticide = (props) =>{
   const navigate = useNavigate()
-  return (<ApplyPesticideClass navigate={navigate} isSignedIn={props.isSignedIn}/>)
+  return (<ApplyPesticideClass navigate={navigate}/>)
 }
 
 class ApplyPesticideClass extends Component {
@@ -18,26 +18,41 @@ class ApplyPesticideClass extends Component {
     }
   }
   getPesticides = async () => {
-    await axios.get("/api/user/pesticide").then((response) => {
+    const headers = {
+      'Authorization': localStorage.getItem("token")
+    };
+    await axios.get("/api/user/pesticide", {headers}).then((response) => {
       this.setState({
         pesticides: response.data
       })
     }).catch(function (error) {
       console.log(error);
+      if(error.response.status === 401){
+        localStorage.setItem("isSignedIn", false)
+        localStorage.removeItem("token")
+      }
     });
   }
   getPlants = async () => {
-    axios.get("/api/user/plants/pesticide/"+this.state.appliedPesticideId).then((response) => {
+    const headers = {
+      'Authorization': localStorage.getItem("token")
+    };
+    axios.get("/api/user/plants/pesticide/"+this.state.appliedPesticideId, {headers}).then((response) => {
       console.log(response)
       let tempPlants = response.data.map(plant => { return { ...plant, isChecked: false } })
       this.setState({
         plants: tempPlants
       })
+    }).then(function (error){
+      if(error.response.status === 401){
+        localStorage.setItem("isSignedIn", false)
+        localStorage.removeItem("token")
+      }
     })
   }
   componentDidMount() {
     // If it's not logged in then redirect to home page
-    if(!this.props.isSignedIn){
+    if(!(localStorage.getItem("isSignedIn")==='true')){
       this.props.navigate('/');
     }
     this.getPesticides()
@@ -87,11 +102,18 @@ class ApplyPesticideClass extends Component {
     if (jsonBody.length === 0) {
       alert("Select at least one plant to save")
     } else {
-      axios.post("/api/user/applied-pesticide", jsonBody).then((response) => {
+      const headers = {
+        'Authorization': localStorage.getItem("token")
+      };
+      axios.post("/api/user/applied-pesticide", jsonBody, {headers}).then((response) => {
         alert("Changes saved")
         this.getPlants()
       }).catch((error) => {
         console.log(error)
+        if(error.response.status === 401){
+          localStorage.setItem("isSignedIn", false)
+          localStorage.removeItem("token")
+        }
       })
     }
   }

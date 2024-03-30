@@ -11,7 +11,7 @@ import (
 	"github.com/hallosabuj/plant-care/server/models"
 )
 
-var TokenTimeOut time.Duration = 15 * time.Minute
+var TokenTimeOut time.Duration = 24 * time.Hour
 
 func SignIn(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Signing in")
@@ -26,12 +26,11 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(map[string]string{"msg": "login failed"})
 		} else {
-			http.SetCookie(w, &http.Cookie{
-				Name:    "token",
-				Value:   token,
-				Expires: time.Now().Add(TokenTimeOut),
-			})
-			json.NewEncoder(w).Encode(map[string]string{"msg": "login success"})
+			responseJson := map[string]string{
+				"msg":   "login success",
+				"token": "Bearer " + token,
+			}
+			json.NewEncoder(w).Encode(responseJson)
 		}
 	} else {
 		w.WriteHeader(http.StatusUnauthorized)
@@ -64,27 +63,17 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 
 func Logout(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Signing out")
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   "",
-		Expires: time.Now(),
-	})
 }
 
 func CheckLogin(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	fmt.Println("CheckLogin called")
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+		json.NewEncoder(w).Encode(map[string]string{"status": "verified"})
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(TokenTimeOut),
-	})
 }

@@ -30,10 +30,17 @@ class PlantEditModal extends Component {
         }
         let url="/api/user/plant/update/"+this.state.editValues.fieldName+"/"+this.state.editValues.plantId+"/"+this.state.editValues.fieldValue
         console.log(url)
-        await axios.post(url).then((response)=>{
+        const headers = {
+            'Authorization': localStorage.getItem("token")
+          };
+        await axios.post(url, {headers}).then((response)=>{
             console.log(response)
         }).catch((error)=>{
             console.log(error)
+            if(error.response.status === 401){
+                localStorage.setItem("isSignedIn", false)
+                localStorage.removeItem("token")
+            }
         })
         console.log("Now update in database")
         // Now need to close the modal and clear values

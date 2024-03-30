@@ -22,18 +22,10 @@ import axios from 'axios';
 class App extends Component {
   constructor(props){
     super(props)
-    this.state = {
-      isSignedIn: false
+    console.log("HHHH", localStorage.getItem('isSignedIn'))
+    if(!(localStorage.getItem('isSignedIn') === 'true')){
+      localStorage.setItem('isSignedIn', false);
     }
-    this.toggleSignedIn=this.toggleSignedIn.bind(this)
-    axios.get("/api/checklogin").then(()=>{
-      this.toggleSignedIn()
-    })
-  }
-  toggleSignedIn(){
-    this.setState({
-      isSignedIn: !this.state.isSignedIn
-    })
   }
   render() {
       return (
@@ -41,7 +33,7 @@ class App extends Component {
           <div className='bg-slate-300 min-h-screen flex flex-col'>
             <div className='w-full h-auto'>
               <Router>
-                <NavBar isSignedIn={this.state.isSignedIn} toggleSignedIn={this.toggleSignedIn}/>
+                <NavBar/>
                 <Routes>
                   <Route exact path='/' element={<Home />}></Route>
                   <Route exact path='/web' element={<Home />}></Route>
@@ -51,16 +43,17 @@ class App extends Component {
                   <Route exact path='/web/compress' element={<CompressImage />}></Route>
                   <Route exact path='/swagger-ui' element={<SwaggerUIPage />}></Route>
 
-                  <Route exact path='/web/user/plants' element={<UserPlants isSignedIn={this.state.isSignedIn}/>}></Route>
-                  <Route exact path='/web/user/plants/:plantId' element={<UserPlantDetails isSignedIn={this.state.isSignedIn}/>}></Route>
-                  <Route exact path='/web/user/fertilizers' element={<Fertilizers isSignedIn={this.state.isSignedIn}/>}></Route>
-                  <Route exact path='/web/user/fertilizers/:fertilizerId' element={<FertilizerDetails isSignedIn={this.state.isSignedIn}/>}></Route>
-                  <Route exact path='/web/user/apply-fertilizer' element={<ApplyFertilizer isSignedIn={this.state.isSignedIn}/>}></Route>
-                  <Route exact path='/web/user/pesticides' element={<Pesticides isSignedIn={this.state.isSignedIn}/>}></Route>
-                  <Route exact path='/web/user/pesticides/:pesticideId' element={<PesticideDetails isSignedIn={this.state.isSignedIn}/>}></Route>
-                  <Route exact path='/web/user/apply-pesticide' element={<ApplyPesticide isSignedIn={this.state.isSignedIn}/>}></Route>
+                  <Route exact path='/web/user/plants' element={<UserPlants/>}></Route>
+                  <Route exact path='/web/user/plants/:plantId' element={<UserPlantDetails/>}></Route>
+                  <Route exact path='/web/user/fertilizers' element={<Fertilizers/>}></Route>
+                  <Route exact path='/web/user/fertilizers/:fertilizerId' element={<FertilizerDetails/>}></Route>
+                  <Route exact path='/web/user/apply-fertilizer' element={<ApplyFertilizer/>}></Route>
+                  <Route exact path='/web/user/pesticides' element={<Pesticides/>}></Route>
+                  <Route exact path='/web/user/pesticides/:pesticideId' element={<PesticideDetails/>}></Route>
+                  <Route exact path='/web/user/apply-pesticide' element={<ApplyPesticide/>}></Route>
 
-                  <Route exact path='/web/signin' element={<SingIn toggleSignedIn={this.toggleSignedIn}/>}></Route>
+                  <Route exact path='/web/signin' element={<SingIn/>}></Route>
+                  {/* <Route exact path='/web/signin' element={<SingIn toggleSignedIn={this.toggleSignedIn}/>}></Route> */}
                 </Routes>
               </Router>
             </div>

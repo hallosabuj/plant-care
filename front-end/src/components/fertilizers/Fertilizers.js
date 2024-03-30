@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 const Fertilizers = (props) =>{
     const navigate = useNavigate()
-    return (<FertilizersClass navigate={navigate} isSignedIn={props.isSignedIn}/>)
+    return (<FertilizersClass navigate={navigate}/>)
 }
 
 class FertilizersClass extends Component {
@@ -19,19 +19,26 @@ class FertilizersClass extends Component {
       this.reRenderOnAddOrDelete = this.reRenderOnAddOrDelete.bind(this)
     }
     async getFertilizers(){
-        let fertilizers=await axios.get("/api/user/fertilizer").then((response)=>{
+        const headers = {
+            'Authorization': localStorage.getItem("token")
+        };
+        let fertilizers=await axios.get("/api/user/fertilizer", {headers}).then((response)=>{
             console.log(response)
             this.setState({
                 fertilizers:response.data
             })
         }).catch(function(error) {
             console.log(error);
+            if(error.response.status === 401){
+                localStorage.setItem("isSignedIn", false)
+                localStorage.removeItem("token")
+            }
         });
         console.log(fertilizers)
     }
     componentDidMount(){
         // If it's not logged in then redirect to home page
-        if(!this.props.isSignedIn){
+        if(!localStorage.getItem("isSignedIn")){
             this.props.navigate('/');
         }
         this.getFertilizers()

@@ -2,6 +2,7 @@ package user
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -46,13 +47,17 @@ func CreateJWT(email string) (string, error) {
 	return token, nil
 }
 
-func VerifyJWT(token string) (string, error) {
+func VerifyJWT(authHeader string) (bool, string) {
+	if authHeader == "" {
+		return false, ""
+	}
+	token := strings.Split(authHeader, " ")[1]
 	// Generating claims from access token
 	userClaims := ParseAccessToken(token)
 	if userClaims.Valid() != nil {
-		return "", userClaims.Valid()
+		return false, ""
 	}
 	var newToken string
 	newToken, _ = CreateJWT(userClaims.Email)
-	return newToken, nil
+	return true, newToken
 }

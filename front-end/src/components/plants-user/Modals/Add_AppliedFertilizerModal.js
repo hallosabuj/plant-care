@@ -15,12 +15,19 @@ class AddAppliedFertilizerModal extends Component {
         this.getNeededFertilizers()
     }
     async getNeededFertilizers(){
-        let fertilizers=await axios.get("/api/plant-fertilizer/plantId/"+this.props.plantId).then((response)=>{
+        const headers = {
+            'Authorization': localStorage.getItem("token")
+        };
+        let fertilizers=await axios.get("/api/plant-fertilizer/plantId/"+this.props.plantId, {headers}).then((response)=>{
             this.setState({
                 listOfNeededFertilizers:response.data
             })
         }).catch(function(error) {
             console.log(error);
+            if(error.response.status === 401){
+                localStorage.setItem("isSignedIn", false)
+                localStorage.removeItem("token")
+            }
         });
         console.log(fertilizers)
     }
@@ -45,10 +52,17 @@ class AddAppliedFertilizerModal extends Component {
             fertilizerId:this.state.fertilizerId,
             appliedDate:this.state.appliedDate
         }]
-        axios.post("/api/user/applied-fertilizer",jsonBody).then((response)=>{
+        const headers = {
+            'Authorization': localStorage.getItem("token")
+        };
+        axios.post("/api/user/applied-fertilizer",jsonBody, {headers}).then((response)=>{
             console.log("Applied fertilizer added")
         }).catch((error)=>{
             console.log(error)
+            if(error.response.status === 401){
+                localStorage.setItem("isSignedIn", false)
+                localStorage.removeItem("token")
+            }
         })
         this.props.closeModal()
     }

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 const Pesticides = (props) =>{
     const navigate = useNavigate()
-    return (<PesticidesClass navigate={navigate} isSignedIn={props.isSignedIn}/>)
+    return (<PesticidesClass navigate={navigate}/>)
 }
 
 class PesticidesClass extends Component {
@@ -19,19 +19,26 @@ class PesticidesClass extends Component {
     this.reRenderOnAddOrDelete=this.reRenderOnAddOrDelete.bind(this)
   }
   async getPesticides(){
-      let pesticides=await axios.get("/api/user/pesticide").then((response)=>{
+      const headers = {
+        'Authorization': localStorage.getItem("token")
+      };
+      let pesticides=await axios.get("/api/user/pesticide", {headers}).then((response)=>{
           console.log(response)
           this.setState({
             pesticides:response.data
           })
       }).catch(function(error) {
           console.log(error);
+          if(error.response.status === 401){
+            localStorage.setItem("isSignedIn", false)
+            localStorage.removeItem("token")
+          }
       });
       console.log(pesticides)
   }
   componentDidMount(){
     // If it's not logged in then redirect to home page
-    if(!this.props.isSignedIn){
+    if(!localStorage.getItem("isSignedIn")){
         this.props.navigate('/');
     }
     this.getPesticides()

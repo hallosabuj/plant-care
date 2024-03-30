@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"path/filepath"
 	"strings"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
@@ -15,21 +14,14 @@ import (
 )
 
 func AddFertilizer(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 	// Getting email from newToken
 	email := user.ParseAccessToken(newToken).Email
 
@@ -51,21 +43,14 @@ func AddFertilizer(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllFertilizers(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 	// Getting email from newToken
 	email := user.ParseAccessToken(newToken).Email
 
@@ -76,25 +61,18 @@ func GetAllFertilizers(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetFertilizer(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 
 	var fertilizerId string = mux.Vars(r)["fertilizerId"]
 	var fertilizer models.Fertilizer
-	err = FertilizerHandler.GetFertilizerDetails(fertilizerId, &fertilizer)
+	err := FertilizerHandler.GetFertilizerDetails(fertilizerId, &fertilizer)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	} else {
@@ -103,22 +81,6 @@ func GetFertilizer(w http.ResponseWriter, r *http.Request) {
 }
 
 func DownloadFertilizerImage(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
-
 	var imageName string = mux.Vars(r)["imageName"]
 	fmt.Println("plantId", imageName)
 	data, err := GetFertilizerImage(imageName)
@@ -129,21 +91,14 @@ func DownloadFertilizerImage(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteFertilizer(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 
 	var fertilizerId string = mux.Vars(r)["fertilizerId"]
 	if err := FertilizerHandler.DeleteFertilizerDetails(fertilizerId); err != nil {
@@ -160,21 +115,14 @@ func DeleteFertilizer(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateFertilizer(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 
 	queryParams := mux.Vars(r)
 	var fertilizerId string = queryParams["fertilizerId"]
@@ -186,7 +134,7 @@ func UpdateFertilizer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = FertilizerHandler.UpdateFertilizer(fertilizerId, field, value)
+	err := FertilizerHandler.UpdateFertilizer(fertilizerId, field, value)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

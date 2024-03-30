@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"path/filepath"
 	"strings"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
@@ -15,21 +14,14 @@ import (
 )
 
 func AddPesticides(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 	// Getting email from newToken
 	email := user.ParseAccessToken(newToken).Email
 
@@ -51,21 +43,14 @@ func AddPesticides(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllPesticides(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 	// Getting email from newToken
 	email := user.ParseAccessToken(newToken).Email
 
@@ -76,25 +61,18 @@ func GetAllPesticides(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetPesticide(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 
 	var pesticideId string = mux.Vars(r)["pesticideId"]
 	var pesticide models.Pesticides
-	err = PesticideHandler.GetPesticideDetails(pesticideId, &pesticide)
+	err := PesticideHandler.GetPesticideDetails(pesticideId, &pesticide)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	} else {
@@ -103,21 +81,14 @@ func GetPesticide(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeletePesticide(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 
 	var pesticideId string = mux.Vars(r)["pesticideId"]
 	if err := PesticideHandler.DeletePesticideDetails(pesticideId); err != nil {
@@ -134,21 +105,6 @@ func DeletePesticide(w http.ResponseWriter, r *http.Request) {
 }
 
 func DownloadPesticideImage(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 
 	var imageName string = mux.Vars(r)["imageName"]
 	fmt.Println("plantId", imageName)
@@ -160,21 +116,14 @@ func DownloadPesticideImage(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdatePesticide(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 
 	queryParams := mux.Vars(r)
 	var pesticideId string = queryParams["pesticideId"]
@@ -186,7 +135,7 @@ func UpdatePesticide(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = PesticideHandler.UpdatePesticide(pesticideId, field, value)
+	err := PesticideHandler.UpdatePesticide(pesticideId, field, value)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

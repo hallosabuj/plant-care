@@ -16,12 +16,19 @@ class AddAppliedFertilizerModal extends Component {
     getAllPlantsForAUser = async () => {
         let fertilizerId = this.props.fertilizerId
         // Getting basic details
-        await axios.get("/api/user/plants/fertilizer-usage/" + fertilizerId).then((response) => {
+        const headers = {
+            'Authorization': localStorage.getItem("token")
+          };
+        await axios.get("/api/user/plants/fertilizer-usage/" + fertilizerId, {headers}).then((response) => {
             this.setState({
                 plantLists: response.data
             })
         }).catch(function (error) {
             console.log(error);
+            if(error.response.status === 401){
+                localStorage.setItem("isSignedIn", false)
+                localStorage.removeItem("token")
+            }
         });
     }
     handleChange = (event) => {
@@ -48,10 +55,17 @@ class AddAppliedFertilizerModal extends Component {
         })
     }
     handleUpdate = async () => {
-        axios.post("/api/user/plants-fertilizer/"+ this.props.fertilizerId, this.state.plantLists).then((response) => {
+        const headers = {
+            'Authorization': localStorage.getItem("token")
+          };
+        axios.post("/api/user/plants-fertilizer/"+ this.props.fertilizerId, this.state.plantLists, {headers}).then((response) => {
             alert("Changes saved")
         }).catch((error) => {
             console.log(error)
+            if(error.response.status === 401){
+                localStorage.setItem("isSignedIn", false)
+                localStorage.removeItem("token")
+            }
         })
     }
     render() {

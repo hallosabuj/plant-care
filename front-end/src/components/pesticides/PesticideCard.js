@@ -12,10 +12,17 @@ export class PesticideCard extends Component {
     }
   }
   async deletePesticide(){
-    await axios.delete("/api/user/pesticide/"+this.state.pesticide.pesticideId).then(()=>{
+    const headers = {
+      'Authorization': localStorage.getItem("token")
+    };
+    await axios.delete("/api/user/pesticide/"+this.state.pesticide.pesticideId, {headers}).then(()=>{
       alert("Pesticide deleted successfully")
     }).catch(function(error) {
       alert(error.response.data)
+      if(error.response.status === 401){
+        localStorage.setItem("isSignedIn", false)
+        localStorage.removeItem("token")
+      }
     });
     this.props.reRenderOnDelete()
   }

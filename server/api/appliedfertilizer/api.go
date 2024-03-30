@@ -3,7 +3,6 @@ package appliedfertilizer
 import (
 	"encoding/json"
 	"net/http"
-	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/hallosabuj/plant-care/server/api/user"
@@ -11,21 +10,14 @@ import (
 )
 
 func AddAppliedFertilizer(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 
 	var appliedFertilizers []models.AppliedFertilizer
 	json.NewDecoder(r.Body).Decode(&appliedFertilizers)

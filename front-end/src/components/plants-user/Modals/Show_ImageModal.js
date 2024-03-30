@@ -24,10 +24,17 @@ class ShowImageModal extends Component {
         }
         let imageName = this.props.imageUrl.split("/")[5]
         let url = "/api/user/plant/update/profileimage/" + this.props.plantId + "/" + imageName
-        await axios.post(url).then((response) => {
+        const headers = {
+            'Authorization': localStorage.getItem("token")
+        };
+        await axios.post(url, {headers}).then((response) => {
             console.log("Profile image updated")
         }).catch((error) => {
             console.log(error)
+            if(error.response.status === 401){
+                localStorage.setItem("isSignedIn", false)
+                localStorage.removeItem("token")
+            }
         })
         console.log("Now update in database")
         // Now need to close the modal and clear values

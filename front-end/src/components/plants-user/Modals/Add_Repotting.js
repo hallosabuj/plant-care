@@ -23,10 +23,17 @@ class AddRepotting extends Component {
                 repottingDate: this.state.repottingDate
             }
             console.log(jsonBody)
-            axios.post("/api/user/repotting", jsonBody).then((response) => {
+            const headers = {
+                'Authorization': localStorage.getItem("token")
+            };
+            axios.post("/api/user/repotting", jsonBody, {headers}).then((response) => {
                 console.log("Repotting date added")
             }).catch((error) => {
                 console.log(error)
+                if(error.response.status === 401){
+                    localStorage.setItem("isSignedIn", false)
+                    localStorage.removeItem("token")
+                }
             })
         }
         this.props.closeModal()

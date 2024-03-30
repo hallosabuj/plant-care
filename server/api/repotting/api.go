@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/hallosabuj/plant-care/server/api/user"
@@ -12,26 +11,18 @@ import (
 )
 
 func AddRepotting(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
-
 	var repotting models.Repotting
 	json.NewDecoder(r.Body).Decode(&repotting)
 	fmt.Println(repotting)
-	err = RepottingHandler.AddRepotting(repotting)
+	err := RepottingHandler.AddRepotting(repotting)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

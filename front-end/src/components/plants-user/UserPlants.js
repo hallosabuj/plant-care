@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 const UserPlants = (props) => {
     const navigate = useNavigate();
-    return (<UserPlantsClass navigate={navigate} isSignedIn={props.isSignedIn} />)
+    return (<UserPlantsClass navigate={navigate} />)
 }
 
 class UserPlantsClass extends Component {
@@ -19,19 +19,26 @@ class UserPlantsClass extends Component {
         this.reRenderOnAddOrDelete = this.reRenderOnAddOrDelete.bind(this)
     }
     async getPlants() {
-        let plants = await axios.get("/api/user/plant").then((response) => {
-            console.log(response)
+        const headers = {
+            'Authorization': localStorage.getItem("token")
+        };
+        let plants = await axios.get("/api/user/plant",{headers}).then((response) => {
+            console.log(response.status)
             this.setState({
                 plants: response.data
             })
         }).catch(function (error) {
             console.log(error);
+            if(error.response.status === 401){
+                localStorage.setItem("isSignedIn", false)
+                localStorage.removeItem("token")
+            }
         });
         console.log(plants)
     }
     componentDidMount() {
         // If it's not logged in then redirect to home page
-        if(!this.props.isSignedIn){
+        if(!localStorage.getItem("isSignedIn")){
             this.props.navigate('/');
         }
         this.getPlants()

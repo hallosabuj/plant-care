@@ -8,7 +8,7 @@ import AddAppliedFertilizerModal from './Modals/AddAppliedFertilizerModal';
 
 const FertilizerDetails = (props) =>{
   const navigate = useNavigate()
-  return (<FertilizerDetailsClass navigate={navigate} isSignedIn={props.isSignedIn}/>)
+  return (<FertilizerDetailsClass navigate={navigate}/>)
 }
 
 export class FertilizerDetailsClass extends Component {
@@ -28,12 +28,19 @@ export class FertilizerDetailsClass extends Component {
   async getPlantsUsingThisFertilizer(){
     let fertilizerId = window.location.href.split('/')[7] 
     // Getting basic details
-    await axios.get("/api/user/plants/fertilizer/" + fertilizerId).then((response) => {
+    const headers = {
+      'Authorization': localStorage.getItem("token")
+    };
+    await axios.get("/api/user/plants/fertilizer/" + fertilizerId, {headers}).then((response) => {
       this.setState({
         plantLists: response.data
       })
     }).catch(function (error) {
       console.log(error);
+      if(error.response.status === 401){
+        localStorage.setItem("isSignedIn", false)
+        localStorage.removeItem("token")
+      }
     });
   }
   toggleShowPlantList = () =>{
@@ -42,7 +49,10 @@ export class FertilizerDetailsClass extends Component {
   async getDetails(){
     let fertilizerId = window.location.href.split('/')[7]
     // Getting basic details
-    await axios.get("/api/user/fertilizer/" + fertilizerId).then((response) => {
+    const headers = {
+      'Authorization': localStorage.getItem("token")
+    };
+    await axios.get("/api/user/fertilizer/" + fertilizerId, {headers}).then((response) => {
       this.setState({
         fertilizerDetails: response.data
       })
@@ -51,11 +61,15 @@ export class FertilizerDetailsClass extends Component {
       })
     }).catch(function (error) {
       console.log(error);
+      if(error.response.status === 401){
+        localStorage.setItem("isSignedIn", false)
+        localStorage.removeItem("token")
+      }
     });
   }
   componentDidMount(){
     // If it's not logged in then redirect to home page
-    if(!this.props.isSignedIn){
+    if(!localStorage.getItem("isSignedIn")){
       this.props.navigate('/');
     }
     this.getPlantsUsingThisFertilizer()

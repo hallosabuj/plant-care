@@ -23,7 +23,10 @@ class MyImageSlider extends Component {
         if (key===""){
             return
         }
-        await axios.delete("/api/user/plant/deleteImage/"+this.state.imageNames[key]).then((response)=>{
+        const headers = {
+            'Authorization': localStorage.getItem("token")
+          };
+        await axios.delete("/api/user/plant/deleteImage/"+this.state.imageNames[key], {headers}).then((response)=>{
             console.log("Deleted")
             let imageNames=this.state.imageNames
             delete imageNames[key]
@@ -32,6 +35,10 @@ class MyImageSlider extends Component {
             })
         }).catch((error)=>{
             console.log(error)
+            if(error.response.status === 401){
+                localStorage.setItem("isSignedIn", false)
+                localStorage.removeItem("token")
+            }
         })
     }
     sendImageUrlToParent=(imageUrl)=>{

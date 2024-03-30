@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
@@ -27,22 +26,14 @@ func GetAllPlants(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllPlantsOfUser(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	fmt.Println(oldToken)
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 	fmt.Println("new cookie:", newToken)
 	// Getting email from newToken
 	email := user.ParseAccessToken(newToken).Email
@@ -57,21 +48,14 @@ func GetAllPlantsOfUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddPlant(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 	// Getting email from newToken
 	email := user.ParseAccessToken(newToken).Email
 
@@ -102,21 +86,14 @@ func AddPlant(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeletePlantPhoto(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
 	fileName := mux.Vars(r)["imageName"]
@@ -129,21 +106,14 @@ func DeletePlantPhoto(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddImages(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
 	if r.Method != "POST" {
@@ -186,26 +156,19 @@ func GetPlant(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUserPlant(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 	w.Header().Add("Access-Control-Allow-Origin", "*")
 	var plantId string = mux.Vars(r)["plantId"]
 	var plant models.Plant
 	plant.ImageNames = make(map[string]string)
-	err = PlantHandler.GetUserPlantDetails(plantId, &plant)
+	err := PlantHandler.GetUserPlantDetails(plantId, &plant)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	} else {
@@ -214,21 +177,14 @@ func GetUserPlant(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetPlantForAFertilizer(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
 	var fertilizerId string = mux.Vars(r)["fertilizerId"]
@@ -241,21 +197,14 @@ func GetPlantForAFertilizer(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetPlantForAFertilizerWithUsage(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 	email := user.ParseAccessToken(newToken).Email
 	fmt.Println(email)
 	w.Header().Add("Access-Control-Allow-Origin", "*")
@@ -269,21 +218,14 @@ func GetPlantForAFertilizerWithUsage(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetPlantForAPesticide(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
 	var pesticideId string = mux.Vars(r)["pesticideId"]
@@ -296,21 +238,14 @@ func GetPlantForAPesticide(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdatePlant(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
 	fmt.Println("Updating plant")
@@ -331,21 +266,14 @@ func UpdatePlant(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeletePlant(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
 	var plantId string = mux.Vars(r)["plantId"]
@@ -369,21 +297,14 @@ func DownloadImage(w http.ResponseWriter, r *http.Request) {
 }
 
 func CompressedImages(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
 	if r.Method != "POST" {

@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 
 const MyPlantDetails = (props) =>{
   const navigate = useNavigate()
-  return(<MyPlantDetailsClass navigate={navigate} isSignedIn={props.isSignedIn}/>)
+  return(<MyPlantDetailsClass navigate={navigate}/>)
 }
 class MyPlantDetailsClass extends Component {
   constructor(props) {
@@ -39,7 +39,10 @@ class MyPlantDetailsClass extends Component {
   async getDetails() {
     let plantId = window.location.href.split('/')[7]
     // Getting basic details
-    await axios.get("/api/user/plant/" + plantId).then((response) => {
+    const headers = {
+      'Authorization': localStorage.getItem("token")
+    };
+    await axios.get("/api/user/plant/" + plantId, {headers}).then((response) => {
       this.setState({
         plantDetails: response.data
       })
@@ -60,9 +63,13 @@ class MyPlantDetailsClass extends Component {
       }
     }).catch(function (error) {
       console.log(error);
+      if(error.response.status === 401){
+        localStorage.setItem("isSignedIn", false)
+        localStorage.removeItem("token")
+      }
     });
     // Getting needed fertilizers
-    await axios.get("/api/plant-fertilizer/plantId/" + plantId).then((response) => {
+    await axios.get("/api/plant-fertilizer/plantId/" + plantId, {headers}).then((response) => {
       this.setState({
         neededFertilizers: response.data
       })
@@ -71,7 +78,7 @@ class MyPlantDetailsClass extends Component {
       console.log(error);
     });
     // Getting applied fertilizers
-    await axios.get("/api/applied-fertilizer/plantId/" + plantId).then((response) => {
+    await axios.get("/api/applied-fertilizer/plantId/" + plantId, {headers}).then((response) => {
       this.setState({
         appliedFertilizers: response.data
       })
@@ -80,7 +87,7 @@ class MyPlantDetailsClass extends Component {
       console.log(error);
     });
     // Getting repotting lists
-    await axios.get("/api/repotting/" + plantId).then((response) => {
+    await axios.get("/api/repotting/" + plantId, {headers}).then((response) => {
       this.setState({
         repottingList: response.data
       })
@@ -90,7 +97,7 @@ class MyPlantDetailsClass extends Component {
   }
   componentDidMount() {
     // If it's not logged in then redirect to home page
-    if(!this.props.isSignedIn){
+    if(!localStorage.getItem("isSignedIn")){
       this.props.navigate('/');
     }
     this.getDetails()
@@ -195,12 +202,19 @@ class MyPlantDetailsClass extends Component {
   updatePublic = async () => {
     let url="/api/user/plant/update/public/"+this.state.plantDetails.plantId+"/"+!this.state.isPublic
     console.log(url)
-    await axios.post(url).then((response)=>{
+    const headers = {
+      'Authorization': localStorage.getItem("token")
+    };
+    await axios.post(url, {headers}).then((response)=>{
       this.setState({
         isPublic: !this.state.isPublic
       })
     }).catch((error)=>{
         console.log(error)
+        if(error.response.status === 401){
+          localStorage.setItem("isSignedIn", false)
+          localStorage.removeItem("token")
+        }
     })
   }
 

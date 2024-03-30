@@ -62,7 +62,8 @@ class NavBar2 extends Component {
 
     signOut = () =>{
         axios.get("/api/signout")
-        this.props.toggleSignedIn()
+        localStorage.setItem("isSignedIn", false)
+        localStorage.removeItem("token")
         this.toggleProfileMenuIcon()
     };
 
@@ -84,7 +85,7 @@ class NavBar2 extends Component {
                     <div className='hidden lg:inline'>
                         <div className='bg-gray-800 w-auto flex items-center gap[4vh] gap-1 px-10'>
                             {this.state.navigation.map((item) => {
-                                return (item.public || this.props.isSignedIn)&&(
+                                return (item.public || (localStorage.getItem("isSignedIn")==='true'))&&(
                                     <NavLink
                                         key={item.name}
                                         to={item.href}
@@ -101,7 +102,7 @@ class NavBar2 extends Component {
 
                     {/* End */}
                     <div className="flex items-center gap-2 pr-5">
-                        {this.props.isSignedIn && (
+                        {(localStorage.getItem("isSignedIn")==='true') && (
                             <div className='lg:pr-10'>
                                 <button
                                     type="button"
@@ -112,7 +113,7 @@ class NavBar2 extends Component {
                                 </button>
                             </div>
                         )}
-                        {!this.props.isSignedIn && (
+                        {!(localStorage.getItem("isSignedIn")==='true') && (
                             <NavLink
                                 key="signin"
                                 to="/web/signin"
@@ -138,7 +139,7 @@ class NavBar2 extends Component {
                     {(this.state.menuOpen) && (
                         <div className='bg-gray-800 min-w-[200px] top-[70px] flex flex-col gap-1 px-5 pb-3 mr-4 lg:hidden rounded-b-md'>
                             {this.state.navigation.map((item) => {
-                                return (item.public || this.props.isSignedIn)&&(
+                                return (item.public || (localStorage.getItem("isSignedIn")==='true'))&&(
                                     <NavLink
                                         key={item.name}
                                         to={item.href}

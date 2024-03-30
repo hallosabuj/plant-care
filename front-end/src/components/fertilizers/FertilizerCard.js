@@ -12,11 +12,18 @@ export class FertilizerCard extends Component {
     }
   }
   async deleteFertilizer(){
-    await axios.delete("/api/user/fertilizer/"+this.state.fertilizer.fertilizerId).then(()=>{
+    const headers = {
+      'Authorization': localStorage.getItem("token")
+    };
+    await axios.delete("/api/user/fertilizer/"+this.state.fertilizer.fertilizerId, {headers}).then(()=>{
       alert("Fertilizer deleted successfully")
       this.props.reRenderOnDelete()
     }).catch(function(error) {
       alert(error.response.data)
+      if(error.response.status === 401){
+        localStorage.setItem("isSignedIn", false)
+        localStorage.removeItem("token")
+      }
     });
   }
   render() {

@@ -122,11 +122,18 @@ class AddImageModal extends Component {
     this.state.imagesSmall.forEach((image)=>formData.append("imageSmall",image,image.name))
     this.state.imagesMedium.forEach((image)=>formData.append("imageMedium",image,image.name))
     this.state.imagesLarge.forEach((image)=>formData.append("imageLarge",image,image.name))
-    await axios.post("/api/user/plant/uploadImages",formData).then((response)=>{
+    const headers = {
+      'Authorization': localStorage.getItem("token")
+    };
+    await axios.post("/api/user/plant/uploadImages",formData, {headers}).then((response)=>{
       console.log(response)
       this.props.closeModal()
     }).catch((error)=>{
       console.log(error)
+      if(error.response.status === 401){
+        localStorage.setItem("isSignedIn", false)
+        localStorage.removeItem("token")
+      }
       this.props.closeModal()
     })
   }

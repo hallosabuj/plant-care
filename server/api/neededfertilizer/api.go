@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/hallosabuj/plant-care/server/api/user"
@@ -12,26 +11,19 @@ import (
 )
 
 func AddNeededFertilizer(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 
 	var neededFertilizer models.NeededFertilizer
 	json.NewDecoder(r.Body).Decode(&neededFertilizer)
 	fmt.Println(neededFertilizer)
-	err = PlantsFertilizersHandler.AddNeededFertilizer(neededFertilizer)
+	err := PlantsFertilizersHandler.AddNeededFertilizer(neededFertilizer)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -39,21 +31,14 @@ func AddNeededFertilizer(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddFertilizerForMultiplePlants(w http.ResponseWriter, r *http.Request) {
-	oldToken, _ := r.Cookie("token")
-	if oldToken == nil {
+	authHeader := r.Header.Get("Authorization")
+	isValid, newToken := user.VerifyJWT(authHeader)
+	if isValid {
+		w.Header().Add("Authorization", "Bearer "+newToken)
+	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	newToken, err := user.VerifyJWT(oldToken.Value)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   newToken,
-		Expires: time.Now().Add(user.TokenTimeOut),
-	})
 
 	fertilizerId := mux.Vars(r)["fertilizerId"]
 	var plantList []models.PlantWithFertilizerUsage
@@ -64,7 +49,7 @@ func AddFertilizerForMultiplePlants(w http.ResponseWriter, r *http.Request) {
 		neededFertilizer.PlantId = plant.PlantId
 		neededFertilizer.FertilizerId = fertilizerId
 		neededFertilizer.ApplyInterval = plant.ApplyInterval
-		err = PlantsFertilizersHandler.DeleteNeededFertilizer(neededFertilizer)
+		err := PlantsFertilizersHandler.DeleteNeededFertilizer(neededFertilizer)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
