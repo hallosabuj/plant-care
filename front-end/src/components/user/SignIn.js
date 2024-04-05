@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const SignIn = (props) =>{
-    const navigate = useNavigate();
-    return <SingInClass navigate={navigate}/>
+    const navigate = useNavigate(); 
+    return <SingInClass navigate={navigate} toggleSignedIn={props.toggleSignedIn}/>
 }
 class SingInClass extends Component {
     constructor(props) {
@@ -13,6 +13,13 @@ class SingInClass extends Component {
             email: "",
             password: "",
             invalidCredentials: false,
+        }
+    }
+
+    componentDidMount(){
+        if (localStorage.getItem("isSignedIn") === "true"){
+            // If already signed in then redirecting to the home page
+            this.props.navigate('/')
         }
     }
 
@@ -28,10 +35,10 @@ class SingInClass extends Component {
                 })
                 localStorage.setItem("isSignedIn",true)
                 localStorage.setItem("token",response.data.token)
+                // On success need to reload home page properly
+                this.props.toggleSignedIn()
+                this.componentDidMount()
             }
-            window.location.reload()
-            console.log("after reload")
-            this.props.navigate('/')
         }).catch((error)=>{
             console.log(error)
             if(error.request.status == 401){

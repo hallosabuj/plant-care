@@ -22,8 +22,16 @@ import axios from 'axios';
 class App extends Component {
   constructor(props){
     super(props)
-    console.log("HHHH", localStorage.getItem('isSignedIn'))
+    this.state = {
+      isSignedIn: false
+    }
+  }
+  toggleSignedIn = () =>{
+    this.setState({
+      isSignedIn: !this.state.isSignedIn
+    })
     if(!(localStorage.getItem('isSignedIn') === 'true')){
+      // If not logged then setting to false
       localStorage.setItem('isSignedIn', false);
     }
   }
@@ -52,8 +60,7 @@ class App extends Component {
                   <Route exact path='/web/user/pesticides/:pesticideId' element={<PesticideDetails/>}></Route>
                   <Route exact path='/web/user/apply-pesticide' element={<ApplyPesticide/>}></Route>
 
-                  <Route exact path='/web/signin' element={<SingIn/>}></Route>
-                  {/* <Route exact path='/web/signin' element={<SingIn toggleSignedIn={this.toggleSignedIn}/>}></Route> */}
+                  <Route exact path='/web/signin' element={<SingIn toggleSignedIn={this.toggleSignedIn}/>}></Route>
                 </Routes>
               </Router>
             </div>
