@@ -32,7 +32,7 @@ class PesticideEditModal extends Component {
         const headers = {
             'Authorization': localStorage.getItem("token")
         };
-        await axios.post(url, {headers}).then((response)=>{
+        await axios.post(url, {}, {headers}).then((response)=>{
             console.log(response)
         }).catch((error)=>{
             console.log(error)

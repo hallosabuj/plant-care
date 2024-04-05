@@ -205,7 +205,7 @@ class MyPlantDetailsClass extends Component {
     const headers = {
       'Authorization': localStorage.getItem("token")
     };
-    await axios.post(url, {headers}).then((response)=>{
+    await axios.post(url, {}, {headers}).then((response)=>{
       this.setState({
         isPublic: !this.state.isPublic
       })

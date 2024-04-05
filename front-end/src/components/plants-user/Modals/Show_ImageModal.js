@@ -27,7 +27,7 @@ class ShowImageModal extends Component {
         const headers = {
             'Authorization': localStorage.getItem("token")
         };
-        await axios.post(url, {headers}).then((response) => {
+        await axios.post(url, {}, {headers}).then((response) => {
             console.log("Profile image updated")
         }).catch((error) => {
             console.log(error)
