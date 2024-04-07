@@ -129,7 +129,7 @@ export class FertilizerDetailsClass extends Component {
           </div>
           {/* Row 2 */}
           <div className='bg-slate-400 flex justify-center items-center overflow-hidden'>
-            <img src={imageUrl} className=" max-h-64" alt={this.state.fertilizerDetails.name}/>
+            <img src={imageUrl} className="max-h-[400px] max-w-[400px]" alt={this.state.fertilizerDetails.name}/>
           </div>
           {/* Row 2 */}
           <div className='bg-slate-500 flex justify-left items-center pl-10 h-8 relative'>
