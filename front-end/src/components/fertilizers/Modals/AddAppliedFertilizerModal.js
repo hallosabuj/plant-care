@@ -116,7 +116,7 @@ class AddAppliedFertilizerModal extends Component {
                                                 {plant.numberId}: {plant.plantName}
                                             </td>
                                             <td className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                <img src={"/api/plant/downloadImage/small/" + plant.profileImage} className="h-16 w-auto" alt={plant.plantName} />
+                                                <img src={"/api/plant/downloadImage/small/" + plant.profileImage} className="h-30 w-auto" alt={plant.plantName} />
                                             </td>
                                             <td className="py-4 px-6">
                                                 <input name={"plant_"+plant.plantId} type='number' defaultValue={plant.applyInterval} onChange={this.handleApplyIntervalChnage}></input>
