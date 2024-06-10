@@ -93,7 +93,7 @@ class SingInClass extends Component {
                                 </div>
                                 <a href="#" className="text-sm font-medium text-gray-500 dark:text-gray-300 hover:underline dark:text-primary-500">Forgot password?</a>
                             </div>
-                            <button onClick={this.signIn} type='button' className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
+                            <button onClick={this.signIn} type='button' className="w-full text-gray-500 bg-gray-200 hover:bg-gray-500 hover:text-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800 dark:text-white">Sign in</button>
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                 Don’t have an account yet? <a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a>
                             </p>

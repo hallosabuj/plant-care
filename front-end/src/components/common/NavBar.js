@@ -69,7 +69,7 @@ class NavBar2 extends Component {
 
     render() {
         return (
-            <div as="nav" className="">
+            <div as="nav" className="sticky -top-3 w-full z-[1000]">
                 {/* Line 1 */}
                 <div className='bg-gray-800 flex justify-between items-center mx-auto relative'>
                     {/* Start */}
@@ -90,8 +90,8 @@ class NavBar2 extends Component {
                                         key={item.name}
                                         to={item.href}
                                         className={this.state.currentPage === item.href ?
-                                            'bg-gray-700 text-white px-3 py-1 rounded-t-[5%] rounded-b-[5%] rounded-l-full rounded-r-full whitespace-nowrap' :
-                                            'hover:bg-gray-700 text-gray-400 hover:text-white px-3 py-1 rounded-t-[5%] rounded-b-[5%] rounded-l-full rounded-r-full text-sm font-medium whitespace-nowrap'
+                                            'bg-gray-700 text-white px-3 py-1 rounded-t-full rounded-b-full whitespace-nowrap' :
+                                            'hover:bg-gray-700 text-gray-400 hover:text-white px-3 py-1 rounded-t-full rounded-b-full text-sm font-medium whitespace-nowrap'
                                         }
                                         onClick={() => this.handleFunc(item.href)}
                                     > {item.name} </NavLink>
@@ -118,8 +118,8 @@ class NavBar2 extends Component {
                                 key="signin"
                                 to="/web/signin"
                                 className={this.state.currentPage === "/web/signin" ?
-                                    'bg-gray-700 text-white px-3 py-1 rounded-t-[5%] rounded-b-[5%] rounded-l-full rounded-r-full whitespace-nowrap' :
-                                    'hover:bg-gray-700 text-gray-400 hover:text-white px-3 py-1 rounded-t-[5%] rounded-b-[5%] rounded-l-full rounded-r-full text-sm font-medium whitespace-nowrap'
+                                    'bg-gray-700 text-white px-3 py-1 rounded-t-full rounded-b-full whitespace-nowrap' :
+                                    'hover:bg-gray-700 text-gray-400 hover:text-white px-3 py-1 rounded-t-full rounded-b-full text-sm font-medium whitespace-nowrap'
                                 }
                                 onClick={() => this.handleFunc("/web/signin")}
                             > Sing In </NavLink>
@@ -144,8 +144,8 @@ class NavBar2 extends Component {
                                         key={item.name}
                                         to={item.href}
                                         className={this.state.currentPage === item.href ?
-                                            'bg-gray-700 text-white px-3 py-1 rounded-t-[5%] rounded-b-[5%] rounded-l-full rounded-r-full' :
-                                            'hover:bg-gray-700 text-gray-300 hover:text-white px-3 py-1 rounded-t-[5%] rounded-b-[5%] rounded-l-full rounded-r-full text-sm font-medium'
+                                            'bg-gray-700 text-white px-3 py-1 rounded-t-full rounded-b-full' :
+                                            'hover:bg-gray-700 text-gray-300 hover:text-white px-3 py-1 rounded-t-full rounded-b-full text-sm font-medium'
                                         }
                                         onClick={() => this.handleFunc(item.href)}
                                     > {item.name} </NavLink>
@@ -161,8 +161,8 @@ class NavBar2 extends Component {
                                         key={item.name}
                                         to={item.href}
                                         className={this.state.currentPage === item.href ?
-                                            'bg-gray-700 w-fit text-white px-3 py-1 rounded-t-[5%] rounded-b-[5%] rounded-l-full rounded-r-full' :
-                                            'hover:bg-gray-700 w-fit text-gray-300 hover:text-white px-3 py-1 rounded-t-[5%] rounded-b-[5%] rounded-l-full rounded-r-full text-sm font-medium'
+                                            'bg-gray-700 w-fit text-white px-3 py-1 rounded-t-full rounded-b-full' :
+                                            'hover:bg-gray-700 w-fit text-gray-300 hover:text-white px-3 py-1 rounded-t-full rounded-b-full text-sm font-medium'
                                         }
                                         onClick={() => this.handleFunc(item.href)}
                                     > {item.name} </NavLink>
