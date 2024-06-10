@@ -31,7 +31,7 @@ class UserPlantCard extends Component {
     return (
       <div className='pr-1 pl-1 pt-3 pb-3 hover:scale-105'>
         <div className='h-[420px] rounded-lg shadow-lg '>
-          <div className='h-[320px] flex justify-center items-center rounded-lg relative bg-slate-500 border-2 border-slate-900 p-3' >
+          <div className='h-[320px] flex justify-center items-center rounded-lg relative overflow-hidden bg-slate-500 border-2 border-slate-900 p-3' >
             <Link to={"/web/user/plants/" + this.state.plant.plantId}>
               <img src={imageUrl} className=' max-h-1 max-w-1 rounded-md' alt={this.state.plant.name} />
             </Link>
