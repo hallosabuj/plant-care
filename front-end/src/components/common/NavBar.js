@@ -19,6 +19,7 @@ class NavBar2 extends Component {
                 { name: 'Pesticides',       href: '/web/user/pesticides',       public: false },
                 { name: 'Apply Pesticide',  href: '/web/user/apply-pesticide',  public: false },
                 { name: 'Disease',          href: '/web/disease',               public: true },
+                { name: 'Blogs',            href: '/web/blogs',                 public: true },
                 { name: 'Swagger-UI',       href: '/swagger-ui',                public: true },
             ],
             currentPage: (window.location.href.split('#')[1] === "" || window.location.href.split('#')[1] === undefined) ? "/web" : window.location.href.split('#')[1],

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { NavLink } from 'react-router-dom'
 
 class Footer extends Component {
   render() {
@@ -9,16 +10,16 @@ class Footer extends Component {
         </div>
         <ul className="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
           <li>
-            <a href="#" className="mr-4 hover:underline md:mr-6 ">About</a>
+            <NavLink to="/web/about" className="mr-4 hover:underline md:mr-6 ">About</NavLink>
           </li>
           <li>
-            <a href="#" className="mr-4 hover:underline md:mr-6">Privacy Policy</a>
+            <NavLink to="/web/privacy-policy" className="mr-4 hover:underline md:mr-6">Privacy Policy</NavLink>
           </li>
           <li>
-            <a href="#" className="mr-4 hover:underline md:mr-6">Licensing</a>
+            <NavLink to="/web/licensing" className="mr-4 hover:underline md:mr-6">Licensing</NavLink>
           </li>
           <li>
-            <a href="#" className="hover:underline">Contact</a>
+            <NavLink to="/web/contact" className="hover:underline">Contact</NavLink>
           </li>
         </ul>
       </div>
