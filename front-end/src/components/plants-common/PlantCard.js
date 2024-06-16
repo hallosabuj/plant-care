@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import deleteIcon from '../../assets/delete.png';
 import waterIcon from '../../assets/water.png';
-import axios from 'axios';
 import { Link } from 'react-router-dom'
 
 class PlantCard extends Component {
@@ -15,11 +13,11 @@ class PlantCard extends Component {
   render() {
     let imageUrl = "/api/plant/downloadImage/medium/" + this.state.plant.profileImage
     return (
-      <div className='pr-1 pl-1 pt-3 pb-3 hover:scale-105'>
+      <div className='pr-1 pl-1 pt-3 pb-3 hover:scale-105 transition-all duration-300'>
         <div className='h-[420px] rounded-lg shadow-lg '>
           <div className='h-[320px] flex justify-center items-center rounded-lg relative overflow-hidden bg-slate-500 border-2 border-slate-900 p-3' >
             <Link to={"/web/plants/" + this.state.plant.plantId}>
-              <img src={imageUrl} className=' max-h-1 max-w-1 rounded-md' alt={this.state.plant.name} />
+              <img src={imageUrl} className=' w-[100%] h-[290px] object-cover rounded-md' alt={this.state.plant.name} />
             </Link>
           </div>
           <div className=' h-[100px] rounded-lg flex justify-center items-center bg-slate-500 border-2 border-slate-900'>

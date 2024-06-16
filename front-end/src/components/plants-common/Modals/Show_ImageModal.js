@@ -43,7 +43,7 @@ class ShowImageModal extends Component {
             return (<></>)
         }
         return (
-            <div onClick={this.closeModal} id="imageModal" className='fixed inset-0 p-5 w-full h-full bg-black bg-opacity-30 backdrop-blur-sm flex justify-center'>
+            <div onClick={this.closeModal} id="imageModal" className='fixed inset-0 p-5 w-full h-full bg-black bg-opacity-30 backdrop-blur-sm flex justify-center z-[1001]'>
                 <div className="bg-white p-2 flex justify-center items-center relative">
                     <img className=' max-h-1 max-w-1' src={this.props.imageUrl} alt="Plant"/>
                     <div className=' bottom-3 absolute'>

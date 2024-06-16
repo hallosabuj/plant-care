@@ -73,7 +73,7 @@ class AddAppliedFertilizerModal extends Component {
             return (<></>)
         }
         return (
-            <div className='fixed inset-0 w-full h-full bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center'>
+            <div className='fixed inset-0 w-full h-full bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-[1001]'>
                 <div className=' bg-white p-2 rounded h-full'>
                     <div className='w-full'>
                         <table className="min-w-full">
