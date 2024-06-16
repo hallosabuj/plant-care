@@ -18,6 +18,12 @@ import { Component } from 'react';
 import UserPlants from './components/plants-user/UserPlants';
 import UserPlantDetails from './components/plants-user/UserPlantDetails';
 import axios from 'axios';
+import Blogs from './components/common/Blogs';
+import About from './components/common/About';
+import PrivacyPolicy from './components/common/PrivacyPolicy';
+import Licensing from './components/common/Licensing';
+import Contact from './components/common/Contact';
+import ProfileInformation from './components/user/ProfileInformation';
 
 class App extends Component {
   constructor(props){
@@ -38,36 +44,47 @@ class App extends Component {
   render() {
       return (
         <div className="App">
-          <div className='bg-slate-300 min-h-screen flex flex-col'>
-            <div className='w-full h-auto'>
-              <Router>
-                <NavBar/>
-                <Routes>
-                  <Route exact path='/' element={<Home />}></Route>
-                  <Route exact path='/web' element={<Home />}></Route>
-                  <Route exact path='/web/plants' element={<Plants />}></Route>
-                  <Route exact path='/web/plants/:plantId' element={<PlantDetails />}></Route>
-                  <Route exact path='/web/disease' element={<Disease />}></Route>
-                  <Route exact path='/web/compress' element={<CompressImage />}></Route>
-                  <Route exact path='/swagger-ui' element={<SwaggerUIPage />}></Route>
+          <Router>
+            <div className='bg-slate-300 min-h-screen flex flex-col'>
+              <div className='w-full h-auto'>
+                  <NavBar/>
+                  <Routes>
+                    <Route exact path='/' element={<Home />}></Route>
+                    <Route exact path='/web' element={<Home />}></Route>
+                    <Route exact path='/web/plants' element={<Plants />}></Route>
+                    <Route exact path='/web/plants/:plantId' element={<PlantDetails />}></Route>
+                    <Route exact path='/web/disease' element={<Disease />}></Route>
+                    <Route exact path='/web/compress' element={<CompressImage />}></Route>
+                    <Route exact path='/swagger-ui' element={<SwaggerUIPage />}></Route>
 
-                  <Route exact path='/web/user/plants' element={<UserPlants/>}></Route>
-                  <Route exact path='/web/user/plants/:plantId' element={<UserPlantDetails/>}></Route>
-                  <Route exact path='/web/user/fertilizers' element={<Fertilizers/>}></Route>
-                  <Route exact path='/web/user/fertilizers/:fertilizerId' element={<FertilizerDetails/>}></Route>
-                  <Route exact path='/web/user/apply-fertilizer' element={<ApplyFertilizer/>}></Route>
-                  <Route exact path='/web/user/pesticides' element={<Pesticides/>}></Route>
-                  <Route exact path='/web/user/pesticides/:pesticideId' element={<PesticideDetails/>}></Route>
-                  <Route exact path='/web/user/apply-pesticide' element={<ApplyPesticide/>}></Route>
+                    <Route exact path='/web/user/plants' element={<UserPlants/>}></Route>
+                    <Route exact path='/web/user/plants/:plantId' element={<UserPlantDetails/>}></Route>
+                    <Route exact path='/web/user/fertilizers' element={<Fertilizers/>}></Route>
+                    <Route exact path='/web/user/fertilizers/:fertilizerId' element={<FertilizerDetails/>}></Route>
+                    <Route exact path='/web/user/apply-fertilizer' element={<ApplyFertilizer/>}></Route>
+                    <Route exact path='/web/user/pesticides' element={<Pesticides/>}></Route>
+                    <Route exact path='/web/user/pesticides/:pesticideId' element={<PesticideDetails/>}></Route>
+                    <Route exact path='/web/user/apply-pesticide' element={<ApplyPesticide/>}></Route>
 
-                  <Route exact path='/web/signin' element={<SingIn toggleSignedIn={this.toggleSignedIn}/>}></Route>
-                </Routes>
-              </Router>
+                    <Route exact path='/web/signin' element={<SingIn toggleSignedIn={this.toggleSignedIn}/>}></Route>
+                    <Route exact path='/web/profile' element={<ProfileInformation/>}></Route>
+
+                    <Route exact path='/web/blogs' element={<Blogs/>}></Route>
+
+                    <Route exact path='/web/about' element={<About/>}></Route>
+                    <Route exact path='/web/privacy-policy' element={<PrivacyPolicy/>}></Route>
+                    <Route exact path='/web/licensing' element={<Licensing/>}></Route>
+                    <Route exact path='/web/contact' element={<Contact/>}></Route>
+
+                  </Routes>
+                
+              </div>
+              <div className='w-full mt-auto'>
+                <Footer />
+              </div>
+              
             </div>
-            <div className='w-full mt-auto'>
-              <Footer />
-            </div>
-          </div>
+          </Router>
         </div>
       );
     }
