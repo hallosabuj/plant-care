@@ -16,9 +16,6 @@ class Footer extends Component {
             <NavLink to="/web/privacy-policy" className="mr-4 hover:underline md:mr-6">Privacy Policy</NavLink>
           </li>
           <li>
-            <NavLink to="/web/licensing" className="mr-4 hover:underline md:mr-6">Licensing</NavLink>
-          </li>
-          <li>
             <NavLink to="/web/contact" className="hover:underline">Contact</NavLink>
           </li>
         </ul>
