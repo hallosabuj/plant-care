@@ -38,7 +38,7 @@ class UserPlantCard extends Component {
             <img src={deleteIcon} onClick={() => this.deletePlant()} alt="delete" className='hover:opacity-100 opacity-60 top-3 right-3 absolute'/>
           </div>
           <div className=' h-[100px] rounded-lg flex justify-center items-center bg-slate-500 border-2 border-slate-900'>
-            <div className='grid grid-cols-2 grid-rows-2 gap-2 w-full p-2'>
+            <div className='grid grid-cols-2 grid-rows-2 gap-2 w-full p-2 overflow-scroll scrollbar-hide'>
               {/* Row 1 */}
               <div className=' flex p-2 items-center col-span-2 text-stone-200 h-10'>
                 {this.state.plant.numberId}: {this.state.plant.name}

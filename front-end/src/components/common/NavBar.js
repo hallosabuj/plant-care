@@ -72,7 +72,7 @@ class NavBar2 extends Component {
         return (
             <div as="nav" className="sticky -top-3 w-full z-[1000]">
                 {/* Line 1 */}
-                <div className='bg-gray-800 flex justify-between items-center mx-auto relative'>
+                <div className='bg-gray-800 flex justify-between items-center mx-auto relative overflow-scroll scrollbar-hide'>
                     {/* Start */}
                     <div className="flex flex-shrink-0 items-center h-[70px] pl-5">
                         <img
