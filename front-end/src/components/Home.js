@@ -27,13 +27,13 @@ class Home extends Component {
         <div className='h-[400px] w-full bg-slate-200 pl-16 pr-16 pt-3 pb-8'>
           <div className='w-full h-[10%] mb-2 text-2xl font-bold font-serif italic'>Growing Happiness, One Plant at a Time</div>
           <div className='flex w-full h-[90%]'>
-            <div className='h-full w-1/3 hover:w-3/5 transition-all duration-500 bg-lime-800 overflow-hidden flex justify-center items-center'>
+            <div className='h-full w-1/3 hover:w-3/5 transition-all duration-500 overflow-hidden flex justify-center items-center'>
               <img alt='first' src={first} className='w-[100%] h-96 object-cover'/>
             </div>
-            <div className='h-full w-1/3 hover:w-3/5 transition-all duration-500 bg-lime-300 overflow-hidden flex justify-center items-center'>
+            <div className='h-full w-1/3 hover:w-3/5 transition-all duration-500 overflow-hidden flex justify-center items-center'>
               <img alt='second' src={second} className='w-[100%] h-96 object-cover'/>
             </div>
-            <div className='h-full w-1/3 hover:w-3/5 transition-all duration-500 bg-lime-800 overflow-hidden flex justify-center items-center'>
+            <div className='h-full w-1/3 hover:w-3/5 transition-all duration-500 overflow-hidden flex justify-center items-center'>
               <img alt='third' src={third} className='w-[100%] h-96 object-cover'/>
             </div>
           </div>

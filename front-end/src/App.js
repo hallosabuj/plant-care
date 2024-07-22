@@ -21,7 +21,6 @@ import axios from 'axios';
 import Blogs from './components/common/Blogs';
 import About from './components/common/About';
 import PrivacyPolicy from './components/common/PrivacyPolicy';
-import Licensing from './components/common/Licensing';
 import Contact from './components/common/Contact';
 import ProfileInformation from './components/user/ProfileInformation';
 
@@ -73,7 +72,6 @@ class App extends Component {
 
                     <Route exact path='/web/about' element={<About/>}></Route>
                     <Route exact path='/web/privacy-policy' element={<PrivacyPolicy/>}></Route>
-                    <Route exact path='/web/licensing' element={<Licensing/>}></Route>
                     <Route exact path='/web/contact' element={<Contact/>}></Route>
 
                   </Routes>
