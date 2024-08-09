@@ -30,12 +30,12 @@ class UserPlantCard extends Component {
     let imageUrl = "/api/plant/downloadImage/medium/" + this.state.plant.profileImage
     return (
       <div className='pr-1 pl-1 pt-3 pb-3 hover:scale-105 transition-all duration-300'>
-        <div className='h-[420px] rounded-lg shadow-lg '>
-          <div className='h-[320px] flex justify-center items-center rounded-lg relative overflow-hidden bg-slate-500 border-2 border-slate-900 p-3' >
+        <div className='lg:h-[420px] md:h-[420px] h-[300px] rounded-lg shadow-lg '>
+          <div className='lg:h-[320px] md:h-[320px] h-[200px] flex justify-center items-center rounded-lg relative overflow-hidden bg-slate-500 border-2 border-slate-900 p-3' >
             <Link to={"/web/user/plants/" + this.state.plant.plantId}>
-              <img src={imageUrl} className='w-[100%] h-[290px] object-cover rounded-md' alt={this.state.plant.name} />
+              <img src={imageUrl} className='w-[100%] lg:h-[290px] md:h-[290px] h-[170px] object-cover rounded-md' alt={this.state.plant.name} />
             </Link>
-            <img src={deleteIcon} onClick={() => this.deletePlant()} alt="delete" className='hover:opacity-100 opacity-60 top-3 right-3 absolute'/>
+            <img src={deleteIcon} onClick={() => this.deletePlant()} alt="delete" className='hover:opacity-100 opacity-80 top-3 right-3 absolute h-7 w-7 md:h-9 md:w-9'/>
           </div>
           <div className=' h-[100px] rounded-lg flex justify-center items-center bg-slate-500 border-2 border-slate-900'>
             <div className='grid grid-cols-2 grid-rows-2 gap-2 w-full p-2 overflow-scroll scrollbar-hide'>

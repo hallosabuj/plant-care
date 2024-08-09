@@ -221,9 +221,9 @@ class MyPlantDetailsClass extends Component {
   render() {
     return !(this.state.plantDetails) ? (<div>Details Not Found</div>) : (
       <div>
-        <div className='grid gap-2 p-2'>
+        <div className='grid gap-2 p-2 w-full'>
           {/* Row 1 */}
-          <div className=' bg-slate-500 h-14 flex justify-center items-center text-4xl relative'>
+          <div className=' bg-slate-500 h-14 flex justify-center items-center text-2xl md:text-4xl relative'>
             <input type='checkbox' checked={this.state.isPublic} onChange={this.updatePublic} className='absolute left-4 top-auto h-4 w-4'/>
             <h1>{this.state.plantDetails.numberId}: {this.state.plantDetails.name}</h1>
             <img src={editIcon} className="absolute top-auto right-4 h-6 w-6" onClick={() => this.showEditModal("Name", "name", this.state.plantDetails.name)} alt={"Edit"} />
@@ -231,7 +231,7 @@ class MyPlantDetailsClass extends Component {
           {/* Row 2 */}
           <div className=' bg-slate-400 flex justify-center items-center overflow-hidden relative'>
             {this.state.plantDetails && (<ImageSlider openShowImageModal={this.openShowImageModal} imageNames={this.state.plantDetails.imageNames} />)}
-            <img src={addPhotoIcon} className="w-6 h-6 top-1 right-4 absolute" onClick={this.showAddImageModal} alt="PlantImage" />
+            <img src={addPhotoIcon} className="w-6 h-6 top-1 right-1 md:right-2 absolute" onClick={this.showAddImageModal} alt="PlantImage" />
           </div>
           {/* Row 3 */}
           <div className='flex justify-left items-center bg-slate-500 pl-10 h-8 relative'>
@@ -252,23 +252,25 @@ class MyPlantDetailsClass extends Component {
             <img src={editIcon} className="absolute top-auto right-4 h-6 w-6" onClick={() => this.showEditModal("About the plant", "details", this.state.plantDetails.details)} alt={"Edit"} />
           </div>
           {/* Row 6 */}
-          <div className=''>
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <div className='overflow-scroll scrollbar-hide'>
+            <table className="w-full text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th colSpan={3} className=' text-center text-2xl relative'>
-                    Fertilizers needed for this plant
-                    <img src={addIcon} className="h-6 w-6 absolute top-auto right-4" alt={"Add"} onClick={this.showAddNeededFertilizersModal} />
+                  <th colSpan={3}>
+                    <div className='pl-4 text-left text-xl md:text-2xl relative text-nowrap flex items-center'>
+                      <div>Fertilizers needed for this plant</div>
+                      <img src={addIcon} className="h-6 w-6 absolute right-4" alt={"Add"} onClick={this.showAddNeededFertilizersModal} />
+                    </div>
                   </th>
                 </tr>
                 <tr>
-                  <th scope="col" className="py-3 px-6 text-center">
+                  <th scope="col" className="py-3 px-6 text-center text-nowrap">
                     Fertilizer Name
                   </th>
-                  <th scope="col" className="py-3 px-6 text-center">
+                  <th scope="col" className="py-3 px-6 text-center text-nowrap">
                     Apply Interval in days
                   </th>
-                  <th scope="col" className="py-3 px-6 text-center">
+                  <th scope="col" className="py-3 px-6 text-center text-nowrap">
                     Benefit
                   </th>
                 </tr>
@@ -278,13 +280,13 @@ class MyPlantDetailsClass extends Component {
                   console.log(details)
                   return (
                     <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600">
-                      <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                      <th scope="row" className="py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-left pl-4">
                         {details.fertilizerName}
                       </th>
-                      <td className="py-4 px-6 text-center">
+                      <td className="py-4 px-6 text-left">
                         {details.applyInterval}
                       </td>
-                      <td className="py-4 px-6 text-center">
+                      <td className="py-4 px-6 text-left">
                         {details.benefit}
                       </td>
                     </tr>
@@ -294,20 +296,22 @@ class MyPlantDetailsClass extends Component {
             </table>
           </div>
           {/* Row 7 */}
-          <div className=''>
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <div className='overflow-scroll scrollbar-hide'>
+            <table className="w-full text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th colSpan={2} className=' text-center text-2xl relative'>
-                    Fertilizers applied
-                    <img src={addIcon} className="h-6 w-6 absolute top-auto right-4" alt="Add" onClick={this.showAddAppliedFertilizersModal} />
+                  <th colSpan={2} >
+                    <div className='pl-4 text-left text-xl md:text-2xl relative text-nowrap flex items-center'>
+                      Fertilizers applied
+                      <img src={addIcon} className="h-6 w-6 absolute right-4" alt="Add" onClick={this.showAddAppliedFertilizersModal} />
+                    </div>
                   </th>
                 </tr>
                 <tr>
-                  <th scope="col" className="py-3 px-6 text-center">
+                  <th scope="col" className="py-3 px-6 text-center text-nowrap">
                     Fertilizer Name
                   </th>
-                  <th scope="col" className="py-3 px-6 text-center">
+                  <th scope="col" className="py-3 px-6 text-center text-nowrap">
                     Applied date
                   </th>
                 </tr>
@@ -317,10 +321,10 @@ class MyPlantDetailsClass extends Component {
                   console.log(details)
                   return (
                     <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600">
-                      <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                      <th scope="row" className="py-4 pl-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-left">
                         {details.fertilizerName}
                       </th>
-                      <td className="py-4 px-6 text-center">
+                      <td className="py-4 pl-4 text-left">
                         {details.appliedDate}
                       </td>
                     </tr>
@@ -330,17 +334,19 @@ class MyPlantDetailsClass extends Component {
             </table>
           </div>
           {/* Row 8 */}
-          <div className=''>
+          <div className='overflow-scroll scrollbar-hide'>
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th className=' text-center text-2xl relative'>
-                    Repotting Details
-                    <img src={addIcon} className="h-6 w-6 absolute top-auto right-4" alt="Add" onClick={this.openAddRepottingModal} />
+                  <th>
+                    <div className='pl-4 text-left text-xl md:text-2xl relative text-nowrap flex items-center'>
+                      Repotting Details
+                      <img src={addIcon} className="h-6 w-6 absolute right-4" alt="Add" onClick={this.openAddRepottingModal} />
+                    </div>
                   </th>
                 </tr>
                 <tr>
-                  <th scope="col" className="py-3 px-6 text-center">
+                  <th scope="col" className="py-3 px-6 text-center text-nowrap">
                     Date
                   </th>
                 </tr>
@@ -349,7 +355,7 @@ class MyPlantDetailsClass extends Component {
                 {this.state.repottingList && this.state.repottingList.map((repotting, index) => {
                   return (
                     <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600">
-                      <td className="py-4 px-6 text-center">
+                      <td className="py-4 pl-4 text-left">
                         {repotting.repottingDate}
                       </td>
                     </tr>

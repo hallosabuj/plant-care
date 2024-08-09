@@ -76,9 +76,9 @@ class PlantDetails extends Component {
   render() {
     return !(this.state.plantDetails) ? (<div>Details Not Found</div>) : (
       <div>
-        <div className='grid gap-2 p-2'>
+        <div className='grid gap-2 p-2 w-full'>
           {/* Row 1 */}
-          <div className=' bg-slate-500 h-14 flex justify-center items-center text-4xl relative'>
+          <div className=' bg-slate-500 h-14 flex justify-center items-center text-2xl md:text-4xl relative'>
             <h1>{this.state.plantDetails.numberId}: {this.state.plantDetails.name}</h1>
           </div>
           {/* Row 2 */}
@@ -101,22 +101,24 @@ class PlantDetails extends Component {
             </div>
           </div>
           {/* Row 6 */}
-          <div className=''>
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <div className='overflow-scroll scrollbar-hide'>
+            <table className="w-full text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th colSpan={3} className=' text-center text-2xl relative'>
-                    Fertilizers needed for this plant
+                  <th colSpan={3}>
+                    <div className='pl-4 text-left text-xl md:text-2xl relative text-nowrap flex items-center'>
+                      Fertilizers needed for this plant
+                    </div>
                   </th>
                 </tr>
                 <tr>
-                  <th scope="col" className="py-3 px-6 text-center">
+                  <th scope="col" className="py-3 px-6 text-center text-nowrap">
                     Fertilizer Name
                   </th>
-                  <th scope="col" className="py-3 px-6 text-center">
+                  <th scope="col" className="py-3 px-6 text-center text-nowrap">
                     Apply Interval in days
                   </th>
-                  <th scope="col" className="py-3 px-6 text-center">
+                  <th scope="col" className="py-3 px-6 text-center text-nowrap">
                     Benefit
                   </th>
                 </tr>
@@ -126,13 +128,13 @@ class PlantDetails extends Component {
                   console.log(details)
                   return (
                     <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600">
-                      <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                      <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white text-left">
                         {details.fertilizerName}
                       </th>
-                      <td className="py-4 px-6 text-center">
+                      <td className="py-4 px-6 text-left">
                         {details.applyInterval}
                       </td>
-                      <td className="py-4 px-6 text-center">
+                      <td className="py-4 px-6 text-left">
                         {details.benefit}
                       </td>
                     </tr>
@@ -142,19 +144,21 @@ class PlantDetails extends Component {
             </table>
           </div>
           {/* Row 7 */}
-          <div className=''>
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <div className='overflow-scroll scrollbar-hide'>
+            <table className="w-full text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th colSpan={2} className=' text-center text-2xl relative'>
-                    Fertilizers applied
+                  <th colSpan={2} >
+                    <div className='pl-4 text-left text-xl md:text-2xl text-nowrap relative flex items-center'>
+                      Fertilizers applied
+                    </div>
                   </th>
                 </tr>
                 <tr>
-                  <th scope="col" className="py-3 px-6 text-center">
+                  <th scope="col" className="py-3 px-6 text-center text-nowrap">
                     Fertilizer Name
                   </th>
-                  <th scope="col" className="py-3 px-6 text-center">
+                  <th scope="col" className="py-3 px-6 text-center text-nowrap">
                     Applied date
                   </th>
                 </tr>
@@ -164,10 +168,10 @@ class PlantDetails extends Component {
                   console.log(details)
                   return (
                     <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600">
-                      <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                      <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white text-left">
                         {details.fertilizerName}
                       </th>
-                      <td className="py-4 px-6 text-center">
+                      <td className="py-4 px-6 text-left">
                         {details.appliedDate}
                       </td>
                     </tr>
@@ -177,16 +181,18 @@ class PlantDetails extends Component {
             </table>
           </div>
           {/* Row 8 */}
-          <div className=''>
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <div className='overflow-scroll scrollbar-hide'>
+            <table className="w-full text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th className=' text-center text-2xl relative'>
-                    Repotting Details
+                  <th>
+                    <div className='pl-4 text-center text-xl md:text-2xl text-nowrap relative flex items-center'>
+                      Repotting Details
+                    </div>
                   </th>
                 </tr>
                 <tr>
-                  <th scope="col" className="py-3 px-6 text-center">
+                  <th scope="col" className="py-3 px-6 text-center text-nowrap">
                     Date
                   </th>
                 </tr>
@@ -195,7 +201,7 @@ class PlantDetails extends Component {
                 {this.state.repottingList && this.state.repottingList.map((repotting, index) => {
                   return (
                     <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600">
-                      <td className="py-4 px-6 text-center">
+                      <td className="py-4 px-6 text-left">
                         {repotting.repottingDate}
                       </td>
                     </tr>

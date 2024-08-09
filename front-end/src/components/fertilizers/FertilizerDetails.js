@@ -121,9 +121,9 @@ export class FertilizerDetailsClass extends Component {
       imageUrl = "/api/user/fertilizer/downloadImage/" + this.state.fertilizerDetails.profileImage
     }
     return !(this.state.fertilizerDetails)?(<div>Details not found</div>):(
-      <div className='grid gap-2 p-2'>
+      <div className='grid gap-2 p-2 w-full'>
           {/* Row 1 */}
-          <div className='bg-slate-500 h-14 flex justify-center items-center text-4xl relative'>
+          <div className='bg-slate-500 h-14 flex justify-center items-center text-2xl md:text-4xl relative'>
             <h1>{this.state.fertilizerDetails.name}</h1>
             <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Name","name",this.state.fertilizerDetails.name)} alt={"Edit"}/>
           </div>
@@ -131,42 +131,44 @@ export class FertilizerDetailsClass extends Component {
           <div className='bg-slate-400 flex justify-center items-center overflow-hidden'>
             <img src={imageUrl} className="max-h-[400px] max-w-[400px]" alt={this.state.fertilizerDetails.name}/>
           </div>
-          {/* Row 2 */}
+          {/* Row 3 */}
           <div className='bg-slate-500 flex justify-left items-center pl-10 h-8 relative'>
             <div>Available : {this.state.fertilizerDetails.available}</div>
             <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Availability","available",this.state.fertilizerDetails.available)} alt={"Edit"}/>
           </div>
           
-          {/* Row 3 */}
+          {/* Row 4 */}
           <div className='bg-slate-400 flex justify-left items-center pl-10 h-8 relative'> 
             Composition : {this.state.fertilizerDetails.composition}
             <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Composition","composition",this.state.fertilizerDetails.composition)} alt={"Edit"}/>
           </div>
-          {/* Row 4 */}
+          {/* Row 5 */}
           <div className='justify-left items-center bg-slate-500 pl-10 h-auto relative'>
             <h2>Details:</h2>
             {this.state.fertilizerDetails.details}
             <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Details","details",this.state.fertilizerDetails.details)} alt={"Edit"}/>
           </div>
-          {/* Row 5 */}
+          {/* Row 6 */}
           {/* <div className='' onClick={this.toggleShowPlantList}> */}
-          <div className=''>
+          <div className='overflow-scroll scrollbar-hide'>
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th colSpan={3} className=' text-center text-2xl relative'>
-                    Plant List
-                    <img src={addIcon} className="h-6 w-6 absolute top-auto right-4" alt="Add" onClick={this.showAddAppliedFertilizersModal} />
+                  <th colSpan={3}>
+                    <div className='pl-4 text-left text-xl md:text-2xl relative text-nowrap flex items-center'>
+                      Plant List
+                      <img src={addIcon} className="h-6 w-6 absolute right-4" alt="Add" onClick={this.showAddAppliedFertilizersModal} />
+                    </div>
                   </th>
                 </tr>
                 <tr>
-                  <th scope="col" className="py-3 px-6 text-center">
+                  <th scope="col" className="py-3 px-6 text-center text-nowrap">
                     Plant ID
                   </th>
-                  <th scope="col" className="py-3 px-6 text-center">
+                  <th scope="col" className="py-3 px-6 text-center text-nowrap">
                     Plant Name
                   </th>
-                  <th scope="col" className="py-3 px-6 text-center">
+                  <th scope="col" className="py-3 px-6 text-center text-nowrap">
                     Image
                   </th>
                 </tr>
@@ -178,7 +180,7 @@ export class FertilizerDetailsClass extends Component {
                       <td className="py-4 px-6 text-center">
                         {plant.numberId}
                       </td>
-                      <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                      <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white text-left">
                         {plant.plantName}
                       </th>
                       <td className="py-4 px-6 text-center">

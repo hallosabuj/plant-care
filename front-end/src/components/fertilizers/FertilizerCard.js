@@ -35,7 +35,7 @@ export class FertilizerCard extends Component {
             <Link to={"/web/user/fertilizers/"+this.state.fertilizer.fertilizerId}>
               <img src={imageUrl} className='w-[100%] h-[280px] object-cover rounded-md' alt={this.state.fertilizer.name}/>
             </Link>
-            <img src={deleteIcon} onClick={()=>this.deleteFertilizer()} alt="delete" className='hover:opacity-100 opacity-60 top-3 right-3 absolute'/>
+            <img src={deleteIcon} onClick={()=>this.deleteFertilizer()} alt="delete" className='hover:opacity-100 opacity-80 top-3 right-3 absolute h-7 w-7 md:h-9 md:w-9'/>
           </div>
           <div className='h-[100px] rounded-md flex justify-center items-center bg-slate-500 border-2 border-slate-900'>
             <div className='grid grid-cols-1 gap-2 w-full p-2'>
