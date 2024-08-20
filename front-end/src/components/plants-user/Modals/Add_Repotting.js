@@ -38,12 +38,17 @@ class AddRepotting extends Component {
         }
         this.props.closeModal()
     }
+    closeForm = (event) =>{
+        if (event.target.id === "repottingModal") {
+            this.props.closeModal()
+        }
+    }
     render() {
         if (this.props.isOpen === false) {
             return <></>
         }
         return (
-            <div className='fixed inset-0 w-full h-full bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center'>
+            <div onClick={this.closeForm} id='repottingModal' className='fixed inset-0 w-full h-full bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center'>
                 <div className=' bg-white p-2 rounded w-96'>
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">

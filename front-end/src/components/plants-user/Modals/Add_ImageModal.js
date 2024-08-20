@@ -29,6 +29,11 @@ class AddImageModal extends Component {
     this.resetState()
     this.props.closeModal()
   }
+  closeForm = (event) =>{
+    if (event.target.id === "addImageForm") {
+      this.closingModal()
+    }
+  }
   imageOnChangeHandler = async (event) => {
     // this.setState({
     //   images: [...event.target.files]
@@ -141,7 +146,7 @@ class AddImageModal extends Component {
   uploadForm = () =>{
     let images = this.state.imagesLarge
     return (
-      <div className='fixed inset-0 w-full h-full bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center'>
+      <div onClick={this.closeForm} id='addImageForm' className='fixed inset-0 w-full h-full bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center'>
         <div className=' bg-white p-2 rounded w-96'>
           <div className="relative p-6 flex-auto">
             <div className="mb-6">

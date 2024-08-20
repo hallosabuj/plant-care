@@ -120,6 +120,11 @@ class AddPlantModal extends Component {
       }
     })
   }
+  closeForm = (event) =>{
+    if (event.target.id === "addPlantForm") {
+      this.toggleShowModal()
+    }
+  }
   form() {
     let image = this.state.imageLarge
     return (
@@ -190,7 +195,7 @@ class AddPlantModal extends Component {
         </button>
         {showModal ? (
           <>
-            <div className="justify-center flex fixed inset-0 z-50 outline-none focus:outline-none bg-black bg-opacity-30 w-full backdrop-blur-sm">
+            <div onClick={this.closeForm} id='addPlantForm' className="justify-center flex fixed inset-0 z-50 outline-none focus:outline-none bg-black bg-opacity-30 w-full backdrop-blur-sm">
               <div className="relative w-auto my-6 mx-auto max-w-3xl top-16">
                 {/*content*/}
                 <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">

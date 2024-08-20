@@ -68,12 +68,17 @@ class AddAppliedFertilizerModal extends Component {
             }
         })
     }
+    closeForm = (event) =>{
+        if (event.target.id === "plantList") {
+            this.props.closeModal()
+        }
+    }
     render() {
         if (this.props.isOpen === false) {
             return (<></>)
         }
         return (
-            <div className='fixed inset-0 w-full h-full bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-[1001]'>
+            <div onClick={this.closeForm} id='plantList' className='fixed inset-0 w-full h-full bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-[1001]'>
                 <div className=' bg-white p-2 rounded h-full'>
                     <div className='w-full'>
                         <table className="min-w-full">
