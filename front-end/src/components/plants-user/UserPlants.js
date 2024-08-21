@@ -60,7 +60,6 @@ class UserPlantsClass extends Component {
                         <UserPlantCard key={plant.plantId} plant={plant} reRenderOnDelete={this.reRenderOnAddOrDelete} />
                     ))}
                 </div>
-                
             </div>
         )
     }

@@ -2,12 +2,15 @@ import React, { Component } from 'react'
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md'
 import axios from 'axios'
 import removeIcon from '../../assets/remove.png';
+import Confirm from '../common/modals/Confirm';
 class MyImageSlider extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            imageNames: this.props.imageNames
+            imageNames: this.props.imageNames,
+            confirmImageDeleteModal: false,
+            keyForImageToBeDeleted:"",
         }
     }
     slideLeft=()=>{
@@ -18,33 +21,47 @@ class MyImageSlider extends Component {
         var slider=document.getElementById("slider")
         slider.scrollLeft=slider.scrollLeft+500
     }
-    deleteImage=async(key)=>{
-        console.log(key)
+    deleteImage = async(confirm) =>{
+        if(confirm === true){
+            const headers = {
+                'Authorization': localStorage.getItem("token")
+              };
+            await axios.delete("/api/user/plant/deleteImage/"+this.state.imageNames[this.state.keyForImageToBeDeleted], {headers}).then((response)=>{
+                // This part will execute after deletion
+                let imageNames=this.state.imageNames
+                delete imageNames[this.state.keyForImageToBeDeleted]
+                this.setState({
+                    imageNames:imageNames
+                })
+            }).catch((error)=>{
+                if(error.response.status === 401){
+                    localStorage.setItem("isSignedIn", false)
+                    localStorage.removeItem("token")
+                }
+            })
+        }
+    }
+    confirmDeleteImage= (key) =>{
         if (key===""){
             return
-        }
-        const headers = {
-            'Authorization': localStorage.getItem("token")
-          };
-        await axios.delete("/api/user/plant/deleteImage/"+this.state.imageNames[key], {headers}).then((response)=>{
-            console.log("Deleted")
-            let imageNames=this.state.imageNames
-            delete imageNames[key]
+        }else{
             this.setState({
-                imageNames:imageNames
+                keyForImageToBeDeleted:key
             })
-        }).catch((error)=>{
-            console.log(error)
-            if(error.response.status === 401){
-                localStorage.setItem("isSignedIn", false)
-                localStorage.removeItem("token")
-            }
+        }
+        this.setState({
+            confirmImageDeleteModal:true
         })
     }
     sendImageUrlToParent=(imageUrl)=>{
         console.log("Need to send URL to parent")
         console.log(imageUrl)
         this.props.openShowImageModal(imageUrl)
+    }
+    closeConfirmModal = () => {
+        this.setState({
+            confirmImageDeleteModal:false
+        })
     }
     render() {
         return (
@@ -57,12 +74,13 @@ class MyImageSlider extends Component {
                         return (
                             <div className='h-[220px] inline-block p-2 cursor-pointer hover:scale-105 ease-in-out duration-500 relative' key={key}>
                                 <img onClick={()=>{this.sendImageUrlToParent(imageUrlLarge)}} className='h-full w-auto' src={imageUrlMedium} alt="Plant"/>
-                                <img onClick={()=>{this.deleteImage(key)}} src={removeIcon} className="h-6 w-6 top-3 right-3 opacity-60 hover:opacity-100 absolute" alt='Delete'/>
+                                <img onClick={()=>{this.confirmDeleteImage(key)}} src={removeIcon} className="h-6 w-6 top-3 right-3 opacity-60 hover:opacity-100 absolute" alt='Delete'/>
                             </div>
                         )
                     })}
                 </div>
                 <MdChevronRight className='opacity-50 cursor-pointer hover:opacity-100' onClick={this.slideRight} size={40} />
+                {this.state.confirmImageDeleteModal && <Confirm message="Are you sure you want to delete?" onClose={this.closeConfirmModal} onConfirm={this.deleteImage}/>}
             </div>
         )
     }
