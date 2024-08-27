@@ -11,10 +11,17 @@ class ApplyPesticideClass extends Component {
   constructor(props) {
     super(props)
 
+    let newDate = new Date()
+    let date = newDate.getDate()
+    let month = newDate.getMonth() + 1
+    let year = newDate.getFullYear()
+    let currentDate = `${year}-${month < 10 ? `0${month}` : `${month}`}-${date < 10 ? `0${date}` : `${date}`}`
+
     this.state = {
       pesticides: null,
       appliedPesticideId: "",
-      plants: null
+      plants: null,
+      applieddate: currentDate
     }
   }
   getPesticides = async () => {
@@ -43,7 +50,7 @@ class ApplyPesticideClass extends Component {
       this.setState({
         plants: tempPlants
       })
-    }).then(function (error){
+    }).catch(function (error){
       if(error.response.status === 401){
         localStorage.setItem("isSignedIn", false)
         localStorage.removeItem("token")
@@ -84,17 +91,19 @@ class ApplyPesticideClass extends Component {
       })
     }
   }
+  applieddateChangeHandler = (event) => {
+    this.setState({
+      applieddate: event.target.value
+    }, () => {
+      console.log(this.state)
+    })
+  }
   saveChanges = () => {
     let jsonBody = []
-    let newDate = new Date()
-    let date = newDate.getDate()
-    let month = newDate.getMonth() + 1
-    let year = newDate.getFullYear()
-    let currentDate = `${year}-${month < 10 ? `0${month}` : `${month}`}-${date < 10 ? `0${date}` : `${date}`}`
 
     this.state.plants.map((plant) => {
       if (plant.isChecked === true) {
-        let tempPlant = { pesticideId: this.state.appliedPesticideId, plantId: plant.plantId, appliedDate: currentDate }
+        let tempPlant = { pesticideId: this.state.appliedPesticideId, plantId: plant.plantId, appliedDate: this.state.applieddate }
         jsonBody = [...jsonBody, tempPlant]
       }
     })
@@ -134,6 +143,12 @@ class ApplyPesticideClass extends Component {
           </div>
           <div></div>
           <div className='flex justify-center items-center'>
+            {this.state.plants &&
+              <input value={this.state.applieddate} onChange={this.applieddateChangeHandler}
+                className="shadow appearance-none border border-red-500 rounded w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mx-2"
+                type="date" />
+            }
+
             {this.state.plants && <button
               className="bg-emerald-700 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
               type="button"
