@@ -79,7 +79,7 @@ class PlantDetails extends Component {
         <div className='grid gap-2 p-2 w-full'>
           {/* Row 1 */}
           <div className=' bg-slate-500 h-14 flex justify-center items-center text-2xl md:text-4xl relative'>
-            <h1>{this.state.plantDetails.numberId}: {this.state.plantDetails.name}</h1>
+            <h1 className='bg-gradient-to-r from-[#102a14] to-[#7d0b65] bg-clip-text text-transparent'>{this.state.plantDetails.numberId}: {this.state.plantDetails.name}</h1>
           </div>
           {/* Row 2 */}
           <div className=' bg-slate-400 flex justify-center items-center overflow-hidden relative'>

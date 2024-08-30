@@ -225,7 +225,7 @@ class MyPlantDetailsClass extends Component {
           {/* Row 1 */}
           <div className=' bg-slate-500 h-14 flex justify-center items-center text-2xl md:text-4xl relative'>
             <input type='checkbox' checked={this.state.isPublic} onChange={this.updatePublic} className='absolute left-4 top-auto h-4 w-4'/>
-            <h1>{this.state.plantDetails.numberId}: {this.state.plantDetails.name}</h1>
+            <h1 className='bg-gradient-to-r from-[#102a14] to-[#7d0b65] bg-clip-text text-transparent'>{this.state.plantDetails.numberId}: {this.state.plantDetails.name}</h1>
             <img src={editIcon} className="absolute top-auto right-4 h-6 w-6" onClick={() => this.showEditModal("Name", "name", this.state.plantDetails.name)} alt={"Edit"} />
           </div>
           {/* Row 2 */}
