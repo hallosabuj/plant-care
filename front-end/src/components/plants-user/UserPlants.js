@@ -49,7 +49,7 @@ class UserPlantsClass extends Component {
     render() {
         return (
             <div className='lg:pl-14 lg:pr-14 md:pl-14 md:pr-14 pl-3 pr-3'>
-                <div className="relative flex h-16 items-center justify-between">
+                <div className="relative flex pt-2 px-2 justify-end">
                     <div className='sm:ml-6 sm:block flex '>
                         <AddPlantModal reRenderOnAdd={this.reRenderOnAddOrDelete} />
                     </div>

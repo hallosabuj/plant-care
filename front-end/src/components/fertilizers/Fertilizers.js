@@ -49,7 +49,7 @@ class FertilizersClass extends Component {
     render() {
         return (
             <div className='pl-14 pr-14'>
-                <div className="relative flex h-16 items-center justify-between">
+                <div className="relative flex pt-2 px-2 justify-end">
                     <div className='sm:ml-6 sm:block flex'>
                         <AddFertilizerModal reRenderOnAdd={this.reRenderOnAddOrDelete}/>
                     </div>
