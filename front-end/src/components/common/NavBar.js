@@ -70,9 +70,9 @@ class NavBar2 extends Component {
 
     render() {
         return (
-            <div as="nav" className="sticky -top-3 w-full z-[1000] shadow-md shadow-slate-600">
+            <div as="nav" className="sticky -top-3 w-full z-[1000]">
                 {/* Line 1 */}
-                <div className='bg-gray-800 flex justify-between items-center mx-auto relative overflow-scroll scrollbar-hide'>
+                <div className='bg-gray-800 flex justify-between items-center mx-auto overflow-scroll scrollbar-hide shadow-md shadow-slate-600'>
                     {/* Start */}
                     <div className="flex flex-shrink-0 items-center h-[70px] pl-5">
                         <img
@@ -136,7 +136,7 @@ class NavBar2 extends Component {
                 </div>
 
                 {/* Line 2 */}
-                <div className='flex justify-end'>
+                <div className='flex justify-end absolute right-1'>
                     {(this.state.menuOpen) && (
                         <div className='bg-gray-800 min-w-[200px] top-[70px] flex flex-col gap-1 px-5 pb-3 mr-4 lg:hidden rounded-b-md'>
                             {this.state.navigation.map((item) => {
