@@ -44,7 +44,7 @@ class App extends Component {
       return (
         <div className="App">
           <Router>
-            <div className='bg-slate-300 min-h-screen flex flex-col'>
+            <div className='min-h-screen flex flex-col bg-gradient-to-r from-[#D8B5FF] to-[#1EAE98]'>
               <div className='w-full h-auto'>
                   <NavBar/>
                   <Routes>
