@@ -130,7 +130,7 @@ class ApplyPesticideClass extends Component {
     return (
       <div>
         {/* Section for pesticide selection */}
-        <div className='grid grid-cols-3 bg-cyan-400'>
+        <div className='grid grid-cols-3'>
           <div className='flex p-2 justify-center items-center'>
             <select onChange={this.onPesticideChangeHandler} className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
               <option value="">Select Pesticide</option>
@@ -197,7 +197,7 @@ class ApplyPesticideClass extends Component {
                               <input type="checkbox" name={plant.plantId} checked={plant.isChecked ? plant.isChecked : false} onChange={this.handleChange} className="w-4 h-4 focus:ring-green-500 dark:focus:ring-green-600 focus:ring-2"></input>
                             </td>
                             <td className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                              {plant.numberId}: {plant.name}
+                              {plant.numberId}: {plant.plantName}
                             </td>
                             <td className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                               <img src={"/api/plant/downloadImage/small/" + plant.profileImage} className="h-30 w-auto" alt={plant.plantName}/>

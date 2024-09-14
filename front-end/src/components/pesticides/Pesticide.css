@@ -1,0 +1,9 @@
+.btn-grad {
+    background-image: linear-gradient(to right, #6A9113 0%, #141517  51%, #6A9113  100%);
+    background-size: 200% auto;
+    box-shadow: 0 0 20px #eee;
+}
+
+.btn-grad:hover {
+    background-position: right center; /* change the direction of the change here */
+}

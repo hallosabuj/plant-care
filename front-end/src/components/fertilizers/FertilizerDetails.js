@@ -132,18 +132,18 @@ export class FertilizerDetailsClass extends Component {
             <img src={imageUrl} className="max-h-[400px] max-w-[400px]" alt={this.state.fertilizerDetails.name}/>
           </div>
           {/* Row 3 */}
-          <div className='bg-slate-500 flex justify-left items-center pl-10 h-8 relative'>
+          <div className='bg-slate-500 flex justify-left items-center pl-10 min-h-8 h-auto relative'>
             <div>Available : {this.state.fertilizerDetails.available}</div>
             <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Availability","available",this.state.fertilizerDetails.available)} alt={"Edit"}/>
           </div>
           
           {/* Row 4 */}
-          <div className='bg-slate-400 flex justify-left items-center pl-10 h-8 relative'> 
+          <div className='bg-slate-400 flex justify-left items-center pl-10 min-h-8 h-auto relative'> 
             Composition : {this.state.fertilizerDetails.composition}
             <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Composition","composition",this.state.fertilizerDetails.composition)} alt={"Edit"}/>
           </div>
           {/* Row 5 */}
-          <div className='justify-left items-center bg-slate-500 pl-10 h-auto relative'>
+          <div className='justify-left items-center bg-slate-500 pl-10 min-h-8 h-auto relative'>
             <h2>Details:</h2>
             {this.state.fertilizerDetails.details}
             <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Details","details",this.state.fertilizerDetails.details)} alt={"Edit"}/>

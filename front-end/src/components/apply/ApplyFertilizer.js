@@ -136,7 +136,7 @@ class ApplyFertilizerClass extends Component {
     return (
       <div>
         {/* Section for fertilizer selection */}
-        <div className='grid grid-cols-3 bg-cyan-400'>
+        <div className='grid grid-cols-3'>
           <div className='flex p-2 justify-center items-center'>
             <select onChange={this.onFertilizerChangeHandler} className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
               <option value="">Select Fertilizer</option>

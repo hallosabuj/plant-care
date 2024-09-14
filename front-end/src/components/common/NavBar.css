@@ -1,0 +1,14 @@
+@property --fill{
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 0%;
+}
+
+.profile-menu-icon{
+    background-image: conic-gradient(#43ceead1 var(--fill), transparent var(--fill));
+    transition:--fill 0.6s ease-in-out;
+}
+
+.profile-menu-icon:hover{
+    --fill: 100%
+}

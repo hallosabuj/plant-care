@@ -86,11 +86,11 @@ class PlantDetails extends Component {
             {this.state.plantDetails && (<ImageSlider openShowImageModal={this.openShowImageModal} imageNames={this.state.plantDetails.imageNames} />)}
           </div>
           {/* Row 3 */}
-          <div className='flex justify-left items-center bg-slate-500 pl-10 h-8 relative'>
+          <div className='flex justify-left items-center bg-slate-500 pl-10 min-h-8 h-auto relative'>
             <div>DOB: {this.state.plantDetails.dob} </div>
           </div>
           {/* Row 4 */}
-          <div className=' bg-slate-400 flex justify-left items-center pl-10 h-8 relative'>
+          <div className=' bg-slate-400 flex justify-left items-center pl-10 min-h-8 h-auto relative'>
             Soil type : {this.state.plantDetails.soilType}
           </div>
           {/* Row 5 */}

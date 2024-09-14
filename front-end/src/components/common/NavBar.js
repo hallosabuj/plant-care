@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom'
 
 import React, { Component } from 'react'
 import axios from 'axios'
+import './NavBar.css';
 
 class NavBar2 extends Component {
     constructor(props) {
@@ -105,13 +106,15 @@ class NavBar2 extends Component {
                     <div className="flex items-center gap-2 pr-5">
                         {(localStorage.getItem("isSignedIn")==='true') && (
                             <div className='lg:pr-10'>
+                                <div className="profile-menu-icon p-[2px] rounded-[50%] flex justify-center items-center">
                                 <button
                                     type="button"
-                                    className="rounded-full bg-red-800 p-1 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-800"
+                                    className="rounded-full bg-red-800 p-1 focus:outline-none"
                                     onClick={this.toggleProfileMenuIcon}
                                 >
                                     <UserCircleIcon className="h-6 w-6 text-gray-400" aria-hidden="true" />
                                 </button>
+                                </div>
                             </div>
                         )}
                         {!(localStorage.getItem("isSignedIn")==='true') && (
