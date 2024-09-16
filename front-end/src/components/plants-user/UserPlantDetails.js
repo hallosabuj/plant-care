@@ -223,28 +223,28 @@ class MyPlantDetailsClass extends Component {
       <div>
         <div className='grid gap-2 p-2 w-full'>
           {/* Row 1 */}
-          <div className=' bg-slate-500 h-14 flex justify-center items-center text-2xl md:text-4xl relative'>
+          <div className='bg-white bg-opacity-20 h-14 flex justify-center items-center text-2xl md:text-4xl relative'>
             <input type='checkbox' checked={this.state.isPublic} onChange={this.updatePublic} className='absolute left-4 top-auto h-4 w-4'/>
             <h1 className='bg-gradient-to-r from-[#102a14] to-[#7d0b65] bg-clip-text text-transparent'>{this.state.plantDetails.numberId}: {this.state.plantDetails.name}</h1>
             <img src={editIcon} className="absolute top-auto right-4 h-6 w-6" onClick={() => this.showEditModal("Name", "name", this.state.plantDetails.name)} alt={"Edit"} />
           </div>
           {/* Row 2 */}
-          <div className=' bg-slate-400 flex justify-center items-center overflow-hidden relative'>
+          <div className='bg-white bg-opacity-20 flex justify-center items-center overflow-hidden relative'>
             {this.state.plantDetails && (<ImageSlider openShowImageModal={this.openShowImageModal} imageNames={this.state.plantDetails.imageNames} />)}
             <img src={addPhotoIcon} className="w-6 h-6 top-1 right-1 md:right-2 absolute" onClick={this.showAddImageModal} alt="PlantImage" />
           </div>
           {/* Row 3 */}
-          <div className='flex justify-left items-center bg-slate-500 pl-10 h-8 relative'>
+          <div className='bg-white bg-opacity-20 flex justify-left items-center pl-10 h-8 relative'>
             <div>DOB: {this.state.plantDetails.dob} </div>
             <img src={editIcon} className="absolute top-auto right-4 h-6 w-6" onClick={() => this.showEditModal("Date of birth", "dob", this.state.plantDetails.dob)} alt={"Edit"} />
           </div>
           {/* Row 4 */}
-          <div className=' bg-slate-400 flex justify-left items-center pl-10 h-8 relative'>
+          <div className='bg-white bg-opacity-20 flex justify-left items-center pl-10 h-8 relative'>
             Soil type : {this.state.plantDetails.soilType}
             <img src={editIcon} className="absolute top-auto right-4 h-6 w-6" onClick={() => this.showEditModal("Soil type", "soiltype", this.state.plantDetails.soilType)} alt={"Edit"} />
           </div>
           {/* Row 5 */}
-          <div className='flex justify-left items-center pl-10 bg-slate-500 min-h-[32px] relative'>
+          <div className='bg-white bg-opacity-20 flex justify-left items-center pl-10 min-h-[32px] relative'>
             <div>
               <h2>About the plant</h2>
               {this.state.plantDetails.details}
@@ -253,8 +253,8 @@ class MyPlantDetailsClass extends Component {
           </div>
           {/* Row 6 */}
           <div className='overflow-scroll scrollbar-hide'>
-            <table className="w-full text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <table className="w-full">
+              <thead className="text-xs text-gray-700 uppercase bg-white bg-opacity-50">
                 <tr>
                   <th colSpan={3}>
                     <div className='pl-4 text-left text-xl md:text-2xl relative text-nowrap flex items-center'>
@@ -279,14 +279,14 @@ class MyPlantDetailsClass extends Component {
                 {this.state.neededFertilizers && this.state.neededFertilizers.map((details, index) => {
                   console.log(details)
                   return (
-                    <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600">
-                      <th scope="row" className="py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-left pl-4">
+                    <tr key={index} className="bg-white bg-opacity-30 border-b">
+                      <td scope="row" className="py-4 px-6 font-medium text-center text-nowrap">
                         {details.fertilizerName}
-                      </th>
-                      <td className="py-4 px-6 text-left">
+                      </td>
+                      <td className="py-4 px-6 text-center text-nowrap">
                         {details.applyInterval}
                       </td>
-                      <td className="py-4 px-6 text-left">
+                      <td className="py-4 px-6 text-center text-nowrap">
                         {details.benefit}
                       </td>
                     </tr>
@@ -297,8 +297,8 @@ class MyPlantDetailsClass extends Component {
           </div>
           {/* Row 7 */}
           <div className='overflow-scroll scrollbar-hide'>
-            <table className="w-full text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <table className="w-full">
+              <thead className="text-xs text-gray-700 uppercase bg-white bg-opacity-50">
                 <tr>
                   <th colSpan={2} >
                     <div className='pl-4 text-left text-xl md:text-2xl relative text-nowrap flex items-center'>
@@ -320,11 +320,11 @@ class MyPlantDetailsClass extends Component {
                 {this.state.appliedFertilizers && this.state.appliedFertilizers.map((details, index) => {
                   console.log(details)
                   return (
-                    <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600">
-                      <th scope="row" className="py-4 pl-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-left">
+                    <tr key={index} className="bg-white bg-opacity-30 border-b">
+                      <th scope="row" className="py-4 px-6 font-medium text-center text-nowrap">
                         {details.fertilizerName}
                       </th>
-                      <td className="py-4 pl-4 text-left">
+                      <td className="py-4 px-6 text-center text-nowrap">
                         {details.appliedDate}
                       </td>
                     </tr>
@@ -335,8 +335,8 @@ class MyPlantDetailsClass extends Component {
           </div>
           {/* Row 8 */}
           <div className='overflow-scroll scrollbar-hide'>
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <table className="w-full text-sm text-left">
+              <thead className="text-xs text-gray-700 uppercase bg-white bg-opacity-50">
                 <tr>
                   <th>
                     <div className='pl-4 text-left text-xl md:text-2xl relative text-nowrap flex items-center'>
@@ -354,8 +354,8 @@ class MyPlantDetailsClass extends Component {
               <tbody>
                 {this.state.repottingList && this.state.repottingList.map((repotting, index) => {
                   return (
-                    <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600">
-                      <td className="py-4 pl-4 text-left">
+                    <tr key={index} className="bg-white bg-opacity-30 border-b">
+                      <td className="py-4 px-6 text-left text-nowrap">
                         {repotting.repottingDate}
                       </td>
                     </tr>
