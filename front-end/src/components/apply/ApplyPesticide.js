@@ -130,8 +130,8 @@ class ApplyPesticideClass extends Component {
     return (
       <div>
         {/* Section for pesticide selection */}
-        <div className='grid grid-cols-3'>
-          <div className='flex p-2 justify-center items-center'>
+        <div className='grid md:grid-cols-2 grid-cols-1 mt-2'>
+          <div className='flex md:pl-20 pl-8 justify-start items-center'>
             <select onChange={this.onPesticideChangeHandler} className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
               <option value="">Select Pesticide</option>
               {this.state.pesticides && this.state.pesticides.map((pesticide, index) => {
@@ -141,8 +141,7 @@ class ApplyPesticideClass extends Component {
               })}
             </select>
           </div>
-          <div></div>
-          <div className='flex justify-center items-center'>
+          <div className='flex md:pr-20 pl-6 md:justify-end justify-start items-center'>
             {this.state.plants &&
               <input value={this.state.applieddate} onChange={this.applieddateChangeHandler}
                 className="shadow appearance-none border border-red-500 rounded w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mx-2"
@@ -150,7 +149,7 @@ class ApplyPesticideClass extends Component {
             }
 
             {this.state.plants && <button
-              className="bg-emerald-700 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              className="btn-grad m-[10px] py-[10px] px-[45px] text-center uppercase transition-all duration-500 text-white rounded-[10px] block"
               type="button"
               onClick={this.saveChanges}
             >
