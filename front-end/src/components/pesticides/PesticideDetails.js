@@ -86,27 +86,27 @@ export class PesticideDetailsClass extends Component {
     return !(this.state.pesticideDetails)?(<div>Details not found</div>):(
       <div className='grid gap-2 p-2'>
           {/* Row 1 */}
-          <div className='bg-slate-500 h-14 flex justify-center items-center text-4xl relative'>
+          <div className='bg-white bg-opacity-20 h-14 flex justify-center items-center text-4xl relative'>
             <h1 className='bg-gradient-to-r from-[#102a14] to-[#7d0b65] bg-clip-text text-transparent'>{this.state.pesticideDetails.name}</h1>
             <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Name","name",this.state.pesticideDetails.name)} alt={"Edit"}/>
           </div>
           {/* Row 2 */}
-          <div className='bg-slate-400 flex justify-center items-center overflow-hidden'>
+          <div className='bg-white bg-opacity-20 flex justify-center items-center overflow-hidden'>
             <img src={imageUrl} className="max-h-[400px] max-w-[400px]" alt={this.state.pesticideDetails.name}/>
           </div>
           {/* Row 2 */}
-          <div className='bg-slate-400 flex justify-left items-center pl-10 min-h-8 h-auto relative'>
+          <div className='bg-white bg-opacity-20 flex justify-left items-center pl-10 min-h-8 h-auto relative'>
             <div>Available : {this.state.pesticideDetails.available}</div>
             <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Availability","available",this.state.pesticideDetails.available)} alt={"Edit"}/>
           </div>
           
           {/* Row 3 */}
-          <div className='bg-slate-500 flex justify-left items-center pl-10 min-h-8 h-auto relative'> 
+          <div className='bg-white bg-opacity-20 flex justify-left items-center pl-10 min-h-8 h-auto relative'> 
             Composition : {this.state.pesticideDetails.composition}
             <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Composition","composition",this.state.pesticideDetails.composition)} alt={"Edit"}/>
           </div>
           {/* Row 4 */}
-          <div className='justify-left items-center bg-slate-500 pl-10 min-h-8 h-auto relative'>
+          <div className='bg-white bg-opacity-20 justify-left items-center pl-10 min-h-8 h-auto relative'>
             <h2>Details:</h2>
             {this.state.pesticideDetails.details}
             <img src={editIcon} className="absolute top-1 right-4 h-6 w-6" onClick={()=>this.showEditModal("Details","details",this.state.pesticideDetails.details)} alt={"Edit"}/>

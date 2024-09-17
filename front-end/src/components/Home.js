@@ -15,7 +15,7 @@ class Home extends Component {
     return (
       <div>
         {/* Title for the website */}
-        <div className=' h-auto w-full md:px-16 px-8 bg-slate-200 flex flex-wrap justify-evenly items-center'>
+        <div className=' bg-black bg-opacity-20 h-auto w-full md:px-16 px-8 flex flex-wrap justify-evenly items-center'>
           <div className='h-full md:w-2/5 mb-4 mt-4 hover:scale-105 transition-all duration-300 rounded-[3%] shadow-gray-600 shadow-md overflow-hidden'>
             <img src={caring} />
           </div>
@@ -24,7 +24,7 @@ class Home extends Component {
           </div>
         </div>
         {/* Div containing three images animation */}
-        <div className='h-[400px] w-full bg-slate-200 md:px-16 px-8 pt-3 pb-8'>
+        <div className='h-[400px] w-full md:px-16 px-8 pt-3 pb-8'>
           <div className='w-full mb-2 text-2xl font-bold font-serif italic'>Growing Happiness, One Plant at a Time</div>
           <div className='flex w-full h-[90%]'>
             <div className='h-full w-1/3 hover:w-3/5 transition-all duration-500 overflow-hidden flex justify-center items-center'>
@@ -40,7 +40,7 @@ class Home extends Component {
         </div>
 
         {/* Div containing list of blogs */}
-        <div className='h-auto w-full bg-slate-200 md:px-16 px-8 pt-3 pb-8'>
+        <div className='bg-black bg-opacity-20 h-auto w-full md:px-16 px-8 pt-3 pb-8'>
           <div className=' font-serif font-bold italic text-emerald-950 text-2xl'>Checkout our blogs ...</div>
           <div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 lg:space-x-8 md:space-x-2'>
             <BlogCard imgsrc={plant}/> <BlogCard imgsrc={caring}/> <BlogCard imgsrc={plant}/>
