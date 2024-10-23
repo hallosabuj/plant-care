@@ -49,11 +49,11 @@ class PesticidesClass extends Component {
   render() {
     return (
         <div className='lg:pl-14 lg:pr-14 md:pl-14 md:pr-14 pl-3 pr-3'>
-            <div className="relative flex pt-2 px-2 justify-end">
+            {(localStorage.getItem('isSignedIn') === 'true') && (<div className="relative flex pt-2 px-2 justify-end">
                 <div className='sm:ml-6 sm:block flex'>
                     <AddPesticideModal reRenderOnAdd={this.reRenderOnAddOrDelete}/>
                 </div>
-            </div>
+            </div>)}
             <div className='grid lg:grid-cols-6 md:grid-cols-3 grid-cols-2 gap-x-3'>
                 {/* Short Circuit to check null */}
                 {this.state.pesticides && this.state.pesticides.map((pesticide,index)=>(
