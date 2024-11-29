@@ -1,0 +1,57 @@
+display = property specifies how an element is displayed
+block-level = start on a new line, take upto full width available (hi, div, p, form, header, footer)
+inline = do not start on a new line, width is limited to what is needed (span, img, a)
+values = block(height, width), inline(no-height, no-width), inline-block(inline but can have height and width), none(will erase the element)
+==================================================
+visibility = hidden(element will be hidden but will take up space)
+==================================================
+position
+values =    static(default) 
+            absolute: any element that is abosulutely positioned will search for a parent that is not statically positioned, if it does not have any parent it will use the viewport. top/left/right/bottom can be used. Absolute elementgoes over other elements in general
+            fixed: fixed will stay in position of our viewport, will fix the element to the window/viewport, top/left/right/bottom can be used.
+            relative : makes an empty space and position the element relative to its original position, top/left/right/bottom can be used.
+            sticky: stick to a position of our viewport on reaching sticking point, top/left/right/bottom can be used.
+
+            fixed and absolute element covers other elements
+==================================================
+flex 
+This can be used as a value of display property
+If we use flex we can use multiple other properties which are:
+justify-content: This justify the content along the main axis
+                 Values: flex-start/flex-end/center//space-between/space-around/space-evenly
+align-items:      This align the content along the cross axis
+                 If there are multiple cross-axis it will affect multiple cross-axis.
+                 It controls alignment along cross axis of every flexbox line individually 
+                 Values: flex-start/flex-end/center//space-between/space-around/space-evenly   
+align-content:   This is to aling whole content of the flexbox along cross-axis
+                 Controls the alignment of all aligns together
+                 Values: flex-start/flex-end/center//space-between/space-around/space-evenly
+gap:             For providing gaps between the items
+                 Values: 0px/1px...
+column-gap:      For providing gaps between the columns
+                 Values: 0px/1px...
+row-gap:         For providing gaps between the rows
+                 Values: 0px/1px...
+flex-wrap:       To enable wrap in case of content overflow
+                 Values: wrap/nowrap
+flex-shrink:     To enable/disable shrinking of the flex elements
+                 Value: 0(disable)/1 or higher(enable), 1 is default value, more the value more faster the box will shrink
+flex-grow:       To enable/disable growing of the flex elements
+                 Values: 0(disable)/1 or higher (enable), 0 is default value, more the value more faster the box will grow
+align-self:      To align a particular flex element
+                 Value: flex-start/flex-end/center
+
+=================================================
+To make glass effect use following in the glass element:
+    White background color with 5% opacity
+    Set backdrop-filter: blur(10px)
+=================================================
+To apply gradient to the text:
+    background: linear-gradient(to right, red, blue);
+    background-clip: text;
+    color: transparent;
+=================================================
+For better scrolling use:
+    scroll-snap-type: x mandatory (in parent element)
+    scroll-snap-position: center  (in child element)
+=================================================

@@ -1,0 +1,9 @@
+1. Create a ssh key
+2. ssh pico.sh
+Token
+======
+65cbdb3d-5615-4909-928d-b1ac3588c904
+####################################################
+zrok enable fUya1tuUcINs
+zrok share public --backend-mode proxy http://192.168.0.115:8080
+password: Sabuj@zrok12
